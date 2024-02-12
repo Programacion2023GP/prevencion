@@ -1,0 +1,55 @@
+<mat-card>
+  <mat-card-content>
+    <mat-form-field appearance="outline">
+      <mat-label>Buscar</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
+    </mat-form-field>
+
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" matSort>
+        <!-- Define las columnas en el encabezado -->
+        <ng-container *ngFor="let col of displayedColumns; let i = index" [matColumnDef]="col">
+          <!-- Verifica si col es igual a 'Actions' -->
+          <ng-container *ngIf="col !== 'Actions'; else notActions">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="flex: 1;"> {{ col }} </th>
+            <td mat-cell class="custom-cell-width" *matCellDef="let row" style="flex: 1;">{{ row[col] }}</td>
+          </ng-container>
+          <!-- Si col no es igual a 'Actions', se mostrará un mensaje personalizado -->
+          <ng-template #notActions>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="flex: 1;"> Acciones </th>
+            <td mat-cell class="custom-cell-width" *matCellDef="let row" style="flex: 1;">
+              <ng-container *ngIf="!disablebuttons">
+                <button mat-icon-button color="primary" (click)="Pdf(row.id)">
+                  <mat-icon class="icon-red icon-large">picture_as_pdf</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="delete(row.id)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="buttons">
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <ng-container *ngFor="let btn of buttons; let j = index">
+                    <button mat-menu-item (click)="touchedButton(row.id, btn.value, row.idviolence || row.id_taller)" *ngIf="(row.caso_violencia !== '1' || (btn.text !== 'Actualizar Caso de violencia' && btn.text !== 'Actualizar Perfil de Agresor'))">
+                      {{ btn.text }}
+                    </button>
+                  </ng-container>
+                </mat-menu>
+              </ng-container>
+            </td>
+          </ng-template>
+        </ng-container>
+
+        <!-- Asocia las columnas definidas con las filas de datos -->
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <tr class="mat-row" *matNoDataRow>
+          <th class="mat-cell text-center" [attr.colspan]="displayedColumns.length">No Existen datos</th>
+        </tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5"></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,67 @@
+table {
+    width: 100%;
+  }
+  
+  .mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  td, th {
+    width: 25%;
+  }
+  /* Estilo para las celdas de encabezado */
+th.mat-header-cell {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    text-align: left;
+  }
+  
+  /* Estilo para las celdas de datos */
+  td.mat-cell {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+  }
+  .mat-mdc-table tbody, .mat-mdc-table tfoot, .mat-mdc-table thead, .mat-mdc-cell, .mat-mdc-footer-cell, .mat-mdc-header-row, .mat-mdc-row, .mat-mdc-footer-row, .mat-mdc-table .mat-mdc-header-cell {
+    background: transparent;
+}
+/* En tu archivo de estilos CSS */
+th.mat-header-cell {
+    border-bottom: none; /* Elimina el borde inferior */
+  }
+ .mdc-data-table__header-cell {
+    border-bottom: none; /* Eliminar el borde inferior solo de la primera celda */
+}  
+/* styles.css o tu archivo de estilos personalizado */
+.custom-cell-width {
+    height: 48px;
+    max-height: 48px; /* Puedes ajustar este valor según tus necesidades */
+    overflow: hidden; /* Esto evitará que el contenido desborde el límite */
+    white-space: nowrap; /* Esto evita que el contenido se divida en varias líneas */
+    text-overflow: ellipsis;
+    justify-content: start; /* Centrar horizontalmente */
+    align-items: center;
+    display: flex;
+
+  }
+
+  element.style {
+}
+.mat-mdc-table mat-header-row.mat-mdc-header-row, .mat-mdc-table mat-row.mat-mdc-row, .mat-mdc-table mat-footer-row.mat-mdc-footer-cell {
+    height: unset;
+}
+.mat-mdc-table[_ngcontent-ng-c1738769311] tbody[_ngcontent-ng-c1738769311], .mat-mdc-table[_ngcontent-ng-c1738769311] tfoot[_ngcontent-ng-c1738769311], .mat-mdc-table[_ngcontent-ng-c1738769311] thead[_ngcontent-ng-c1738769311], .mat-mdc-cell[_ngcontent-ng-c1738769311], .mat-mdc-footer-cell[_ngcontent-ng-c1738769311], .mat-mdc-header-row[_ngcontent-ng-c1738769311], .mat-mdc-row[_ngcontent-ng-c1738769311], .mat-mdc-footer-row[_ngcontent-ng-c1738769311], .mat-mdc-table[_ngcontent-ng-c1738769311] .mat-mdc-header-cell[_ngcontent-ng-c1738769311] {
+    background: transparent;
+    height: 50px;
+    margin-bottom:0px;
+    display: flex;
+  justify-content: start; /* Centrar horizontalmente */
+  align-items: center;
+}  
+.icon-red {
+  color: rgb(235, 24, 24);
+}
+
+.icon-large {
+  font-size: 25px; /* Puedes ajustar el tamaño según tus preferencias */
+}

@@ -1,0 +1,50 @@
+/* You can add global styles to this file, and also import other style files */
+
+$gutter: 1rem; //for primeflex grid system
+@import "assets/layout/styles/layout/layout.scss";
+
+/* PrimeNG */
+@import "../node_modules/primeng/resources/primeng.min.css";
+@import "../node_modules/primeflex/primeflex.scss";
+@import "../node_modules/primeicons/primeicons.css";
+
+/* Demos */
+@import "assets/demo/styles/flags/flags.css";
+@import "assets/demo/styles/badges.scss";
+@import "assets/demo/styles/code.scss";
+/* styles.css */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.p-skeleton {
+    background-color: #f2f2f2;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .p-skeleton-header,
+  .p-skeleton-content {
+    height: 20px;
+    margin-bottom: 10px;
+    background-color: #e0e0e0;
+  }
+  
+  .p-skeleton-header {
+    width: 100%;
+  }
+  
+  .p-skeleton-content {
+    width: 80%;
+  }
+  
+  .p-skeleton-animation {
+    animation: loadingAnimation 1.5s infinite linear;
+  }
+  
+  @keyframes loadingAnimation {
+    0% { opacity: 0.6; }
+    50% { opacity: 0.8; }
+    100% { opacity: 0.6; }
+  }
+  
