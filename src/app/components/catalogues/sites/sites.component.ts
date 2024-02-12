@@ -16,10 +16,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import Swal from 'sweetalert2'
 import { fadeInOutAnimation } from 'src/app/components/animations/animate';
 
-export interface SelectIndex{
-  text:string,
-  value:string,
-}
+
 /** Constants used to fill up our data base. */
 
 @Component({
@@ -54,16 +51,7 @@ Toast = Swal.mixin({
 });
 @ViewChild(MatPaginator) paginator: MatPaginator;
 @ViewChild(MatSort) sort: MatSort;
-tableButtons: SelectIndex[] = [
-  {
-    text:"Visualizar Banco de memorias",
-    value:"1"
-  },
-  {
-    text:"Editar Población beneficiada - talleres / pláticas / conferencias / actividades",
-    value:"100"
-  }
-]
+
   constructor(private service:ServiceService<any>) {
    this.getData()
 
@@ -114,7 +102,11 @@ tableButtons: SelectIndex[] = [
           });
         },
         error:(e)=>{
+          this.isLoading = false
           this.action = false
+          this.MyForm.reset()
+          this.getData()
+
           this.Toast.fire({
             position: 'top-end',
             icon: 'error',
@@ -144,14 +136,16 @@ tableButtons: SelectIndex[] = [
               title: `Se ha eliminado correctamente`,
             });
             this.getData()
-          this.Toast.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: `No se  ha podido eliminar correctamente`,
-              });
           },
           error:(e)=>{
-  
+            this.isLoading = false
+            this.Toast.fire({
+                  position: 'top-end',
+                  icon: 'error',
+                  title: `No se  ha podido eliminar correctamente`,
+                });
+                this.getData()
+
           }
         })
       }

@@ -15,30 +15,26 @@ import { CommonModule } from '@angular/common';
 import { SkeletonModule } from 'primeng/skeleton';
 import Swal from 'sweetalert2'
 import { fadeInOutAnimation } from 'src/app/components/animations/animate';
-import {MatSelectModule} from '@angular/material/select';
-
+import {MatPaginatorIntl, PageEvent} from "@angular/material/paginator";
 
 @Component({
-  selector: 'app-users',
+  selector: 'app-cause',
   standalone: true,
   imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule,TableComponent,MatCardModule,MatButtonModule,
-    ReactiveFormsModule,MatIconModule,CommonModule,SkeletonModule,MatSelectModule],
+    ReactiveFormsModule,MatIconModule,CommonModule,SkeletonModule],
     animations:[fadeInOutAnimation],
-  templateUrl: './users.component.html',
-  styleUrl: './users.component.scss'
+  templateUrl: './cause.component.html',
+  styleUrl: './cause.component.scss'
 })
-export class UsersComponent {
+export class CauseComponent {
+
   MyForm = new FormGroup({
     id:new FormControl(''),
-    name:new FormControl('',Validators.required),
-    email:new FormControl('',[Validators.required,Validators.email]),
-    role:new FormControl('',Validators.required),
-
-
+    name:new FormControl('',Validators.required)
   })
   isLoading = true
   action = false
-  displayedColumns: string[] = ['name','email','role', 'Actions'];
+  displayedColumns: string[] = ['name', 'Actions'];
   dataSource: MatTableDataSource<any>;
 data: any;
 Toast = Swal.mixin({
@@ -52,6 +48,7 @@ Toast = Swal.mixin({
     toast.onmouseleave = Swal.resumeTimer;
   }
 });
+
 @ViewChild(MatPaginator) paginator: MatPaginator;
 @ViewChild(MatSort) sort: MatSort;
 constructor(private service:ServiceService<any>) {
@@ -60,7 +57,7 @@ constructor(private service:ServiceService<any>) {
    // Assign the data to the data source for the table to render
  }
  getData(){
-   this.service.Data("users/index").subscribe({
+   this.service.Data("cause/index").subscribe({
      next:(n)=>{
        this.dataSource =  new MatTableDataSource(n['data']['result']);
        this.dataSource.paginator = this.paginator;
@@ -87,10 +84,10 @@ constructor(private service:ServiceService<any>) {
    onSubmit(){
      this.isLoading = true
 
-   let url ="users/create";
+   let url ="cause/create";
 
    if (this.action) {
-     url =  "users/update"
+     url =  "cause/update"
    }
      this.service.Post(url,this.MyForm.value).subscribe({
        next:(n)=>{
@@ -100,22 +97,22 @@ constructor(private service:ServiceService<any>) {
          this.Toast.fire({
            position: 'top-end',
            icon: 'success',
-           title: `Se ha ${url =='users/create'?'insertado':'actualizado'} correctamente`,
+           title: `Se ha ${url =='cause/create'?'insertado':'actualizado'} correctamente`,
          });
        },
        error:(e)=>{
-        this.MyForm.reset()
-        this.getData()
-
          this.action = false
          this.isLoading = false
+         this.MyForm.reset()
+         this.getData()
 
          this.Toast.fire({
            position: 'top-end',
            icon: 'error',
-           title: ` No se ha podido ${url =='users/create'?'insertar':'actualizar'} correctamente`,
+           title: ` No se ha podido ${url =='cause/create'?'insertar':'actualizar'} correctamente`,
          });
        }
+       
      })
 
      }
@@ -131,7 +128,7 @@ constructor(private service:ServiceService<any>) {
      }
      deleterow(row:any){
        this.isLoading = true
-       this.service.Delete(`users/destroy/${row.id}`).subscribe({
+       this.service.Delete(`cause/destroy/${row.id}`).subscribe({
          next:(n)=>{
            this.Toast.fire({
              position: 'top-end',
@@ -153,4 +150,5 @@ constructor(private service:ServiceService<any>) {
          }
        })
      }
+ 
 }

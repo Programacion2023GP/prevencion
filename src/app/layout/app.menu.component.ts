@@ -23,10 +23,44 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Catalogos',
                 items: [
-                    { label: 'Sitio donde se cometio el acto', icon: 'pi pi-fw pi-id-card', routerLink: ['/sites'] },
-                    { label: 'Medio empleado para cometer el acto', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
-                    { label: 'Causa del acto', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/floatlabel'] },
-                    { label: 'Sexo', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/uikit/invalidstate'] },
+                    // { label: 'Sitio donde se cometio el acto', icon: 'pi pi-fw pi-id-card', routerLink: ['/sitios'] },
+                    // { label: 'Medio empleado para cometer el acto', icon: 'pi pi-fw pi-check-square', routerLink: ['/motivos'] },
+                    // { label: 'Causa del acto', icon: 'pi pi-fw pi-bookmark', routerLink: ['/causas'] },
+                    // { label: 'Sexo', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/generos'] },
+                    // { label: 'Dependencias', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/dependencias'] },
+                    // { label: 'Religion o Cultos', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/religion'] },
+                    // { label: 'Estado civil', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/estadocivil'] },
+                    // { label: 'Alfabetismo o Escolaridad', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/escolaridad'] },
+                    // { label: 'Adicciones', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/adicciones'] },
+                    // { label: 'Enfermedades|', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/enfermedades'] },
+                    // { label: 'Tipo de violencia', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/violencia'] },
+                    // { label: 'Tipo de familia', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/familia'] },
+                    // { label: 'Centro educativo', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/escuela'] },
+                    // { label: 'Como se indetifica', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/indentificacion'] },
+                    // { label: 'Posesion de hijos', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/hijos'] },
+                    // { label: 'Existencia de suicidas en la familia', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/suicidas'] },
+
+                    
+                        { label: "Adicciones", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/adicciones"] },
+                        { label: "Alfabetismo o Escolaridad", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/escolaridad"] },
+                        { label: "Centro educativo", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/escuela"] },
+                        { label: "Causa del acto", icon: "pi pi-fw pi-bookmark", routerLink: ["/causas"] },
+                        { label: "Como se indetifica", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/indentificacion"] },
+                        { label: "Dependencias", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/dependencias"] },
+                        { label: "Enfermedades|", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/enfermedades"] },
+                        { label: "Estado civil", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/estadocivil"] },
+                        { label: "Existencia de suicidas en la familia", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/suicidas"] },
+                        { label: "Medio empleado para cometer el acto", icon: "pi pi-fw pi-check-square", routerLink: ["/motivos"] },
+                        { label: "Posesion de hijos", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/hijos"] },
+                        { label: "Religion o Cultos", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/religion"] },
+                        { label: "Sexo", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/generos"] },
+                        { label: "Sitio donde se cometio el acto", icon: "pi pi-fw pi-id-card", routerLink: ["/sitios"] },
+                        { label: "Tipo de familia", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/familia"] },
+                        { label: "Tipo de violencia", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/violencia"] }
+                    
+                    
+
+
                     // { label: 'Button', icon: 'pi pi-fw pi-box', routerLink: ['/uikit/button'] },
                     // { label: 'Table', icon: 'pi pi-fw pi-table', routerLink: ['/uikit/table'] },
                     // { label: 'List', icon: 'pi pi-fw pi-list', routerLink: ['/uikit/list'] },
