@@ -1,17 +1,20 @@
 import { Component, Input } from '@angular/core';
 import { LayoutService } from '../service/app.layout.service';
 import { MenuService } from '../app.menu.service';
+import { ServiceService } from 'src/app/service.service';
 
 @Component({
     selector: 'app-config',
     templateUrl: './app.config.component.html',
 })
 export class AppConfigComponent {
+
     @Input() minimal: boolean = false;
 
     scales: number[] = [12, 13, 14, 15, 16];
 
     constructor(
+        private service:ServiceService<any>,
         public layoutService: LayoutService,
         public menuService: MenuService
     ) {}
@@ -96,4 +99,14 @@ export class AppConfigComponent {
     incrementScale() {
         this.scale++;
     }
+    Logout() {
+        this.service.Logout("auth/logout").subscribe({
+            next:(n)=>{
+                    localStorage.clear()
+            },
+            error:(e)=>{
+
+            }
+        })
+        }
 }

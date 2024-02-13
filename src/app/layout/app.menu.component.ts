@@ -21,6 +21,12 @@ export class AppMenuComponent implements OnInit {
                 ]
             },
             {
+                label: 'Prevencion',
+                items: [
+                    { label: 'Registro', icon: 'pi pi-fw pi-home', routerLink: ['/prevencion'] }
+                ]
+            },
+            {
                 label: 'Catalogos',
                 items: [
                     // { label: 'Sitio donde se cometio el acto', icon: 'pi pi-fw pi-id-card', routerLink: ['/sitios'] },
@@ -42,6 +48,7 @@ export class AppMenuComponent implements OnInit {
 
                     
                         { label: "Adicciones", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/adicciones"] },
+                        { label: "Actos", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/actos"] },
                         { label: "Alfabetismo o Escolaridad", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/escolaridad"] },
                         { label: "Centro educativo", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/escuela"] },
                         { label: "Causa del acto", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/causas"] },
@@ -75,6 +82,7 @@ export class AppMenuComponent implements OnInit {
                     // { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] }
                 ]
             },
+            
             // {
             //     label: 'Prime Blocks',
             //     items: [

@@ -12,12 +12,40 @@ import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './auth.interceptor';
+import { LoginComponent } from './demo/components/auth/login/login.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { PasswordModule } from 'primeng/password';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ReactiveFormsModule } from '@angular/forms';
+import {MatButtonModule} from '@angular/material/button';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
-    declarations: [AppComponent, NotfoundComponent],
-    imports: [AppRoutingModule, AppLayoutModule, BrowserAnimationsModule],
+    declarations: [AppComponent, NotfoundComponent,LoginComponent],
+    imports: [AppRoutingModule, AppLayoutModule, BrowserAnimationsModule,BrowserModule,
+        FormsModule,
+        HttpClientModule,
+        PasswordModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatDatepickerModule,
+        MatStepperModule,
+        MatFormFieldModule,
+        MatNativeDateModule,
+        CalendarModule,
+        MatSelectModule,
+        CheckboxModule],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
+        // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
         CountryService,
         CustomerService,
         EventService,
@@ -27,5 +55,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         ProductService,
     ],
     bootstrap: [AppComponent],
+    
 })
 export class AppModule {}

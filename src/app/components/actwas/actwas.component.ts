@@ -4,7 +4,6 @@ import {MatSort, MatSortModule} from '@angular/material/sort';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { TableComponent } from '../../table/table.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import { ServiceService } from 'src/app/service.service';
@@ -15,35 +14,28 @@ import { CommonModule } from '@angular/common';
 import { SkeletonModule } from 'primeng/skeleton';
 import Swal from 'sweetalert2'
 import { fadeInOutAnimation } from 'src/app/components/animations/animate';
-import {MatSelectModule} from '@angular/material/select';
-
-
+import {MatPaginatorIntl, PageEvent} from "@angular/material/paginator";
 @Component({
-  selector: 'app-users',
+  selector: 'app-actwas',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule,TableComponent,MatCardModule,MatButtonModule,
-    ReactiveFormsModule,MatIconModule,CommonModule,SkeletonModule,MatSelectModule],
+  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule,MatCardModule,MatButtonModule,
+    ReactiveFormsModule,MatIconModule,CommonModule,SkeletonModule],
     animations:[fadeInOutAnimation],
-  templateUrl: './users.component.html',
-  styleUrl: './users.component.scss'
+  templateUrl: './actwas.component.html',
+  styleUrl: './actwas.component.scss'
 })
-export class UsersComponent {
+export class ActwasComponent {
+
   MyForm = new FormGroup({
     id:new FormControl(''),
-    name:new FormControl('',Validators.required),
-    email:new FormControl('',[Validators.required,Validators.email]),
-    role:new FormControl('',Validators.required),
-    dependece_id:new FormControl('',Validators.required),
-
-
+    name:new FormControl('',Validators.required)
   })
   isLoading = true
   action = false
-  displayedColumns: string[] = ['name','email','role', 'Actions'];
+  displayedColumns: string[] = ['name', 'Actions'];
   dataSource: MatTableDataSource<any>;
-  data: any;
-  dependeces = []
-  Toast = Swal.mixin({
+data: any;
+Toast = Swal.mixin({
   toast: true,
   position: "top-end",
   showConfirmButton: false,
@@ -54,15 +46,16 @@ export class UsersComponent {
     toast.onmouseleave = Swal.resumeTimer;
   }
 });
+
 @ViewChild(MatPaginator) paginator: MatPaginator;
 @ViewChild(MatSort) sort: MatSort;
 constructor(private service:ServiceService<any>) {
   this.getData()
-  this.getDependeces()
+
    // Assign the data to the data source for the table to render
  }
  getData(){
-   this.service.Data("users/index").subscribe({
+   this.service.Data("actwas/index").subscribe({
      next:(n)=>{
        this.dataSource =  new MatTableDataSource(n['data']['result']);
        this.dataSource.paginator = this.paginator;
@@ -76,16 +69,7 @@ constructor(private service:ServiceService<any>) {
    })
  }
 
- getDependeces(){
-  this.service.Data("dependence/values").subscribe({
-    next:(n)=>{
-      this.dependeces =  n['data']['result'];
-      console.log(this.dependeces)
-    },error:(e)=>{
 
-    }
-  })
-}
  applyFilter(event: Event) {
    const filterValue = (event.target as HTMLInputElement).value;
    this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -98,10 +82,10 @@ constructor(private service:ServiceService<any>) {
    onSubmit(){
      this.isLoading = true
 
-   let url ="users/create";
+   let url ="actwas/create";
 
    if (this.action) {
-     url =  "users/update"
+     url =  "actwas/update"
    }
      this.service.Post(url,this.MyForm.value).subscribe({
        next:(n)=>{
@@ -111,22 +95,22 @@ constructor(private service:ServiceService<any>) {
          this.Toast.fire({
            position: 'top-end',
            icon: 'success',
-           title: `Se ha ${url =='users/create'?'insertado':'actualizado'} correctamente`,
+           title: `Se ha ${url =='actwas/create'?'insertado':'actualizado'} correctamente`,
          });
        },
        error:(e)=>{
-        this.MyForm.reset()
-        this.getData()
-
          this.action = false
          this.isLoading = false
+         this.MyForm.reset()
+         this.getData()
 
          this.Toast.fire({
            position: 'top-end',
            icon: 'error',
-           title: ` No se ha podido ${url =='users/create'?'insertar':'actualizar'} correctamente`,
+           title: ` No se ha podido ${url =='actwas/create'?'insertar':'actualizar'} correctamente`,
          });
        }
+       
      })
 
      }
@@ -142,7 +126,7 @@ constructor(private service:ServiceService<any>) {
      }
      deleterow(row:any){
        this.isLoading = true
-       this.service.Delete(`users/destroy/${row.id}`).subscribe({
+       this.service.Delete(`actwas/destroy/${row.id}`).subscribe({
          next:(n)=>{
            this.Toast.fire({
              position: 'top-end',
@@ -164,4 +148,6 @@ constructor(private service:ServiceService<any>) {
          }
        })
      }
+ 
 }
+

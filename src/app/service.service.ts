@@ -11,27 +11,42 @@ export class ServiceService<T> {
     // route: string =  "https://api.resguardosinternos.gomezpalacio.gob.mx/api";
   constructor(private http: HttpClient) { 
   }
+
   
   Data<T>(url: string) {
-    return this.http.get<T>(`${this.route}/${url}`);
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem("token")}`
+    });
+    return this.http.get<T>(`${this.route}/${url}`, { headers });
   }
   OtherData<T>(url: string) {
     return this.http.get<T>(`${url}`);
   }
   Post<T>(url: string, params: any) {
-    return this.http.post<T>(`${this.route}/${url}`, params);
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem("token")}`
+    });
+    return this.http.post<T>(`${this.route}/${url}`, params, { headers });
   }
   
   Logout(url: string) {
-    
-    return this.http.post(`${this.route}/${url}`,"");
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem("token")}`
+    });
+    return this.http.post(`${this.route}/${url}`,"", { headers });
   }
 
   Put(url: string, params: any) {
-    return this.http.put(`${this.route}/${url}`, params);
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem("token")}`
+    });
+    return this.http.put(`${this.route}/${url}`, params, { headers });
   }
   Delete(url:string) {
-    return this.http.post(`${this.route}/${url}`,'');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem("token")}`
+    });
+    return this.http.post(`${this.route}/${url}`,'', { headers });
   }
 
   
