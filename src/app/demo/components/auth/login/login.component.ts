@@ -41,8 +41,7 @@ export class LoginComponent {
             console.warn(n["data"])
             localStorage.setItem("token",n["data"]["result"]["token"])
             localStorage.setItem("role",n["data"]["result"]["user"]["role"])
-            localStorage.setItem("role",n["data"]["result"]["user"]["dependence"])
-
+            localStorage.setItem("dependence",n["data"]["result"]["user"]["dependence"])
             const role =n["data"]["result"]["user"]["role"]
             // localStorage.setItem("id",n["data"]["result"]["user"]["id"])
             // localStorage.setItem("group",n["data"]["result"]["user"][0]["group"])

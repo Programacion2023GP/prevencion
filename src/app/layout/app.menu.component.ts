@@ -23,7 +23,11 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Prevencion',
                 items: [
-                    { label: 'Registro', icon: 'pi pi-fw pi-home', routerLink: ['/prevencion'] }
+                    { label: 'Registro', icon: 'pi pi-fw pi-home', routerLink: ['/prevencion'] },
+                    { label: 'Listas', icon: 'pi pi-fw pi-home', routerLink: ['/prevencioninfo'] },
+                    { label: 'Graficas', icon: 'pi pi-fw pi-home', routerLink: ['/graficas'] }
+
+                    
                 ]
             },
             {
@@ -46,9 +50,9 @@ export class AppMenuComponent implements OnInit {
                     // { label: 'Posesion de hijos', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/hijos'] },
                     // { label: 'Existencia de suicidas en la familia', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/suicidas'] },
 
-                    
+
                         { label: "Adicciones", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/adicciones"] },
-                        { label: "Actos", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/actos"] },
+                        { label: "Actos fue", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/actos"] },
                         { label: "Alfabetismo o Escolaridad", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/escolaridad"] },
                         { label: "Centro educativo", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/escuela"] },
                         { label: "Causa del acto", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/causas"] },
@@ -58,14 +62,15 @@ export class AppMenuComponent implements OnInit {
                         { label: "Estado civil", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/estadocivil"] },
                         { label: "Existencia de suicidas en la familia", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/suicidas"] },
                         { label: "Medio empleado para cometer el acto", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/motivos"] },
+                        { label: "Ocupaciones", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/ocupaciones"] },
                         { label: "Posesion de hijos", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/hijos"] },
                         { label: "Religion o Cultos", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/religion"] },
                         { label: "Sexo", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/generos"] },
                         { label: "Sitio donde se cometio el acto", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/sitios"] },
                         { label: "Tipo de familia", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/familia"] },
                         { label: "Tipo de violencia", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/violencia"] }
-                    
-                    
+
+
 
 
                     // { label: 'Button', icon: 'pi pi-fw pi-box', routerLink: ['/uikit/button'] },
@@ -82,7 +87,7 @@ export class AppMenuComponent implements OnInit {
                     // { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] }
                 ]
             },
-            
+
             // {
             //     label: 'Prime Blocks',
             //     items: [

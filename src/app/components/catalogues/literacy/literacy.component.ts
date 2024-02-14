@@ -57,7 +57,7 @@ constructor(private service:ServiceService<any>) {
    // Assign the data to the data source for the table to render
  }
  getData(){
-   this.service.Data("cause/index").subscribe({
+   this.service.Data("literacy/index").subscribe({
      next:(n)=>{
        this.dataSource =  new MatTableDataSource(n['data']['result']);
        this.dataSource.paginator = this.paginator;
@@ -80,14 +80,14 @@ constructor(private service:ServiceService<any>) {
      this.dataSource.paginator.firstPage();
    }
  }
-   
+
    onSubmit(){
      this.isLoading = true
 
-   let url ="cause/create";
+   let url ="literacy/create";
 
    if (this.action) {
-     url =  "cause/update"
+     url =  "literacy/update"
    }
      this.service.Post(url,this.MyForm.value).subscribe({
        next:(n)=>{
@@ -97,7 +97,7 @@ constructor(private service:ServiceService<any>) {
          this.Toast.fire({
            position: 'top-end',
            icon: 'success',
-           title: `Se ha ${url =='cause/create'?'insertado':'actualizado'} correctamente`,
+           title: `Se ha ${url =='literacy/create'?'insertado':'actualizado'} correctamente`,
          });
        },
        error:(e)=>{
@@ -109,15 +109,15 @@ constructor(private service:ServiceService<any>) {
          this.Toast.fire({
            position: 'top-end',
            icon: 'error',
-           title: ` No se ha podido ${url =='cause/create'?'insertar':'actualizar'} correctamente`,
+           title: ` No se ha podido ${url =='literacy/create'?'insertar':'actualizar'} correctamente`,
          });
        }
-       
+
      })
 
      }
      edit(row: any) {
-       
+
        this.action = true
        this.MyForm.get('id')?.setValue(row.id)
        Object.keys(row).forEach(key => {
@@ -128,7 +128,7 @@ constructor(private service:ServiceService<any>) {
      }
      deleterow(row:any){
        this.isLoading = true
-       this.service.Delete(`cause/destroy/${row.id}`).subscribe({
+       this.service.Delete(`literacy/destroy/${row.id}`).subscribe({
          next:(n)=>{
            this.Toast.fire({
              position: 'top-end',
@@ -150,5 +150,5 @@ constructor(private service:ServiceService<any>) {
          }
        })
      }
- 
+
 }

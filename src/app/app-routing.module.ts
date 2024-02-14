@@ -24,6 +24,9 @@ import { AcessGuard } from './access.guard';
 import { LoginComponent } from './demo/components/auth/login/login.component';
 import { AuthenticationGuard } from './auth.guard';
 import { SuicidepreventionComponent } from './components/suicideprevention/suicideprevention.component';
+import { ActiviesComponent } from './components/catalogues/activies/activies.component';
+import { TablesuicidepreventionComponent } from './components/tablesuicideprevention/tablesuicideprevention.component';
+import { ChartsComponent } from './components/charts/charts.component';
 
 @NgModule({
     imports: [
@@ -34,7 +37,9 @@ import { SuicidepreventionComponent } from './components/suicideprevention/suici
 
                 children: [
                     { path: 'prevencion', component:SuicidepreventionComponent},
+                    { path: 'prevencioninfo', component:TablesuicidepreventionComponent},
                     { path: 'sitios', component:SitesComponent},
+                    { path: 'graficas', component:ChartsComponent},
                     { path: 'causas', component:CauseComponent},
                     { path: 'motivos', component:MeanemployeeComponent},
                     { path: 'generos', component:GenderComponent},
@@ -51,6 +56,7 @@ import { SuicidepreventionComponent } from './components/suicideprevention/suici
                     { path: 'hijos', component:ChildrensComponent},
                     { path: 'suicidas', component:ExistenceComponent},
                     { path: 'actos', component:ActwasComponent},
+                    { path: 'ocupaciones', component:ActiviesComponent},
 
                     { path: 'usuarios', component:UsersComponent},
                     { path: '', redirectTo: 'usuarios', pathMatch: 'full' },

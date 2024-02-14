@@ -4,10 +4,18 @@
   <mat-stepper  #stepper>
     <mat-step label="Datos de la fuente informativa" >
         <form [formGroup]="MyForm" (ngSubmit)="onSubmit()">
-    
+
+            <mat-form-field  appearance="outline" style="width: 100%">
+                <mat-label>Fecha de registro</mat-label>
+                <input [readonly]="true" formControlName="dateregister" matInput>
+            </mat-form-field>
+            <mat-form-field  appearance="outline" style="width: 100%">
+                <mat-label>Nombre de la persona suicidada</mat-label>
+                <input formControlName="name" matInput>
+            </mat-form-field>
             <mat-form-field  appearance="outline" style="width: 100%">
                 <mat-label>Folio</mat-label>
-                <input formControlName="invoice" matInput>
+                <input readonly formControlName="invoice" matInput>
             </mat-form-field>
             <mat-form-field appearance="outline" style="width: 100%">
                 <mat-label>El acto fue</mat-label>
@@ -15,102 +23,228 @@
                     <mat-option *ngFor="let i of wasact" [value]="i.value">{{i.text}}</mat-option>
                 </mat-select>
             </mat-form-field>
-            
+
             <mat-label>Intento de suicido o suicidio registrado en el mes de: </mat-label>
             <br>
               <p-calendar
-              
-              formControlName="dateregister"[inline]="true" [locale]="CALENDER_CONFIG_EN"></p-calendar>
-                <br>                 
+
+              formControlName="datecurrence"[inline]="true" [locale]="CALENDER_CONFIG_EN"></p-calendar>
+                <br>
                 <br>
                 <br>
 
                 <mat-form-field  appearance="outline" style="width: 100%">
-                    <mat-label>CP</mat-label>
+                    <mat-label>codigo postal de la fuente</mat-label>
                     <input type="number" (input)="SearchCp($event)" formControlName="cp" matInput>
                 </mat-form-field>
                 <mat-form-field  appearance="outline" style="width: 100%">
-                    <mat-label>Estado</mat-label>
-                    <input formControlName="states" matInput>
+                    <mat-label>Estado de la fuente</mat-label>
+                    <input readonly formControlName="states" matInput>
                 </mat-form-field>
                 <mat-form-field  appearance="outline" style="width: 100%">
-                    <mat-label>Municio</mat-label>
-                    <input formControlName="municipys" matInput>
+                    <mat-label>Municio de la fuente</mat-label>
+                    <input readonly formControlName="municipys" matInput>
                 </mat-form-field>
                 <mat-form-field appearance="outline" style="width: 100%">
-                    <mat-label>Colonia</mat-label>
+                    <mat-label>Colonia de la fuente</mat-label>
                     <mat-select formControlName="colony">
                         <mat-option *ngFor="let i of colonias" [value]="i">{{i}}</mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field appearance="outline" style="width: 100%">
-                    <mat-label>Clave de la fuente(Dependencias)</mat-label>
-                    <mat-select formControlName="dependeces_id">
-                        <mat-option *ngFor="let i of dependeces" [value]="i.value">{{i.text}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <ng-container  *ngIf="role!='Capturista'">
+                    <mat-form-field appearance="outline" style="width: 100%">
+                        <mat-label>Clave de la fuente(Dependencias)</mat-label>
+                        <mat-select formControlName="dependeces_id">
+                            <mat-option *ngFor="let i of dependeces" [value]="i.value">{{i.text}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </ng-container>
                 <mat-label>Fecha de ocurrencia dia: </mat-label>
                 <br>
                 <p-calendar
-              
+
                 formControlName="datesuccess"[inline]="true" [locale]="CALENDER_CONFIG_EN"></p-calendar>
-                  <br>                 
+                  <br>
                   <br>
                   <mat-form-field  appearance="outline" style="width: 100%">
-                    <mat-label>CP</mat-label>
+                    <mat-label>Codigo postal del suicidio</mat-label>
                     <input type="number" (input)="SearchCpDeed($event)" formControlName="cpdeed" matInput>
                 </mat-form-field>
                   <mat-form-field  appearance="outline" style="width: 100%">
-                    <mat-label>Estado</mat-label>
-                    <input formControlName="statesdeed" matInput>
+                    <mat-label>Estado postal del suicidio</mat-label>
+                    <input readonly formControlName="statesdeed" matInput>
                 </mat-form-field>
                 <mat-form-field  appearance="outline" style="width: 100%">
-                    <mat-label>Municio</mat-label>
-                    <input formControlName="municipysdeed" matInput>
+                    <mat-label>Municio del suicidio</mat-label>
+                    <input readonly formControlName="municipysdeed" matInput>
                 </mat-form-field>
                 <mat-form-field appearance="outline" style="width: 100%">
-                    <mat-label>Colonia</mat-label>
+                    <mat-label>Colonia del suicidio</mat-label>
                     <mat-select formControlName="colonydeed">
                         <mat-option *ngFor="let i of coloniasdeed" [value]="i">{{i}}</mat-option>
                     </mat-select>
                 </mat-form-field>
-            
+                <mat-form-field appearance="outline" style="width: 100%">
+                    <mat-label>Sitio donde cometio el acto</mat-label>
+                <mat-select formControlName="sites_id">
+                    <mat-option *ngFor="let i of sites" [value]="i.value">{{i.text}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <mat-label>Causa del acto</mat-label>
+                <mat-select formControlName="causes_id">
+                    <mat-option *ngFor="let i of causes" [value]="i.value">{{i.text}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <mat-label>Medio empleado para cometer el acto</mat-label>
+                <mat-select formControlName="meanemployeed_id">
+                    <mat-option *ngFor="let i of meansemployeed" [value]="i.value">{{i.text}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <mat-label>Dependencia a la que canaliza</mat-label>
+                <mat-select formControlName="dependececanalize_id">
+                    <mat-option *ngFor="let i of dependeces" [value]="i.value">{{i.text}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field  appearance="outline" style="width: 100%">
+                <mat-label>Quien denuncia</mat-label>
+                <input  formControlName="personinformate" matInput>
+            </mat-form-field>
+
             @if (MyForm.valid) {
-                <button mat-raised-button color="primary">Registrar</button>
+                <button (click)="nextStep(stepper)" mat-raised-button color="primary">Continuar</button>
               }
             @else {
                 <button
                 disabled
-                mat-raised-button color="primary">Registrar</button>            
+                mat-raised-button color="primary">Continuar</button>
               }
-               
+
         </form>
     </mat-step>
     <mat-step label="Caracteristicas personales suicidas">
-      <form >
-        <mat-form-field>
-          <mat-label>Address</mat-label>
-          <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY"
-                 required>
-        </mat-form-field>
-        <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
-        </div>
+        <form [formGroup]="Myformsecond" (ngSubmit)="onSubmitsecond()">
+            <mat-form-field  appearance="outline" style="width: 100%">
+                <mat-label>Curp</mat-label>
+                <input  formControlName="curp" matInput>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <mat-label>Sexo</mat-label>
+                <mat-select formControlName="gender_id">
+                    <mat-option *ngFor="let i of genders" [value]="i.value">{{i.text}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field  appearance="outline" style="width: 100%">
+                <mat-label>Edad(Años cumplidos)</mat-label>
+                <input type="number" formControlName="age" matInput>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <mat-label>Religion o culto</mat-label>
+                <mat-select formControlName="belief_id">
+                    <mat-option *ngFor="let i of beliefs" [value]="i.value">{{i.text}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <mat-label>Estado civil</mat-label>
+                <mat-select formControlName="statecivil_id">
+                    <mat-option *ngFor="let i of statesCivils" [value]="i.value">{{i.text}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <mat-label>Alfabetismo y escolaridad</mat-label>
+                <mat-select formControlName="literacy_id">
+                    <mat-option *ngFor="let i of literacys" [value]="i.value">{{i.text}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <mat-label>posesión de hijos</mat-label>
+                <mat-select formControlName="childrens_id">
+                    <mat-option *ngFor="let i of childrens" [value]="i.value">{{i.text}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <mat-label>Existencia de suicidas en la familia</mat-label>
+                <mat-select formControlName="existence_id">
+                    <mat-option *ngFor="let i of existences" [value]="i.value">{{i.text}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <mat-label>Adicciones</mat-label>
+                <mat-select formControlName="adictions_id">
+                    <mat-option *ngFor="let i of adictions" [value]="i.value">{{i.text}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <mat-label>Enfermedades</mat-label>
+                <mat-select formControlName="diseases_id">
+                    <mat-option *ngFor="let i of diseases" [value]="i.value">{{i.text}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <mat-label>Tipo de violencia</mat-label>
+                <mat-select formControlName="violence_id">
+                    <mat-option *ngFor="let i of violences" [value]="i.value">{{i.text}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <mat-label>Tipo de familia</mat-label>
+                <mat-select formControlName="family_id">
+                    <mat-option *ngFor="let i of familys" [value]="i.value">{{i.text}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <mat-label>Centro educativo</mat-label>
+                <mat-select formControlName="school_id">
+                    <mat-option *ngFor="let i of schools" [value]="i.value">{{i.text}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <mat-label>Como se indentifica</mat-label>
+                <mat-select formControlName="indetified_id">
+                    <mat-option *ngFor="let i of indetifieds" [value]="i.value">{{i.text}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-label>Fecha de reindición de datos del dia </mat-label>
+            <br>
+              <p-calendar
+
+              formControlName="datereindence"[inline]="true" [locale]="CALENDER_CONFIG_EN"></p-calendar>
+                <br>
+                <br>
+                <button mat-raised-button (click)="previousStep(stepper)" color="accent">Regresar</button>
+
+                @if (Myformsecond.valid) {
+                    <button mat-raised-button (click)="nextStep(stepper)" color="primary">Continuar</button>
+                  }
+                @else {
+                    <button
+                    disabled
+                    mat-raised-button color="primary">Continuar</button>
+                  }
+
       </form>
     </mat-step>
     <mat-step label="Ocupacion que tiene tenia el suicida">
-        <form >
-          <mat-form-field>
-            <mat-label>Address</mat-label>
-            <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY"
-                   required>
-          </mat-form-field>
-          <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
-          </div>
+        <form [formGroup]="Myformtree" (ngSubmit)="Onsubmitree()">
+            <mat-form-field appearance="outline" style="width: 100%">
+                <mat-label>Ocupación</mat-label>
+                <mat-select formControlName="activies_id">
+                    <mat-option *ngFor="let i of activities" [value]="i.value">{{i.text}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button mat-raised-button  (click)="previousStep(stepper)" color="accent">Regresar</button>
+
+            @if (Myformtree.valid && Myformsecond.valid &&MyForm.valid) {
+                <button mat-raised-button color="primary" (click)="stepper.reset()">Registrar</button>
+              }
+            @else {
+                <button
+                disabled
+                mat-raised-button color="primary" >Registrar</button>
+              }
         </form>
       </mat-step>
   </mat-stepper>
-  
+
