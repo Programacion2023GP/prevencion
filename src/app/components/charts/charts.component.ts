@@ -41,8 +41,8 @@ export class ChartsComponent {
           
           // Iterar sobre las opciones para contar las causas y los tipos de violencia
           this.options.forEach((item) => {
-            const causa = item.causa;
-            const violencia = item.violencia;
+            const causa = item.age;
+            const violencia = item.medio_empleado;
           
             // Contar las causas
             if (!causasContador[causa]) {
@@ -72,22 +72,22 @@ export class ChartsComponent {
               // Obtener las causas únicas como un array
              
           this.data = {
-            labels: causasUnicas,
+            labels: violenceUnicas,
             datasets: [
               {
-                label: 'causas de muertes',
+                label: 'Suicidios con Respecto a Motivos',
                 backgroundColor: '#42A5F5',
-                data: conteosCausas
+                data: conteosViolencia
               }
             ]
           };
           this.violence = {
-            labels: violenceUnicas,
+            labels: causasUnicas,
             datasets: [
               {
-                label: 'Tipos de violencia',
+                label: 'Suicidios con Respecto a Edades',
                 backgroundColor: '#42A5F5',
-                data: conteosViolencia
+                data: conteosCausas
               }
             ]
           };

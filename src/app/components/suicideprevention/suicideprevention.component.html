@@ -234,6 +234,10 @@
                     <mat-option *ngFor="let i of activities" [value]="i.value">{{i.text}}</mat-option>
                 </mat-select>
             </mat-form-field>
+            <mat-form-field class="example-full-width" appearance="outline" style="width: 100%">
+                <mat-label>Especifica el nombre de la actividad a que se dedica o dedicaba, agregando una breve descripción</mat-label>
+                <textarea matInput formControlName="description" placeholder=""></textarea>
+              </mat-form-field>
             <button mat-raised-button  (click)="previousStep(stepper)" color="accent">Regresar</button>
 
             @if (Myformtree.valid && Myformsecond.valid &&MyForm.valid) {

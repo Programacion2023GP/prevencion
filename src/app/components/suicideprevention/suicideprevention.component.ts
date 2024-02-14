@@ -55,6 +55,7 @@ export class SuicidepreventionComponent {
   })
   Myformtree =new FormGroup({
     activies_id:new FormControl('',Validators.required),
+    description:new FormControl('',Validators.required),
   })
 
 

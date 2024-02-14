@@ -1,10 +1,13 @@
 <div class="row">
     <div class="col-6">
         <p-chart type="bar" [data]="violence"></p-chart>
-
     </div>
 
     <div class="col-6">
+        <div class="text-center"> <!-- Contenedor centrado -->
+            <label for="">Suicidios con Respecto a Motivos</label>
+        </div>
+        <br>
         <p-chart type="pie" [data]="data"></p-chart>
     </div>
 </div>
