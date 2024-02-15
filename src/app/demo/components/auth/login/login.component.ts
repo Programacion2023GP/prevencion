@@ -46,20 +46,20 @@ export class LoginComponent {
             // localStorage.setItem("id",n["data"]["result"]["user"]["id"])
             // localStorage.setItem("group",n["data"]["result"]["user"][0]["group"])
             // localStorage.setItem("departamentos",n["data"]["result"]["user"][0]["departamentos"])
-      
-      
-      
-                  if (role == "Administrador" ||"Super Admin") {
+
+
+
+                  if (role == "Administrador" ||role == "SuperAdmin") {
                     this.router.navigateByUrl(`/usuarios`)
                   }else{
-                    this.router.navigateByUrl('/usuarios');
+                    this.router.navigateByUrl('/prevencion');
                   }
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
           },
           error:(e:any)=>{
             this.Toast.fire({
@@ -69,7 +69,7 @@ export class LoginComponent {
             });
           },
           complete :()=>{
-      
+
           }
         })
         }

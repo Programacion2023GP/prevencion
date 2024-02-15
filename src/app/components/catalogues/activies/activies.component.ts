@@ -57,13 +57,13 @@ export class ActiviesComponent {
      // Assign the data to the data source for the table to render
    }
    getData(){
+     this.isLoading = false
      this.service.Data("activies/index").subscribe({
        next:(n)=>{
          this.dataSource =  new MatTableDataSource(n['data']['result']);
          this.dataSource.paginator = this.paginator;
          this.dataSource.sort = this.sort;
          this.data = n["data"]["result"]
-         this.isLoading = false
        },error:(e)=>{
          this.isLoading = false
 
@@ -140,11 +140,13 @@ export class ActiviesComponent {
 
             },
             error:(e)=>{
-             this.Toast.fire({
-                   position: 'top-end',
-                   icon: 'error',
-                   title: `No se  ha podido eliminar correctamente`,
-                 });
+            
+                 this.Toast.fire({
+                  position: 'top-end',
+                  icon: 'error',
+                  title: e['error']['data']['message'] || 'No se ha podido eliminar correctamente',
+              });
+
                  this.getData()
 
            }

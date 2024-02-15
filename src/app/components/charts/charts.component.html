@@ -1,13 +1,39 @@
-<div class="row">
-    <div class="col-6">
-        <p-chart type="bar" [data]="violence"></p-chart>
+
+<div [@fadeInOutAnimation] class="row content"  [ngClass]="{'loading': loading}">
+
+    <div class="row" *ngIf="!isLoading; else SkeletonTable">
+        <div class="col-6">
+            <mat-card>
+                <mat-card-content>
+            <p-chart type="bar" [data]="violence"></p-chart>
+            </mat-card-content>
+            </mat-card>
+        </div>
+
+        <div class="col-6">
+            <mat-card>
+            <mat-card-content>
+            <div class="text-center"> <!-- Contenedor centrado -->
+                <label for="">Suicidios con Respecto a Motivos</label>
+            </div>
+            <br>
+            <p-chart type="pie" [data]="data"></p-chart>
+        </mat-card-content>
+    </mat-card>
+        </div>
     </div>
 
-    <div class="col-6">
-        <div class="text-center"> <!-- Contenedor centrado -->
-            <label for="">Suicidios con Respecto a Motivos</label>
+    <div class="row">
+        <div class="col-md-8 mx-auto"> <!-- Columna centrada horizontalmente -->
+            <ng-template #SkeletonTable>
+                <!-- Esqueleto de carga -->
+                <div style="position: relative; height: 80vh;"> <!-- Estilo para centrar verticalmente -->
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        <h2>Cargando ....</h2>
+                        <mat-spinner></mat-spinner>
+                    </div>
+                </div>
+            </ng-template>
         </div>
-        <br>
-        <p-chart type="pie" [data]="data"></p-chart>
     </div>
 </div>

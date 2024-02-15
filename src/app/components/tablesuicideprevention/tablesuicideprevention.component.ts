@@ -27,32 +27,49 @@ import { DatePipe } from '@angular/common';
   styleUrl: './tablesuicideprevention.component.scss'
 })
 export class TablesuicidepreventionComponent {
-
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 visible:Boolean
   dataSelected =[]
   data: any;
-  displayedColumns: string[] = ['invoice','personinformate','name','dependencia','medio_empleado','datesuccess', 'Actions'];
+  displayedColumns: string[] = ['invoice','personinformate','name','dependencia','causa','datesuccess', 'Actions'];
   dataSource: MatTableDataSource<any>;
+  isLoading: boolean=true;
+loading: true;
   constructor(private service:ServiceService<any>){
     this.getSuicides()
   }
+  ngOnInit() {
+    this.dataSource = new MatTableDataSource([]);
+    this.getSuicides();
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
- 
+
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
   }
-  getSuicides(){
-    this.service.Data("prevention/show").subscribe({
-        next:(n)=>{
-          this.data =  n['data']['result'];
-        },error:(e)=>{
 
-        }
-      })
-}
+  getSuicides() {
+    this.isLoading = true;
+    this.service.Data("prevention/show").subscribe({
+      next: (n) => {
+        this.data = n["data"]["result"];
+        this.dataSource = new MatTableDataSource(this.data);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.isLoading = false;
+      },
+      error: (e) => {
+        console.error("Error al obtener datos:", e);
+        this.isLoading = false;
+      }
+    });
+  }
+
     info(row){
       this.dataSelected =[]
       this.visible = true

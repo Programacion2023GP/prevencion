@@ -22,29 +22,62 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     border-radius: 4px;
     overflow: hidden;
   }
-  
+
   .p-skeleton-header,
   .p-skeleton-content {
     height: 20px;
     margin-bottom: 10px;
     background-color: #e0e0e0;
   }
-  
+
   .p-skeleton-header {
     width: 100%;
   }
-  
+
   .p-skeleton-content {
     width: 80%;
   }
-  
+
   .p-skeleton-animation {
     animation: loadingAnimation 1.5s infinite linear;
   }
-  
+
   @keyframes loadingAnimation {
     0% { opacity: 0.6; }
     50% { opacity: 0.8; }
     100% { opacity: 0.6; }
   }
-  
+
+  .cargando {
+    width: 48px;
+    height: 48px;
+    display: inline-block;
+    position: relative;
+  }
+  .cargando::after,
+  .cargando::before {
+    content: '';
+    box-sizing: border-box;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid #FFF;
+    position: absolute;
+    left: 0;
+    top: 0;
+    animation: animcargando 2s linear infinite;
+  }
+  .cargando::after {
+    animation-delay: 1s;
+  }
+
+  @keyframes animcargando {
+    0% {
+      transform: scale(0);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 0;
+    }
+  }

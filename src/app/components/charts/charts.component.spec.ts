@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { SkeletonModule } from 'primeng/skeleton';
 
 import { ChartsComponent } from './charts.component';
 
@@ -8,7 +9,7 @@ describe('ChartsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ChartsComponent]
+      imports: [ChartsComponent,SkeletonModule]
     })
     .compileComponents();
     

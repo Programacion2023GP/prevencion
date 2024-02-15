@@ -57,20 +57,30 @@ constructor(private service:ServiceService<any>) {
    // Assign the data to the data source for the table to render
  }
  getData(){
+   this.isLoading = false;
    this.service.Data("statecivil/index").subscribe({
      next:(n)=>{
-       this.dataSource =  new MatTableDataSource(n['data']['result']);
-       this.dataSource.paginator = this.paginator;
-       this.dataSource.sort = this.sort;
-       this.data = n["data"]["result"]
-       this.isLoading = false
+       
+      this.data = n["data"]["result"];
+      
+      // Asignar los datos a dataSource.data
+      this.dataSource.data = this.data;
+
+      // Configurar el paginador y el ordenador
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+
+      // Marcar isLoading como false
      },error:(e)=>{
        this.isLoading = false
 
      }
    })
  }
-
+ ngOnInit() {
+  this.dataSource = new MatTableDataSource([]);
+  this.getData();
+}
 
  applyFilter(event: Event) {
    const filterValue = (event.target as HTMLInputElement).value;
@@ -92,6 +102,7 @@ constructor(private service:ServiceService<any>) {
      this.service.Post(url,this.MyForm.value).subscribe({
        next:(n)=>{
        this.MyForm.reset()
+       
          this.getData()
          this.action = false
          this.Toast.fire({
@@ -140,11 +151,11 @@ constructor(private service:ServiceService<any>) {
 
           },
           error:(e)=>{
-           this.Toast.fire({
-                 position: 'top-end',
-                 icon: 'error',
-                 title: `No se  ha podido eliminar correctamente`,
-               });
+            this.Toast.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: e['error']['data']['message'] || 'No se ha podido eliminar correctamente',
+          });
                this.getData()
 
          }

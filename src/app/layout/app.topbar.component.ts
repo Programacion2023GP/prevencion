@@ -13,7 +13,7 @@ export class AppTopBarComponent {
 
 
     items!: MenuItem[];
-    
+
     @ViewChild('menubutton') menuButton!: ElementRef;
 
     @ViewChild('topbarmenubutton') topbarMenuButton!: ElementRef;
@@ -22,6 +22,7 @@ export class AppTopBarComponent {
 
     constructor(public layoutService: LayoutService,private service:ServiceService<any>,private route:Router) { }
     Logout() {
+        localStorage.clear();
         this.service.Logout("auth/logout").pipe(
             catchError(error => {
                 // Maneja el er

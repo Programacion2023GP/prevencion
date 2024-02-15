@@ -16,6 +16,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { CalendarModule } from 'primeng/calendar';
 import {MatStepper, MatStepperModule} from '@angular/material/stepper';
 import Swal from 'sweetalert2'
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import { fadeInOutAnimation } from 'src/app/components/animations/animate';
 import {MatSelectModule} from '@angular/material/select';
@@ -23,7 +24,7 @@ import {MatSelectModule} from '@angular/material/select';
   selector: 'app-suicideprevention',
   standalone: true,
   imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule,MatCardModule,MatButtonModule,
-    ReactiveFormsModule,MatIconModule,CommonModule,SkeletonModule,MatSelectModule,MatDatepickerModule,CalendarModule,MatStepperModule],
+    ReactiveFormsModule,MatIconModule,CommonModule,SkeletonModule,MatSelectModule,MatDatepickerModule,CalendarModule,MatStepperModule,MatProgressSpinnerModule],
     animations:[fadeInOutAnimation],
     providers: [DatePipe],
   templateUrl: './suicideprevention.component.html',
@@ -32,7 +33,7 @@ import {MatSelectModule} from '@angular/material/select';
 export class SuicidepreventionComponent {
     formattedDate: string;
     role =localStorage.getItem("role")
-
+    animation = true
     MyForm: FormGroup;
     Myformsecond =new FormGroup({
     curp: new FormControl('', [Validators.required, Validators.pattern(/^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/)]),
@@ -112,6 +113,9 @@ export class SuicidepreventionComponent {
 @ViewChild(MatSort) sort: MatSort;
 calendar_en: any;
   coloniasdeed: [];
+    loading: boolean;
+    loadingtwo: boolean;
+isLoadingSkeleton: boolean=false;
 
 
 constructor(private service:ServiceService<any>,private datePipe: DatePipe) {
@@ -432,6 +436,8 @@ getCauses(){
        })
      }
      SearchCp(event: any) {
+        this.loading =true
+
         this.service.OtherData(`https://api.gomezpalacio.gob.mx/api/cp/${event.target.value}`).subscribe({
           next:(n)=>{
             const data = n["data"]["result"]
@@ -439,14 +445,17 @@ getCauses(){
             this.colonias = data.map(item => item.Colonia);
             this.MyForm.get("states").setValue(info.Estado)
             this.MyForm.get("municipys").setValue(info.Municipio)
-
+            this.loading =false
           },
           error:(e)=>{
+            this.loading =false
 
           }
         })
       }
       SearchCpDeed(event: any) {
+        this.loadingtwo = true
+
         this.service.OtherData(`https://api.gomezpalacio.gob.mx/api/cp/${event.target.value}`).subscribe({
           next:(n)=>{
             const data = n["data"]["result"]
@@ -454,14 +463,17 @@ getCauses(){
             this.coloniasdeed = data.map(item => item.Colonia);
             this.MyForm.get("statesdeed").setValue(info.Estado)
             this.MyForm.get("municipysdeed").setValue(info.Municipio)
-
+            this.loadingtwo = false
           },
           error:(e)=>{
+            this.loadingtwo = false
 
           }
         })
       }
       Onsubmitree() {
+        this.isLoadingSkeleton =true
+        console.warn( this.isLoadingSkeleton)
         const combinedData = {
             ...this.MyForm.value,
             ...this.Myformsecond.value,
@@ -471,13 +483,15 @@ getCauses(){
                this.MyForm.reset()
                this.Myformsecond.reset()
                this.Myformtree.reset();
-               
+
                this.findIndex()
                this.Toast.fire({
                 position: 'top-end',
                 icon: 'success',
                 title: `Se ha insertado correctamente`,
               });
+              this.isLoadingSkeleton =false
+
            },
            error: (e)=>{
             this.MyForm.reset()
@@ -488,8 +502,10 @@ getCauses(){
               icon: 'error',
               title: `No se ha podido insertar correctamente`,
             });
+            this.isLoadingSkeleton =false
            }
-       })
+          })
+
       }
       onSubmitsecond() {
 
