@@ -17,6 +17,7 @@ import { CalendarModule } from 'primeng/calendar';
 import {MatStepper, MatStepperModule} from '@angular/material/stepper';
 import Swal from 'sweetalert2'
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { PrimeNGConfig } from 'primeng/api';
 
 import { fadeInOutAnimation } from 'src/app/components/animations/animate';
 import {MatSelectModule} from '@angular/material/select';
@@ -116,10 +117,13 @@ calendar_en: any;
     loading: boolean;
     loadingtwo: boolean;
 isLoadingSkeleton: boolean=false;
+hoy: Date;
 
 
 constructor(private service:ServiceService<any>,private datePipe: DatePipe) {
     this.findIndex()
+    this.hoy = new Date(); // Obtiene la fecha de hoy
+
     let Today = new Date();
     // Formatear la fecha en el formato 'YYYY-MM-DD' (formato de fecha de HTML)
      let Hoy = Today.toISOString().split('T')[0];
@@ -137,7 +141,7 @@ constructor(private service:ServiceService<any>,private datePipe: DatePipe) {
         municipys:new FormControl('',Validators.required),
         colony:new FormControl('',Validators.required),
         dependeces_id:new FormControl('',Validators.required),
-        datesuccess:new FormControl('',Validators.required),
+        datesuccess:new FormControl(this.hoy,Validators.required),
         cpdeed:new FormControl('',Validators.required),
         statesdeed:new FormControl('',Validators.required),
         municipysdeed:new FormControl('',Validators.required),

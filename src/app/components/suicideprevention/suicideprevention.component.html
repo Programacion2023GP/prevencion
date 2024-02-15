@@ -28,8 +28,8 @@
                 <mat-label>Intento de suicido o suicidio registrado en el mes de: </mat-label>
                 <br>
                 <p-calendar
-
-                formControlName="datecurrence"[inline]="true" [locale]="CALENDER_CONFIG_EN"></p-calendar>
+                [defaultDate]="hoy"
+                formControlName="datecurrence"[inline]="true" [locale]="'es'"></p-calendar>
                     <br>
                     <br>
                     <br>
@@ -247,7 +247,7 @@
 
         </form>
         </mat-step>
-        <mat-step label="Ocupacion que tiene tenia el suicida">
+        <mat-step label="Ocupacion que tiene (tenia) el suicida">
             <form [formGroup]="Myformtree" (ngSubmit)="Onsubmitree()">
                 <mat-form-field appearance="outline" style="width: 100%">
                     <mat-label>Ocupación</mat-label>

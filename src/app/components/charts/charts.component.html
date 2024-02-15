@@ -1,11 +1,12 @@
 
 <div [@fadeInOutAnimation] class="row content"  [ngClass]="{'loading': loading}">
-
-    <div class="row" *ngIf="!isLoading; else SkeletonTable">
+    
+    <div class="row" >
         <div class="col-6">
             <mat-card>
                 <mat-card-content>
-            <p-chart type="bar" [data]="violence"></p-chart>
+                    <div id="container" style="width:100%; height:400px;"></div>
+                    <!-- <p-chart type="bar" [data]="violence"></p-chart> -->
             </mat-card-content>
             </mat-card>
         </div>
@@ -13,11 +14,8 @@
         <div class="col-6">
             <mat-card>
             <mat-card-content>
-            <div class="text-center"> <!-- Contenedor centrado -->
-                <label for="">Suicidios con Respecto a Motivos</label>
-            </div>
-            <br>
-            <p-chart type="pie" [data]="data"></p-chart>
+            
+            <div id="pie" style="width:100%; height:400px;"></div>
         </mat-card-content>
     </mat-card>
         </div>

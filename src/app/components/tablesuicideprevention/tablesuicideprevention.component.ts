@@ -39,10 +39,10 @@ loading: true;
   constructor(private service:ServiceService<any>){
     this.getSuicides()
   }
-  ngOnInit() {
-    this.dataSource = new MatTableDataSource([]);
-    this.getSuicides();
-  }
+  // ngOnInit() {
+  //   this.dataSource = new MatTableDataSource([]);
+  //   this.getSuicides();
+  // }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -54,14 +54,13 @@ loading: true;
   }
 
   getSuicides() {
-    this.isLoading = true;
+    this.isLoading = false;
     this.service.Data("prevention/show").subscribe({
       next: (n) => {
         this.data = n["data"]["result"];
         this.dataSource = new MatTableDataSource(this.data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        this.isLoading = false;
       },
       error: (e) => {
         console.error("Error al obtener datos:", e);
