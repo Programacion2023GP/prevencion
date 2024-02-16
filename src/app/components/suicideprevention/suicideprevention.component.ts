@@ -121,16 +121,15 @@ hoy: Date;
 
 
 constructor(private service:ServiceService<any>,private datePipe: DatePipe) {
-    this.findIndex()
-    this.hoy = new Date(); // Obtiene la fecha de hoy
-
-    let Today = new Date();
-    // Formatear la fecha en el formato 'YYYY-MM-DD' (formato de fecha de HTML)
-     let Hoy = Today.toISOString().split('T')[0];
-    const currentDate = new Date();
+  this.hoy = new Date(); // Obtiene la fecha de hoy
+  
+  let Today = new Date();
+  // Formatear la fecha en el formato 'YYYY-MM-DD' (formato de fecha de HTML)
+  let Hoy = Today.toISOString().split('T')[0];
+  const currentDate = new Date();
     this.formattedDate = this.datePipe.transform(currentDate, 'dd/MM/yyyy');
     this.MyForm = new FormGroup  ({
-        id:new FormControl(''),
+      id:new FormControl(''),
         dateregister:new FormControl(this.formattedDate,Validators.required),
         name:new FormControl('',Validators.required),
         invoice:new FormControl('',Validators.required),
@@ -152,6 +151,7 @@ constructor(private service:ServiceService<any>,private datePipe: DatePipe) {
         meanemployeed_id:new FormControl('',Validators.required),
         personinformate:new FormControl('',Validators.required),
       })
+      this.findIndex()
       if (this.role =="Capturista") {
           this.MyForm.removeControl("dependeces_id")
       }
@@ -200,10 +200,12 @@ constructor(private service:ServiceService<any>,private datePipe: DatePipe) {
     stepper.next();
   }
   findIndex(){
+    this.MyForm.get("dateregister").setValue(this.formattedDate)
     this.service.Data("prevention/findIndex").subscribe({
       next:(n)=>{
         this.findFolio =n["data"]["next_id"]
         this.MyForm.get("invoice").setValue(this.findFolio)
+        
       },
       error:(e)=>{
 

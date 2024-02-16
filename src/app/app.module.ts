@@ -27,6 +27,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { CalendarModule } from 'primeng/calendar';
+import { HashLocationStrategy } from '@angular/common';
 
 @NgModule({
     declarations: [AppComponent, NotfoundComponent,LoginComponent],
@@ -45,7 +46,7 @@ import { CalendarModule } from 'primeng/calendar';
         CheckboxModule],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
-        // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+        {provide: LocationStrategy, useClass: HashLocationStrategy},
         CountryService,
         CustomerService,
         EventService,

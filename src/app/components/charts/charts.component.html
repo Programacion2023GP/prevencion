@@ -5,6 +5,26 @@
         <div class="col-6">
             <mat-card>
                 <mat-card-content>
+                    <mat-form-field appearance="outline" style="width: 80%;">
+                        <mat-label>Seleccionar tipo de gráfico</mat-label>
+                        <mat-select value="column" (selectionChange)="onChartTypeChangeAge($event)">
+                          <mat-option value="line">Línea</mat-option>
+                          <mat-option value="column">Columna</mat-option>
+                          <mat-option value="bar">Barra</mat-option>
+                          <mat-option value="area">Área</mat-option>
+                          <mat-option value="pie">Pastel</mat-option>
+                          <!-- <mat-option value="donut">Rosquilla</mat-option> -->
+                          <!-- <mat-option value="scatter">Dispersión</mat-option>
+                          <mat-option value="bubble">Burbujas</mat-option>
+                          <mat-option value="radar">Radial</mat-option>
+                          <mat-option value="polar">Área polar</mat-option>
+                          <mat-option value="map">Mapa</mat-option>
+                          <mat-option value="gauge">Gauge</mat-option>
+                          <mat-option value="candlestick">Candlestick</mat-option>
+                          <mat-option value="ohlc">OHLC</mat-option> -->
+                        </mat-select>
+                      </mat-form-field>
+                      
                     <div id="container" style="width:100%; height:400px;"></div>
                     <!-- <p-chart type="bar" [data]="violence"></p-chart> -->
             </mat-card-content>

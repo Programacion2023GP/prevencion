@@ -21,6 +21,7 @@ animations:[fadeInOutAnimation],
   styleUrl: './charts.component.scss'
 })
 export class ChartsComponent {
+
   loading: true;
 
   data: any;
@@ -28,17 +29,16 @@ export class ChartsComponent {
   options :any
   selectedChartType:any ="bar"  // Valor predeterminado
 isLoading: boolean=true;
+  conteosViolencia: any=[];
+  violenceUnicas: any=[];
+  causasUnicas: any=[];
+  conteosCausas: any=[];
 
   constructor(private service:ServiceService<any>) {
    
     this.getSuicides()
   }
-  onSelectionChange(event: any) {
-    this.selectedChartType= event.value 
-    }
-    renderChart() {
-     
-    }
+
     getRandomColor() {
       // Generar un color hexadecimal aleatorio
       return '#' + Math.floor(Math.random() * 16777215).toString(16);
@@ -72,131 +72,15 @@ isLoading: boolean=true;
                   }
               });
   
-              const causasUnicas = Object.keys(causasContador);
-              const conteosCausas = causasUnicas.map((causa) => causasContador[causa]);
+               this.causasUnicas = Object.keys(causasContador);
+               this.conteosCausas = this.causasUnicas.map((causa) => causasContador[causa]);
   
-              const violenceUnicas = Object.keys(violenceContador);
-              const conteosViolencia = violenceUnicas.map((violencia) => violenceContador[violencia]);
-  
-              // Generar colores aleatorios para cada etiqueta
-              const colorsCausas = causasUnicas.map(() => this.getRandomColor());
-              const colorsViolencia = violenceUnicas.map(() => this.getRandomColor());
-              Highcharts.chart('pie', {
-                chart: {
-                  type: 'pie',
-                  options3d: {
-                    enabled: true,
-                    alpha: 45,
-                    beta: 0
-                  }
-                },
-                title: {
-                  text: 'Suicidios con Respecto a Edades',
-                  align: 'center'
-                },
-                subtitle: {},
-
-
-                accessibility: {
-                  point: {
-                    valueSuffix: '%'
-                  }
-                },
-                tooltip: {
-                  pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                },
-                plotOptions: {
-                  pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    depth: 35,
-                    dataLabels: {
-                      enabled: true,
-                      format: '{point.name}'
-                    }
-                  }
-                },
-                series: [{
-                  type: 'pie',
-                  name: 'Share',
-                  data: violenceUnicas.map((value, index) => ({
-                    name: value,
-                    y: conteosViolencia[index],
-                    sliced: index === 2, // Marcamos el tercer elemento como seleccionado
-                    selected: index === 2 // Marcamos el tercer elemento como seleccionado
-                  }))
-                }]
-              });
+               this.violenceUnicas = Object.keys(violenceContador);
+               this.conteosViolencia = this.violenceUnicas.map((violencia) => violenceContador[violencia]);
+               this.createChart("column",this.causasUnicas,this.conteosCausas)
+               this.createCausesChart()
               
-              
-              Highcharts.chart('container', {
-                chart: {
-                  animation: true,
-                  type: 'column',
-                  options3d: {
-                    enabled: true,
-                    alpha: 20,
-                    beta: 20,
-                    depth: 300,
-                    viewDistance: 25
-                  }
-                },
-                title: {
-                  text: 'Suicidios con Respecto a Motivos'
-                },
-                plotOptions: {
-                  column: {
-                    cursor: 'pointer',
-                    dataLabels: {
-                      enabled: true,
-                      format: '{point.name}'
-                    },
-                    depth: 150,
-                    colorByPoint: true, // Habilita el color por punto para que cada barra tenga un color diferente
-                    allowPointSelect: false // Deshabilita la selección de puntos
-                  }
-                },
-                xAxis: {
-                  categories: violenceUnicas // Nombres de las barras
-                },
-                yAxis: {
-                  title: {
-                    text: null // O puedes usar una cadena vacía: text: ''
-                  }
-                },
-               
-               
-                series: violenceUnicas.map((name, index) => ({
-                  name: name,
-                  type: 'column',
-                  data: [{ y: conteosViolencia[index], color: this.getRandomColor() }] // Valores de las barras con colores aleatorios
-                }))
-              });
-              
-              
-  
 
-
-              // this.data = {
-              //     labels: violenceUnicas,
-              //     datasets: [
-              //         {
-              //             label: 'Suicidios con Respecto a Motivos',
-              //             backgroundColor: colorsViolencia,
-              //             data: conteosViolencia
-              //         }
-              //     ]
-              // };
-              // this.violence = {
-              //     labels: causasUnicas,
-              //     datasets: [
-              //         {
-              //             label: 'Suicidios con Respecto a Edades',
-              //             backgroundColor: colorsCausas,
-              //             data: conteosCausas
-              //         }
-              //     ]
-              // };
               this.isLoading = false;
           },
           error: (e) => {
@@ -204,5 +88,282 @@ isLoading: boolean=true;
           }
       });
   }
+  createChart(chart,causas=[],conteos=[]){
+    const finalChartConfig: any[] = [];
+    finalChartConfig.push({
+
   
+
+    })
+    finalChartConfig.push(this.configChart(chart));
+    finalChartConfig.push(this.configLegend());
+    finalChartConfig.push(this.configTitle());
+    finalChartConfig.push(this.configPlotOptions(chart));
+    finalChartConfig.push(this.configXaxis());
+    finalChartConfig.push(this.configYaxis());
+    finalChartConfig.push(this.configData(chart,causas,conteos));
+    Highcharts.chart('container', Object.assign({}, ...finalChartConfig));
+
+
+  }
+
+
+
+  configChart(chart: string) {
+    switch(chart) {
+      case "column":
+      case "bar":
+        return {
+          chart: {
+            type: `${chart}`,
+            animation: true,
+            options3d: {
+              enabled: true,
+              alpha: 10,
+              beta: 20,
+              depth: 300,
+              viewDistance: 25
+            }
+          }
+        };
+      case "pie":
+        return {
+          chart: {
+            type: `${chart}`,
+            options3d: {
+              enabled: true,
+              alpha: 45,
+              beta: 0
+            }
+          }
+        };
+      default:
+        return {}; // Devuelve un objeto vacío si el tipo de gráfico no es reconocido
+    }
+  }
+  
+  
+  
+
+  configLegend() {
+    return {
+      legend: {
+        bubbleLegend: {
+          enabled: true,
+          minSize: 20,
+          maxSize: 60,
+          ranges: [{
+            value: 14
+          }, {
+            value: 89
+          }]
+        }
+      }
+    };
+  }
+
+    configTitle() {
+      return {
+        title: {
+          text: 'Suicidios con Respecto a Edades'
+        }
+           }
+    }
+    configPlotOptions(chart: string): any {
+      switch(chart) {
+        case "bar":
+        case "column":
+          return {
+            plotOptions: {
+              column: {
+                cursor: 'pointer',
+                dataLabels: {
+                  enabled: true,
+                  format: '{point.name}'
+                },
+                depth: 150,
+                colorByPoint: true,
+                allowPointSelect: false
+              }
+            }
+          };
+        case "pie":
+        case "area":
+          return {
+            plotOptions: {
+              pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                depth: 35,
+                slicedOffset: 20,
+                dataLabels: {
+                  enabled: true,
+                  format: `<b>{point.name}</b>: {point.percentage:.1f} % de un total de registros`, // Formato para mostrar el nombre y el porcentaje
+                  distance: 30 // Distancia de las etiquetas desde el centro del pastel
+                }
+              }
+            }
+          };
+       
+      }
+    }
+    
+    configXaxis(){
+      return{
+        xAxis: {
+          type: "category",
+          labels: {
+            autoRotation: [-45, -90],
+            style: {
+              fontSize: '13px',
+              fontFamily: 'Verdana, sans-serif'
+            }
+          }
+        }
+      }
+    }
+    configYaxis(){
+      return{
+        yAxis: {
+          title: {
+            text: "total",
+            align: "middle"
+          }
+        }
+      }
+    }
+
+    configData(chart: string, causas: any[], conteos: any[]): any {
+      switch(chart) {
+        case "bar":
+        case "column":
+          return {
+            series: causas.map((name, index) => ({
+              name: name,
+              type: chart,
+              data: [{ y: conteos[index], color: this.getRandomColor() }],
+              dataLabels: {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                format: '{point.y:.1f}',
+                y: 0,
+                style: {
+                  fontSize: '13px',
+                  fontFamily: 'Verdana, sans-serif'
+                }
+              }
+            }))
+          };
+        case "pie":
+        case "area":
+          return {
+            series: [{
+              type: chart,
+              name: 'Porcentaje obtenido',
+              data: causas.map((value, index) => ({
+                name: value,
+                y: conteos[index],
+                sliced: index === 2,
+                selected: index === 2
+              }))
+            }]
+          };
+       
+          case "line":
+            return{
+              
+              series: [{
+                data: conteos.map((value, index) => ({
+                    y: value, // El valor del punto en la serie
+                    x: index + 1 // El índice del punto más 1 (para empezar desde 1)
+                }))
+            }]
+            
+            }
+      }
+    }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  createCausesChart(){
+    let totalConteosViolencias = this.conteosViolencia.reduce((total, element) => total + element, 0);
+
+    Highcharts.chart('pie', {
+      chart: {
+        type: 'pie',
+        options3d: {
+          enabled: true,
+          alpha: 45,
+          beta: 0
+        }
+      },
+      title: {
+        text: 'Suicidios con Respecto a Motivos',
+        align: 'center'
+      },
+      accessibility: {
+        point: {
+          valueSuffix: '%'
+        }
+      },
+      tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          depth: 35,
+          slicedOffset: 20,
+          dataLabels: {
+            enabled: true,
+            format: `<b>{point.name}</b>: {point.percentage:.1f} % de un total de ${totalConteosViolencias} registros`, // Formato para mostrar el nombre y el porcentaje
+            distance: 30 // Distancia de las etiquetas desde el centro del pastel
+          }
+        }
+      },
+      subtitle: {
+        text: `Total de suicidios con Respecto a Motivos ${totalConteosViolencias}`
+    },
+      exporting: {
+        enabled: true,
+        buttons: {
+          contextButton: {
+            menuItems: ['downloadPNG', 'downloadJPEG', 'downloadPDF', 'downloadSVG']
+          }
+        }
+      },
+      series: [{
+        type: 'pie',
+        name: 'Porcentaje obtenido',
+        data: this.violenceUnicas.map((value, index) => ({
+          name: value,
+          y: this.conteosViolencia[index],
+          sliced: index === 2,
+          selected: index === 2
+        }))
+      }]
+    });
+
+  }
+  onChartTypeChangeAge(event: any) {
+    this.createChart(event.value,this.causasUnicas,this.conteosCausas)
+  }
 }
