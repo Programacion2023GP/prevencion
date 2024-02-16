@@ -77,9 +77,9 @@ isLoading: boolean=true;
   
                this.violenceUnicas = Object.keys(violenceContador);
                this.conteosViolencia = this.violenceUnicas.map((violencia) => violenceContador[violencia]);
-               this.createChart("column",this.causasUnicas,this.conteosCausas)
-               this.createCausesChart()
-              
+               this.createChart("age","column",this.causasUnicas,this.conteosCausas)
+               this.createChart("media","pie",this.causasUnicas,this.conteosCausas)
+
 
               this.isLoading = false;
           },
@@ -88,7 +88,7 @@ isLoading: boolean=true;
           }
       });
   }
-  createChart(chart,causas=[],conteos=[]){
+  createChart(id,chart,causas=[],conteos=[]){
     const finalChartConfig: any[] = [];
     finalChartConfig.push({
 
@@ -102,7 +102,7 @@ isLoading: boolean=true;
     finalChartConfig.push(this.configXaxis());
     finalChartConfig.push(this.configYaxis());
     finalChartConfig.push(this.configData(chart,causas,conteos));
-    Highcharts.chart('container', Object.assign({}, ...finalChartConfig));
+    Highcharts.chart(id, Object.assign({}, ...finalChartConfig));
 
 
   }
@@ -364,6 +364,9 @@ isLoading: boolean=true;
 
   }
   onChartTypeChangeAge(event: any) {
-    this.createChart(event.value,this.causasUnicas,this.conteosCausas)
+    this.createChart("age",event.value,this.causasUnicas,this.conteosCausas)
+  }
+  onChartTypeChangeMedia(event: any) {
+    this.createChart("media",event.value,this.violenceUnicas,this.conteosViolencia)
   }
 }
