@@ -15,47 +15,56 @@
 
                   <ng-container matColumnDef="invoice">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Folio </th>
-                    <td mat-cell *matCellDef="let row"> {{row.invoice}} </td>
+                    <td [ngClass]="{'text-bg-warning':!row.curp}" mat-cell *matCellDef="let row"> {{row.invoice}} </td>
                   </ng-container>
                   <ng-container matColumnDef="personinformate">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Denunciante </th>
-                    <td mat-cell *matCellDef="let row"> {{row.personinformate}} </td>
+                    <td [ngClass]="{'text-bg-warning':!row.curp}"  mat-cell *matCellDef="let row"> {{row.personinformate}} </td>
                   </ng-container>
                   <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Persona de los hechos </th>
-                    <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+                    <td [ngClass]="{'text-bg-warning':!row.curp}" mat-cell *matCellDef="let row"> {{row.name}} </td>
                   </ng-container>
                   <ng-container matColumnDef="dependencia">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Dependencia </th>
-                    <td mat-cell *matCellDef="let row"> {{row.dependencia}} </td>
+                    <td [ngClass]="{'text-bg-warning':!row.curp}" mat-cell *matCellDef="let row"> {{row.dependencia}} </td>
                   </ng-container>
                   <ng-container matColumnDef="causa">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Causa del acto </th>
-                    <td mat-cell *matCellDef="let row"> {{row.causa}} </td>
+                    <td [ngClass]="{'text-bg-warning':!row.curp}" mat-cell *matCellDef="let row"> {{row.causa}} </td>
                   </ng-container>
-                  <ng-container matColumnDef="datesuccess">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha del hecho </th>
-                    <td mat-cell *matCellDef="let row">{{ row.datesuccess | date:'dd/MM/yyyy' }}</td>
+                  <ng-container matColumnDef="datecurrence">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Ocurrencia del Suicidio </th>
+                    <td [ngClass]="{'text-bg-warning':!row.curp}" mat-cell *matCellDef="let row">{{ row.datecurrence | date:'dd/MM/yyyy' }}</td>
                 </ng-container>
                   <ng-container matColumnDef="Actions">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
-                    <td mat-cell *matCellDef="let row">
-                    <button mat-icon-button color="warning"(click)="info(row)">
+                    <td [ngClass]="{'text-bg-warning':!row.curp}" mat-cell *matCellDef="let row">
+                      <button mat-icon-button color="primary"(click)="edit(row)">
+                        @if(row.curp){                      
+                          <mat-icon>edit</mat-icon>
+                        }@else{                        
+                        <i class="fas fa-exclamation-triangle"></i>
+                      }
+                      
+                      </button>
+
+                      <button mat-icon-button color="warning"(click)="info(row)">
                         <i class="fas fa-eye"></i>
                     </button>
-                   
+
                     </td>
                   </ng-container>
                   <!-- Fruit Column -->
                    <tr mat-header-row class="table-dark"  *matHeaderRowDef="displayedColumns"></tr>
-                  <tr mat-row class="table-dark" *matRowDef="let row; columns: displayedColumns;"></tr> 
+                  <tr mat-row class="table-dark" *matRowDef="let row; columns: displayedColumns;"></tr>
                   <!-- Row shown when there is no matching data. -->
                  <tr class="mat-row" *matNoDataRow>
                     <td class="mat-cell" colspan="4">No se encuentran resultados</td>
                   </tr>
                 </table>
-                <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="seleccion de pagina"></mat-paginator> 
-           </div> 
+                <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="seleccion de pagina"></mat-paginator>
+           </div>
 
   </mat-card-content>
 </mat-card>
@@ -93,33 +102,33 @@
                           <th mat-header-cell *matHeaderCellDef mat-sort-header> Medio empleado para cometer el acto </th>
                           <td mat-cell *matCellDef="let row"> <p-skeleton p-skeleton-animation="progress"></p-skeleton> </td>
                         </ng-container>
-                        <ng-container matColumnDef="datesuccess">
-                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha del hecho </th>
+                        <ng-container matColumnDef="datecurrence">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Intento de suicido o suicidio registrado </th>
                           <td mat-cell *matCellDef="let row"> <p-skeleton p-skeleton-animation="progress"></p-skeleton> </td>
                         </ng-container>
 
-                         
+
                           <ng-container matColumnDef="Actions">
                               <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
                               <td mat-cell *matCellDef="let row">
-                                  <p-skeleton></p-skeleton> 
+                                  <p-skeleton></p-skeleton>
                               </td>
                           </ng-container>
                           <!-- Fruit Column -->
                           <tr mat-header-row class="table-dark"  *matHeaderRowDef="displayedColumns"></tr>
-                          <tr mat-row class="table-dark" *matRowDef="let row; columns: displayedColumns;"></tr> 
+                          <tr mat-row class="table-dark" *matRowDef="let row; columns: displayedColumns;"></tr>
                           <!-- Row shown when there is no matching data. -->
                           <tr class="mat-row" *matNoDataRow>
                               <td class="mat-cell" colspan="4"><p-skeleton></p-skeleton> </td>
                           </tr>
                       </table>
-                      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="seleccion de pagina"></mat-paginator> 
-                  </div> 
+                      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="seleccion de pagina"></mat-paginator>
+                  </div>
               </mat-card-content>
           </mat-card>
       </ng-template>
   </div>
-  
+
 </div>
 
 
@@ -142,10 +151,18 @@
                                     <p><strong>Edad:</strong> {{ item.age }}</p>
                                     <p><strong>CURP:</strong> {{ item.curp }}</p>
                                     <p><strong>Denunciante:</strong> {{ item.personinformate }}</p>
-                                    <p><strong>Código Postal:</strong> {{ item.cp }}</p>
-                                    <p><strong>Estado:</strong> {{ item.states }}</p>
-                                    <p><strong>Municipio:</strong> {{ item.municipys }}</p>
-                                    <p><strong>Colonia:</strong> {{ item.colony }}</p>
+                                    <p><strong>Código Postal de la fuente:</strong> {{ item.cp }}</p>
+                                    <p><strong>Estado de la fuente:</strong> {{ item.states }}</p>
+                                    <p><strong>Municipio de la fuente:</strong> {{ item.municipys }}</p>
+                                    <p><strong>Colonia de la fuente:</strong> {{ item.colony }}</p>
+                                    <p><strong>Código Postal del suicidio:</strong> {{ item.cpdeed }}</p>
+                                    <p><strong>Estado del suicidio:</strong> {{ item.statesdeed }}</p>
+                                    <p><strong>Municipio del suicidio:</strong> {{ item.municipysdeed }}</p>
+                                    <p><strong>Colonia del suicidio:</strong> {{ item.colonydeed }}</p>
+                                    <p><strong>¿Es estudiante?:</strong> {{ item.estudiante === 1 ? "Sí" : "No" }}</p>
+
+                                    <p><strong>Intento de suicido o suicidio registrado :</strong> {{ item.datesuccess | date:'dd/MM/yyyy' }}</p>
+
                                     <p><strong>Fecha de Ocurrencia del Suicidio:</strong> {{ item.datecurrence | date:'dd/MM/yyyy' }}</p>
                                 </div>
                             </div>
@@ -156,23 +173,27 @@
                                     Información Adicional
                                 </div>
                                 <div class="card-body">
+                                  <p><strong>Fecha de reindición de datos del dia :</strong> {{ item.datereindence| date:'dd/MM/yyyy' }}</p>
+
+
+                                  
                                     <p><strong>Sitio donde se Cometió el Acto:</strong> {{ item.sitio }}</p>
-                                    <p><strong>¿El Acto Fue Planeado?</strong> {{ item.acto_fue }}</p>
+                                    <p><strong>El Acto Fue </strong> {{ item.acto_fue }}</p>
                                     <p><strong>Clave de la Fuente (Dependencia):</strong> {{ item.dependencia }}</p>
                                     <p><strong>Causa del Acto:</strong> {{ item.causa }}</p>
                                     <p><strong>Dependencia a la que Canaliza:</strong> {{ item.dependencia_canalizada }}</p>
                                     <p><strong>Género:</strong> {{ item.genero }}</p>
-                                    <p><strong>¿Cómo se Identifica?:</strong> {{ item.como_indentifica }}</p>
+                                    <p><strong>Cómo se Identifica:</strong> {{ item.como_indentifica }}</p>
                                     <p><strong>Religión o Culto:</strong> {{ item.religion }}</p>
-                                    <p><strong>Estado Civil:</strong> {{ item.estado_civil }}</p>
-                                    <p><strong>Nivel de Escolaridad:</strong> {{ item.alfabetismo_escolaridad }}</p>
-                                    <p><strong>Posesión de Hijos:</strong> {{ item.posesion_hijos }}</p>
-                                    <p><strong>Historial Familiar de Suicidios:</strong> {{ item.suicidas_familia }}</p>
-                                    <p><strong>Adicciones Conocidas:</strong> {{ item.adiciones }}</p>
-                                    <p><strong>Enfermedades Diagnosticadas:</strong> {{ item.enfermedades }}</p>
-                                    <p><strong>Tipo de Violencia Asociada:</strong> {{ item.violencia }}</p>
-                                    <p><strong>Configuración Familiar:</strong> {{ item.familia }}</p>
-                                    <p><strong>Institución Educativa:</strong> {{ item.centro_educativo }}</p>
+                                    <p><strong>Estado civil:</strong> {{ item.estado_civil }}</p>
+                                    <p><strong>Escolaridad o alfabetismo:</strong> {{ item.alfabetismo_escolaridad }}</p>
+                                    <p><strong>Posesión de hijos:</strong> {{ item.posesion_hijos }}</p>
+                                    <p><strong>Existencia de suicidas en la familia:</strong> {{ item.suicidas_familia }}</p>
+                                    <p><strong>Adicciones:</strong> {{ item.adiciones }}</p>
+                                    <p><strong>Enfermedades :</strong> {{ item.enfermedades }}</p>
+                                    <p><strong>Tipo de violencia :</strong> {{ item.violencia }}</p>
+                                    <p><strong>Tipo de familia:</strong> {{ item.familia }}</p>
+                                    <p><strong>Centro educatio:</strong> {{ item.centro_educativo }}</p>
                                     <p><strong>Medio Empleado para el Acto:</strong> {{ item.medio_empleado }}</p>
                                     <p><strong>Ocupación:</strong> {{ item.ocupacion }}</p>
                                     <p><strong>Descripción:</strong> {{ item.description }}</p>
@@ -183,7 +204,7 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </ng-container>

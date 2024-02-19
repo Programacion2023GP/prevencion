@@ -16,6 +16,7 @@ import Swal from 'sweetalert2'
 import { fadeInOutAnimation } from 'src/app/components/animations/animate';
 import { DialogModule } from 'primeng/dialog';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tablesuicideprevention',
@@ -32,11 +33,11 @@ export class TablesuicidepreventionComponent {
 visible:Boolean
   dataSelected =[]
   data: any;
-  displayedColumns: string[] = ['invoice','personinformate','name','dependencia','causa','datesuccess', 'Actions'];
+  displayedColumns: string[] = ['invoice','personinformate','name','dependencia','causa','datecurrence', 'Actions'];
   dataSource: MatTableDataSource<any>;
   isLoading: boolean=true;
 loading: true;
-  constructor(private service:ServiceService<any>){
+  constructor(private service:ServiceService<any>,private route:Router){
     this.getSuicides()
   }
   // ngOnInit() {
@@ -52,10 +53,14 @@ loading: true;
       this.dataSource.paginator.firstPage();
     }
   }
-
+  edit(row){
+    const rowString = JSON.stringify(row);
+    // Navegar a la ruta 'prevencion' con el parámetro 'row'
+    this.route.navigate(['prevencion'], { queryParams: { row: rowString } });
+  }
   getSuicides() {
     this.isLoading = false;
-    this.service.Data("prevention/show").subscribe({
+    this.service.Data("prevention/index").subscribe({
       next: (n) => {
         this.data = n["data"]["result"];
         this.dataSource = new MatTableDataSource(this.data);

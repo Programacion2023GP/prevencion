@@ -1,44 +1,36 @@
 
 <div [@fadeInOutAnimation] class="row content"  [ngClass]="{'loading': loading}">
-    
     <div class="row" >
-        <div class="col-6">
+        <ng-container *ngFor="let item of cards; let i = index;">
+        <div class="col-3">
             <mat-card>
-                <mat-card-content>
-                    <mat-form-field appearance="outline" style="width: 80%;">
-                        <mat-label>Seleccionar tipo de gráfico</mat-label>
-                        <mat-select value="column" (selectionChange)="onChartTypeChangeAge($event)">
-                          <mat-option value="line">Línea</mat-option>
-                          <mat-option value="column">Columna</mat-option>
-                          <mat-option value="bar">Barra</mat-option>
-                          <mat-option value="area">Área</mat-option>
-                          <mat-option value="pie">Pastel</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                      
-                    <div id="age" style="width:100%; height:400px;"></div>
-                    <!-- <p-chart type="bar" [data]="violence"></p-chart> -->
-            </mat-card-content>
+
+
+                    <mat-label class="description-label">{{item|json}}</mat-label>
+                    <mat-label class="description-label">{{item.value}}</mat-label>
+
             </mat-card>
         </div>
+        </ng-container>
 
+
+    </div>
+    <div class="row" >
+        <ng-container *ngFor="let item of getCharts; let i = index;">
         <div class="col-6">
             <mat-card>
-            <mat-card-content>
-                <mat-form-field appearance="outline" style="width: 80%;">
-                    <mat-label>Seleccionar tipo de gráfico</mat-label>
-                    <mat-select value="pie" (selectionChange)="onChartTypeChangeMedia($event)">
-                      <mat-option value="line">Línea</mat-option>
-                      <mat-option value="column">Columna</mat-option>
-                      <mat-option value="bar">Barra</mat-option>
-                      <mat-option value="area">Área</mat-option>
-                      <mat-option value="pie">Pastel</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-            <div id="media" style="width:100%; height:400px;"></div>
-        </mat-card-content>
-    </mat-card>
+                <button (click)="openDialog(item)" mat-raised-button color="primary">Ver mas detalles</button>
+
+                <div #chartContainer [id]="'chart'+i" style="width:100%; height:400px;"></div>
+                <ng-container *ngIf="item.description">
+                    <mat-label class="description-label">{{item.description}}</mat-label>
+                </ng-container>
+
+            </mat-card>
         </div>
+        </ng-container>
+
+
     </div>
 
     <div class="row">
@@ -49,9 +41,40 @@
                     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
                         <h2>Cargando ....</h2>
                         <mat-spinner></mat-spinner>
-                    </div>
+          Boolean = false;      </div>
                 </div>
             </ng-template>
         </div>
     </div>
 </div>
+<p-dialog position="center" #dialogo [header]="'Detalles sobre la grafica: ' +itemSelected?.[0]?.name" [(visible)]="visible" [style]="{width: '80vw'}">
+    <br>
+    <mat-card>
+    <div #chartContainer [id]="'chartselected'" style="width:100%; height:400px;"></div>
+    <ng-container *ngIf="itemSelected && itemSelected[0] && itemSelected[0].description">
+        <mat-label class="description-label">{{ itemSelected[0].description }}</mat-label>
+        </ng-container>
+    </mat-card>
+    <br>
+    <div class="text-center">
+    <h1 class="mx-auto">Busqueda por rangos de fechas</h1>
+            <p-calendar class="mx-auto" selectionMode="range" [inline]="true" [showWeek]="true" [numberOfMonths]="3" [readonlyInput]="true" (onSelect)="onDateSelect($event)"></p-calendar>
+        </div>
+        <br>
+
+    <div class="row" >
+    <ng-container *ngFor="let index of indices">
+        <div  class="col-4">
+            <mat-card>
+                <div [ngClass]="{'invisible': !index.active}">
+                    <div #chartContainer [id]="'chartsubselected'+index.item" style="width:100%; height:400px;"></div>
+                </div>
+                
+
+            </mat-card>
+        </div>
+
+    </ng-container>
+    </div>
+
+</p-dialog>

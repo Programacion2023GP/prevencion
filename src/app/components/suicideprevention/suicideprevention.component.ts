@@ -18,24 +18,30 @@ import {MatStepper, MatStepperModule} from '@angular/material/stepper';
 import Swal from 'sweetalert2'
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { PrimeNGConfig } from 'primeng/api';
-
+import { SplitterModule } from 'primeng/splitter';
 import { fadeInOutAnimation } from 'src/app/components/animations/animate';
 import {MatSelectModule} from '@angular/material/select';
+import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import {MatRadioModule} from '@angular/material/radio';
+
 @Component({
   selector: 'app-suicideprevention',
   standalone: true,
   imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule,MatCardModule,MatButtonModule,
-    ReactiveFormsModule,MatIconModule,CommonModule,SkeletonModule,MatSelectModule,MatDatepickerModule,CalendarModule,MatStepperModule,MatProgressSpinnerModule],
+    ReactiveFormsModule,MatRadioModule,MatIconModule,ScrollPanelModule,CommonModule,SkeletonModule,MatSelectModule,MatDatepickerModule,CalendarModule,MatStepperModule,SplitterModule,MatProgressSpinnerModule],
     animations:[fadeInOutAnimation],
     providers: [DatePipe],
   templateUrl: './suicideprevention.component.html',
   styleUrl: './suicideprevention.component.scss'
 })
 export class SuicidepreventionComponent {
+  estudiante:Boolean
     formattedDate: string;
     role =localStorage.getItem("role")
     animation = true
     MyForm: FormGroup;
+    today = new Date()
     Myformsecond =new FormGroup({
     curp: new FormControl('', [Validators.required, Validators.pattern(/^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/)]),
     gender_id:new FormControl('',Validators.required),
@@ -44,7 +50,7 @@ export class SuicidepreventionComponent {
     statecivil_id:new FormControl('',Validators.required),
     literacy_id:new FormControl('',Validators.required),
     childrens_id:new FormControl('',Validators.required),
-
+    estudiante:new FormControl('',Validators.required),
     existence_id:new FormControl('',Validators.required),
     adictions_id:new FormControl('',Validators.required),
     diseases_id:new FormControl('',Validators.required),
@@ -60,7 +66,7 @@ export class SuicidepreventionComponent {
     description:new FormControl('',Validators.required),
   })
 
-
+  MyFormPreregistro: FormGroup;
 
   CALENDER_CONFIG_EN = {
     firstDayOfWeek: 1,
@@ -118,9 +124,66 @@ calendar_en: any;
     loadingtwo: boolean;
 isLoadingSkeleton: boolean=false;
 hoy: Date;
+  parametroOpcional: any;
+existParams :boolean=false
+id :number
+ngOnInit(): void {
+  this.route.queryParams.subscribe(params => {
+    // Verificar si el parámetro 'row' está presente en los parámetros de la URL
+    if (params['row']) {
+      // Obtener la cadena JSON del parámetro 'row'
+      const rowString = params['row'];
+      // Convertir la cadena JSON de nuevo a un objeto JSON
+      const row = JSON.parse(rowString);
+      this.existParams = true
+      // Realizar acciones con el objeto 'row'
+      this.id =row["id"]
+      if(row["cp"]){
+        this.SearchCp(row["cp"])
 
+      }
+      if (row["school_id"]) {
+        this.estudiante = true
+        this.Myformsecond.get("estudiante").setValue("true")
 
-constructor(private service:ServiceService<any>,private datePipe: DatePipe) {
+      }else{
+        this.estudiante = false
+        this.Myformsecond.get("estudiante").setValue("false")
+      }
+      this.SearchCpDeed(row["cpdeed"])
+
+      for (const key in row) {
+        if (row.hasOwnProperty(key)) {
+            if (row["datecurrence"]==row[key]||row["datesuccess"]==row[key]||row["datereindence"]==row[key]) {
+                row[key]= new Date(row[key])
+            }
+
+          if (this.MyForm.controls[key]) {
+            this.MyForm.controls[key].setValue(row[key]);
+          }
+          if (this.Myformsecond.controls[key]) {
+            this.Myformsecond.controls[key].setValue(row[key]);
+          }
+          if (this.Myformtree.controls[key]) {
+            this.Myformtree.controls[key].setValue(row[key]);
+          }
+        }
+        //dateregister
+        //datecurrence
+        //datesuccess
+        //datereindence
+
+      }
+    } else {
+      // El parámetro 'row' no está presente en la URL
+      console.log('No se proporcionó el parámetro opcional "row" en la URL');
+    }
+  });
+}
+estudianteSelected(condition){
+  this.estudiante = condition ==1?true:false
+}
+constructor(private service:ServiceService<any>,private datePipe: DatePipe,private route:ActivatedRoute,private change:Router) {
   this.hoy = new Date(); // Obtiene la fecha de hoy
   
   let Today = new Date();
@@ -128,6 +191,21 @@ constructor(private service:ServiceService<any>,private datePipe: DatePipe) {
   let Hoy = Today.toISOString().split('T')[0];
   const currentDate = new Date();
     this.formattedDate = this.datePipe.transform(currentDate, 'dd/MM/yyyy');
+    this. MyFormPreregistro = new FormGroup({
+      dateregister:new FormControl(this.formattedDate,Validators.required),
+      invoice:new FormControl('',Validators.required),
+      actwas_id:new FormControl('',Validators.required),
+      dependeces_id:new FormControl(''),
+      personinformate:new FormControl('',Validators.required),
+      datecurrence:new FormControl('',Validators.required),
+      cpdeed:new FormControl('',Validators.required),
+      statesdeed:new FormControl('',Validators.required),
+      municipysdeed:new FormControl('',Validators.required),
+      colonydeed:new FormControl('',Validators.required),
+      date_created:new FormControl('',Validators.required),
+
+    })
+
     this.MyForm = new FormGroup  ({
       id:new FormControl(''),
         dateregister:new FormControl(this.formattedDate,Validators.required),
@@ -150,6 +228,8 @@ constructor(private service:ServiceService<any>,private datePipe: DatePipe) {
         dependececanalize_id:new FormControl('',Validators.required),
         meanemployeed_id:new FormControl('',Validators.required),
         personinformate:new FormControl('',Validators.required),
+        date_created:new FormControl('',Validators.required),
+
       })
       this.findIndex()
       if (this.role =="Capturista") {
@@ -203,16 +283,61 @@ constructor(private service:ServiceService<any>,private datePipe: DatePipe) {
     this.MyForm.get("dateregister").setValue(this.formattedDate)
     this.service.Data("prevention/findIndex").subscribe({
       next:(n)=>{
-        this.findFolio =n["data"]["next_id"]
-        this.MyForm.get("invoice").setValue(this.findFolio)
-        
+        if (!this.existParams) {
+          this.findFolio =n["data"]["next_id"]
+          
+          this.MyForm.get("invoice").setValue(this.findFolio)
+          this.MyForm.get("date_created").setValue(this.today)
+          
+        }
+        this.MyFormPreregistro.get("invoice").setValue(this.findFolio)
+        this.MyFormPreregistro.get("date_created").setValue(this.today)
+
       },
       error:(e)=>{
 
       }
     })
   }
+  onPressSubmit(){
+    this.isLoadingSkeleton =true
+    this.service.Post("prevention/create", this.MyFormPreregistro.value).subscribe({
+      next: (n)=>{
+      
+          this.MyForm.reset()
+          this.Myformsecond.reset()
+          this.Myformtree.reset();
+          this.MyFormPreregistro.reset()
+          this.findIndex()
+          this.Toast.fire({
+           position: 'top-end',
+           icon: 'success',
+           title: `Se ha insertado correctamente`,
+         });
+         if (this.existParams) {
+           this.change.navigate(["prevencion"])
+         }
+         this.isLoadingSkeleton =false
 
+      },
+      error: (e)=>{
+       this.MyForm.reset()
+       this.Myformsecond.reset()
+       this.Myformtree.reset();
+       this.MyFormPreregistro.reset()
+
+       this.Toast.fire({
+         position: 'top-end',
+         icon: 'error',
+         title: `Se ha actualizado correctamente`,
+       });
+       this.isLoadingSkeleton =false
+       if (this.existParams) {
+         this.change.navigate(["prevencion"])
+       }
+      }
+     })
+  }
   previousStep(stepper: MatStepper) {
     stepper.previous();
   }
@@ -443,8 +568,8 @@ getCauses(){
      }
      SearchCp(event: any) {
         this.loading =true
-
-        this.service.OtherData(`https://api.gomezpalacio.gob.mx/api/cp/${event.target.value}`).subscribe({
+        const value = event?.target?.value ?? event;
+        this.service.OtherData(`https://api.gomezpalacio.gob.mx/api/cp/${value}`).subscribe({
           next:(n)=>{
             const data = n["data"]["result"]
             const info = data[0]
@@ -455,47 +580,64 @@ getCauses(){
           },
           error:(e)=>{
             this.loading =false
-
+            this.colonias = [];
+            this.MyForm.get("states").setValue("")
+            this.MyForm.get("municipys").setValue("")
           }
         })
       }
       SearchCpDeed(event: any) {
         this.loadingtwo = true
+        const value = event?.target?.value ?? event;
 
-        this.service.OtherData(`https://api.gomezpalacio.gob.mx/api/cp/${event.target.value}`).subscribe({
+        this.service.OtherData(`https://api.gomezpalacio.gob.mx/api/cp/${value}`).subscribe({
           next:(n)=>{
             const data = n["data"]["result"]
             const info = data[0]
             this.coloniasdeed = data.map(item => item.Colonia);
             this.MyForm.get("statesdeed").setValue(info.Estado)
             this.MyForm.get("municipysdeed").setValue(info.Municipio)
+            this.MyFormPreregistro.get("statesdeed").setValue(info.Estado)
+            this.MyFormPreregistro.get("municipysdeed").setValue(info.Municipio)
             this.loadingtwo = false
           },
           error:(e)=>{
             this.loadingtwo = false
-
+            this.coloniasdeed =[];
+            this.MyForm.get("statesdeed").setValue("")
+            this.MyForm.get("municipysdeed").setValue("")
+            this.MyFormPreregistro.get("statesdeed").setValue("")
+            this.MyFormPreregistro.get("municipysdeed").setValue("")
           }
         })
       }
       Onsubmitree() {
         this.isLoadingSkeleton =true
-        console.warn( this.isLoadingSkeleton)
+       let url = "prevention/create"
+        if (this.existParams) {
+            url =`prevention/update/${this.id}`
+        }
         const combinedData = {
             ...this.MyForm.value,
             ...this.Myformsecond.value,
             ...this.Myformtree.value };
-       this.service.Post("prevention/create", combinedData).subscribe({
+       this.service.Post(url, combinedData).subscribe({
            next: (n)=>{
+           
                this.MyForm.reset()
                this.Myformsecond.reset()
                this.Myformtree.reset();
+               this.MyFormPreregistro.reset()
 
                this.findIndex()
                this.Toast.fire({
                 position: 'top-end',
                 icon: 'success',
-                title: `Se ha insertado correctamente`,
+                title: `Se ha ${url =="prevention/create"?"insertado":"actualizado"} correctamente`,
               });
+              if (this.existParams) {
+                this.change.navigate(["prevencion"])
+              }
               this.isLoadingSkeleton =false
 
            },
@@ -503,12 +645,16 @@ getCauses(){
             this.MyForm.reset()
             this.Myformsecond.reset()
             this.Myformtree.reset();
+            this.MyFormPreregistro.reset()
             this.Toast.fire({
               position: 'top-end',
               icon: 'error',
-              title: `No se ha podido insertar correctamente`,
+              title: `No se ha podido ${url =="prevention/create"?"insertar":"actualizar"} correctamente`,
             });
             this.isLoadingSkeleton =false
+            if (this.existParams) {
+              this.change.navigate(["prevencion"])
+            }
            }
           })
 

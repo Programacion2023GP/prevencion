@@ -6,13 +6,13 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ServiceService<T> {
- 
-    route: string =' http://127.0.0.1:8000/api'
+
+    route: string ='http://127.0.0.1:8000/api'
     //  route: string =  "https://api.prevencion.gomezpalacio.gob.mx/api";
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
   }
 
-  
+
   Data<T>(url: string) {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem("token")}`
@@ -28,7 +28,7 @@ export class ServiceService<T> {
     });
     return this.http.post<T>(`${this.route}/${url}`, params, { headers });
   }
-  
+
   Logout(url: string) {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem("token")}`
@@ -49,7 +49,7 @@ export class ServiceService<T> {
     return this.http.post(`${this.route}/${url}`,'', { headers });
   }
 
-  
+
   private dataSubject = new BehaviorSubject<any>(null);
   data$ = this.dataSubject.asObservable();
 

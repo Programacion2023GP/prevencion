@@ -10,20 +10,23 @@ import {MatCardModule} from '@angular/material/card';
 import { fadeInOutAnimation } from '../animations/animate';
 import * as Highcharts from 'highcharts';
 import Highcharts3D from 'highcharts/highcharts-3d'; // Importa el módulo Highcharts 3D
+import { Dialog, DialogModule } from 'primeng/dialog';
+import {MatButtonModule} from '@angular/material/button';
+import { CalendarModule } from 'primeng/calendar';
 
 @Component({
   selector: 'app-charts',
   standalone: true,
-imports: [ChartModule,CommonModule,MatFormFieldModule,MatSelectModule,MatProgressSpinnerModule,MatCardModule],
+imports: [ChartModule,CommonModule,MatFormFieldModule,MatSelectModule,MatProgressSpinnerModule,MatButtonModule,MatCardModule,DialogModule,CalendarModule],
 animations:[fadeInOutAnimation],
 
   templateUrl: './charts.component.html',
   styleUrl: './charts.component.scss'
 })
 export class ChartsComponent {
-
+    rangeDates: Date[];
   loading: true;
-
+  visible:Boolean = false;
   data: any;
   violence: any;
   options :any
@@ -33,10 +36,39 @@ isLoading: boolean=true;
   violenceUnicas: any=[];
   causasUnicas: any=[];
   conteosCausas: any=[];
+getCharts:any=[]
+itemSelected:any[]
+keys = [
+    { text: 'Edad', value: 'age' },
+    { text: 'Colonia de la fuente', value: 'colony' },
+    { text: 'Colonia del suicidio', value: 'colonydeed' },
+    { text: 'Fecha de Ocurrencia del Suicidio', value: 'datecurrence' },
+    { text: 'Sitio donde se Cometió el Acto', value: 'sitio' },
+    { text: 'El Acto Fue', value: 'acto_fue' },
+    { text: 'Clave de la Fuente (Dependencia)', value: 'dependencia' },
+    { text: 'Causa del Acto', value: 'causa' },
+    { text: 'Dependencia a la que Canaliza', value: 'dependencia_canalizada' },
+    { text: 'Género', value: 'genero' },
+    { text: 'Cómo se Identifica', value: 'como_indentifica' },
+    { text: 'Religión o Culto', value: 'religion' },
+    { text: 'Estado civil', value: 'estado_civil' },
+    { text: 'Escolaridad o alfabetismo', value: 'alfabetismo_escolaridad' },
+    { text: 'Posesión de hijos', value: 'posesion_hijos' },
+    { text: 'Existencia de suicidas en la familia', value: 'suicidas_familia' },
+    { text: 'Adicciones', value: 'adiciones' },
+    { text: 'Enfermedades', value: 'enfermedades' },
+    { text: 'Tipo de violencia', value: 'violencia' },
+    { text: 'Tipo de familia', value: 'familia' },
+    { text: 'Centro educatio', value: 'centro_educativo' },
+    { text: 'Medio Empleado para el Acto', value: 'medio_empleado' },
+    { text: 'Ocupación', value: 'ocupacion' },
+  ];
+@ViewChild('dialogo') dialogo: Dialog;
+indices: any=[];
 
   constructor(private service:ServiceService<any>) {
-   
-    this.getSuicides()
+    this.getData()
+      this.getSuicides()
   }
 
     getRandomColor() {
@@ -44,68 +76,261 @@ isLoading: boolean=true;
       return '#' + Math.floor(Math.random() * 16777215).toString(16);
   }
   ngOnInit(): void {
+    this.createCharts();
     Highcharts3D(Highcharts); // Activa el módulo Highcharts 3D
   }
+  createCharts(){
+    console.log("chartttt",this.getCharts);
+    this.getCharts.forEach((item,index) => {
+        console.log("chart"+index)
+        this.getSelected("chart"+index,item.chart_selected,item.name,item.option_selected)
+       });
+  }
+  getData(){
+    this.isLoading = false;
+    this.service.Data("chart/index").subscribe({
+      next:(n)=>{
+
+       this.getCharts = n["data"]["result"];
+       console.error(this.getCharts);
+      },error:(e)=>{
+        this.isLoading = false
+
+      }
+    })
+  }
+  getSelected(id,chart_selected,name,option_selected) {
+
+    const causasContador: { [key: string]: number } = {};
+    this.options.forEach((item) => {
+        const causa = item[`${option_selected}`];
+
+        if (!causasContador[causa]) {
+            causasContador[causa] = 1;
+        } else {
+            causasContador[causa]++;
+        }
 
 
+    });
+    const causasUnicas = Object.keys(causasContador);
+    const conteosCausas = causasUnicas.map((causa) => causasContador[causa]);
+    const suma = conteosCausas.reduce((total, numero) => total + numero, 0);
+    this.createChart(id,chart_selected,name,causasUnicas,conteosCausas)
+}
   getSuicides() {
       this.service.Data("prevention/show").subscribe({
           next: (n) => {
               this.options = n['data']['result'];
-              const causasContador: { [key: string]: number } = {};
-              const violenceContador: { [key: string]: number } = {};
-              
-              this.options.forEach((item) => {
-                  const causa = item.age;
-                  const violencia = item.causa;
-  
-                  if (!causasContador[causa]) {
-                      causasContador[causa] = 1;
-                  } else {
-                      causasContador[causa]++;
-                  }
-  
-                  if (!violenceContador[violencia]) {
-                      violenceContador[violencia] = 1;
-                  } else {
-                      violenceContador[violencia]++;
-                  }
-              });
-  
-               this.causasUnicas = Object.keys(causasContador);
-               this.conteosCausas = this.causasUnicas.map((causa) => causasContador[causa]);
-  
-               this.violenceUnicas = Object.keys(violenceContador);
-               this.conteosViolencia = this.violenceUnicas.map((violencia) => violenceContador[violencia]);
-               this.createChart("age","column",this.causasUnicas,this.conteosCausas)
-               this.createChart("media","pie",this.causasUnicas,this.conteosCausas)
-
-
-              this.isLoading = false;
+              this.createCharts()
           },
           error: (e) => {
-              this.isLoading = false;
+
           }
       });
   }
-  createChart(id,chart,causas=[],conteos=[]){
+  cards =[]
+  createChart(id,chart,title,causas=[],conteos=[]){
+// const exists = this.cards.some(card => card.text === Object.keys(this.keys).find(key => this.keys[key] === option_selected));
+
+// if (!exists) {
+//     this.cards.push({
+//         text: Object.keys(this.keys).find(key => this.keys[key] === option_selected),
+//         value: conteos.reduce((total, numero) => total + numero, 0)
+//     });
+// }
+
+
     const finalChartConfig: any[] = [];
     finalChartConfig.push({
 
-  
+
 
     })
     finalChartConfig.push(this.configChart(chart));
     finalChartConfig.push(this.configLegend());
-    finalChartConfig.push(this.configTitle());
+    finalChartConfig.push(this.configTitle(chart,title,conteos));
     finalChartConfig.push(this.configPlotOptions(chart));
-    finalChartConfig.push(this.configXaxis());
+    finalChartConfig.push(this.configXaxis(chart,causas));
     finalChartConfig.push(this.configYaxis());
     finalChartConfig.push(this.configData(chart,causas,conteos));
+    console.warn(id,finalChartConfig)
     Highcharts.chart(id, Object.assign({}, ...finalChartConfig));
 
 
   }
+
+  openDialog(item){
+    this.itemSelected = [];
+    this.itemSelected.push(item);
+    this.indices =[]
+    this.visible = true;
+  // Objeto para almacenar los conteos por dependencia y valor de item.option_selected
+// Objeto para almacenar los conteos por dependencia con títulos y valores
+const countByDependencyWithTitles: { [dependency: string]: { titles: string[], values: number[] } } = {};
+
+// Iterar sobre los elementos de options
+let cont = 0
+this.options.forEach((option) => {
+    const dependency = option.dependencia;
+    const selectedOption = option[item.option_selected];
+
+    // Si la dependencia no existe en countByDependencyWithTitles, inicialízala
+    if (!countByDependencyWithTitles[dependency]) {
+      this.indices.push({item:cont,active:true})
+      cont ++;
+        console.warn(cont)
+        countByDependencyWithTitles[dependency] = { titles: [], values: [] };
+    }
+
+    // Si el título ya está presente en la dependencia, incrementa su valor correspondiente
+    const titleIndex = countByDependencyWithTitles[dependency].titles.indexOf(selectedOption);
+    if (titleIndex !== -1) {
+        countByDependencyWithTitles[dependency].values[titleIndex]++;
+    } else { // Si el título no está presente, agrégalo con un valor inicial de 1
+        countByDependencyWithTitles[dependency].titles.push(selectedOption);
+        countByDependencyWithTitles[dependency].values.push(1);
+    }
+});
+
+const dependencies = Object.keys(countByDependencyWithTitles);
+
+
+
+
+
+
+
+    this.visible = true;
+    this.dialogo.onShow.subscribe(() => {
+        this.getSelected("chartselected", item.chart_selected, item.name, item.option_selected);
+        for (let i = 0; i < dependencies.length; i++) {
+            const dependency = dependencies[i];
+            console.log(`Dependency Index: ${i}`);
+            console.log(`Dependency Name: ${dependency}`);
+
+            // Obtener los títulos y valores correspondientes a la dependencia actual
+            const titles = countByDependencyWithTitles[dependency].titles;
+            const values = countByDependencyWithTitles[dependency].values;
+                // Iterar sobre los títulos y valores e imprimirlos
+                console.error("chartsubselected"+ i,item.chart_selected,dependency,titles,values)
+                this.createChart("chartsubselected"+ i,item.chart_selected,dependency,titles,values);
+
+            }
+    });
+  }
+  startDate: any;
+endDate: any;
+formatDate(date: Date): string {
+    // Obtener los componentes de la fecha
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Añadir cero delante si es necesario
+    const day = date.getDate().toString().padStart(2, '0'); // Añadir cero delante si es necesario
+    // Devolver la fecha formateada
+    return `${year}-${month}-${day}`;
+}
+onDateSelect(event) {
+  // Extraer el día y convertirlo a un número entero
+
+  let selectedDate = new Date(event);
+  const formattedDate = this.formatDate(selectedDate);
+  console.log(formattedDate);
+      if (!this.startDate) {
+        // Si no hay una fecha de inicio, asignar la fecha seleccionada como fecha de inicio
+        this.startDate = formattedDate;
+    } else if (!this.endDate) {
+        // Si hay una fecha de inicio pero no hay una fecha de fin, asignar la fecha seleccionada como fecha de fin
+        this.endDate = formattedDate;
+        // Verificar si la fecha de fin es menor que la fecha de inicio
+        if (this.endDate < this.startDate) {
+            // Si la fecha de fin es menor, intercambiar las fechas para asegurarse de que la fecha de inicio siempre sea menor
+            const tempDate = this.startDate;
+            this.startDate = this.endDate;
+            this.endDate = tempDate;
+        }
+    } else {
+        // Si ya hay una fecha de inicio y una fecha de fin, reiniciar el rango de fechas
+        this.startDate = formattedDate;
+        this.endDate = null;
+    }
+
+    // Si ahora tenemos ambas fechas, puedes hacer algo con ellas
+    if (this.startDate && this.endDate) {
+        console.log('Fecha de inicio:', this.startDate);
+        console.log('Fecha de fin:', this.endDate);
+        this.searchDates(this.itemSelected[0],this.startDate,this.endDate)
+    }
+}
+
+searchDates(item,start,end){
+  const countByDependencyWithTitles: { [dependency: string]: { titles: string[], values: number[] } } = {};
+  let startDate = new Date(start);
+  let endDate = new Date(end);
+  startDate.setHours(0, 0, 0, 0);
+  startDate.setDate(startDate.getDate()+1)
+  endDate.setHours(0, 0, 0, 0);
+  endDate.setDate(endDate.getDate()+1)
+
+  // Iterar sobre los elementos de options
+  let cont = 0
+  this.options.forEach((option) => {
+      let date = new Date(option.date_created);
+      date.setHours(0, 0, 0, 0);
+      date.setDate(date.getDate()+1)
+
+      const dependency = option.dependencia;
+      const selectedOption = option[item.option_selected];
+      const maxLength = this.indices.length;
+
+      if (startDate <= date && endDate >= date) {
+          // Si la dependencia no existe en countByDependencyWithTitles, inicialízala
+          if (!countByDependencyWithTitles[dependency]) {
+            if (cont < maxLength) {
+              this.indices[cont].active = true
+              cont ++
+              }
+          
+              countByDependencyWithTitles[dependency] = { titles: [], values: [] };
+          }
+         
+  
+          // Si el título ya está presente en la dependencia, incrementa su valor correspondiente
+          const titleIndex = countByDependencyWithTitles[dependency].titles.indexOf(selectedOption);
+          if (titleIndex !== -1) {
+              countByDependencyWithTitles[dependency].values[titleIndex]++;
+          } else { // Si el título no está presente, agrégalo con un valor inicial de 1
+              countByDependencyWithTitles[dependency].titles.push(selectedOption);
+              countByDependencyWithTitles[dependency].values.push(1);
+          }
+      }
+      else{
+
+      if (cont < maxLength) {
+          this.indices[cont].active = false;
+          cont++;
+      }
+
+      }
+  });
+  console.error("here",countByDependencyWithTitles)
+  
+const dependencies = Object.keys(countByDependencyWithTitles);
+for (let i = 0; i < dependencies.length; i++) {
+            const dependency = dependencies[i];
+
+
+            // Obtener los títulos y valores correspondientes a la dependencia actual
+            const titles = countByDependencyWithTitles[dependency].titles;
+            const values = countByDependencyWithTitles[dependency].values;
+            
+            this.createChart("chartsubselected"+ i,item.chart_selected,dependency,titles,values);
+
+ }
+  
+}
+
+
+
 
 
 
@@ -118,12 +343,14 @@ isLoading: boolean=true;
             type: `${chart}`,
             animation: true,
             options3d: {
-              enabled: true,
-              alpha: 10,
-              beta: 20,
-              depth: 300,
-              viewDistance: 25
+                enabled: true,
+                alpha: 10,
+                beta: 20,
+                depth: 100,
+                viewDistance: 25
             }
+
+
           }
         };
       case "pie":
@@ -141,9 +368,9 @@ isLoading: boolean=true;
         return {}; // Devuelve un objeto vacío si el tipo de gráfico no es reconocido
     }
   }
-  
-  
-  
+
+
+
 
   configLegend() {
     return {
@@ -162,65 +389,129 @@ isLoading: boolean=true;
     };
   }
 
-    configTitle() {
-      return {
-        title: {
-          text: 'Suicidios con Respecto a Edades'
-        }
-           }
-    }
-    configPlotOptions(chart: string): any {
-      switch(chart) {
+  configTitle(chart: string, title: any,conteos:number[]): any {
+    const total = conteos.reduce((total, numero) => total + numero, 0);
+
+    switch (chart) {
         case "bar":
         case "column":
-          return {
-            plotOptions: {
-              column: {
-                cursor: 'pointer',
-                dataLabels: {
-                  enabled: true,
-                  format: '{point.name}'
+        case "line":
+            return {
+                title: {
+                    text: title
                 },
-                depth: 150,
-                colorByPoint: true,
-                allowPointSelect: false
-              }
-            }
-          };
+                subtitle: {
+                    text: `total de registros: ${total}`
+                }
+            };
         case "pie":
         case "area":
-          return {
-            plotOptions: {
-              pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                depth: 35,
-                slicedOffset: 20,
-                dataLabels: {
-                  enabled: true,
-                  format: `<b>{point.name}</b>: {point.percentage:.1f} % de un total de registros`, // Formato para mostrar el nombre y el porcentaje
-                  distance: 30 // Distancia de las etiquetas desde el centro del pastel
+            return {
+                title: {
+                    text: title
+                },
+                subtitle: {
+                    text: `total de registros: ${total}`
+                },
+                accessibility: {
+                    point: {
+                        valueSuffix: '%'
+                    }
+                },
+                tooltip: {
+                    pointFormat: `{series.name}: <b>{point.percentage:.1f}% de ${total} registros</b>`
                 }
-              }
-            }
-          };
-       
-      }
+            };
     }
-    
-    configXaxis(){
-      return{
-        xAxis: {
-          type: "category",
-          labels: {
-            autoRotation: [-45, -90],
-            style: {
-              fontSize: '13px',
-              fontFamily: 'Verdana, sans-serif'
-            }
+}
+
+    configPlotOptions(chart: string): any {
+        switch(chart) {
+            case "bar":
+            case "column":
+                return {
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            // Ajusta este valor para cambiar el espaciado entre columnas
+                            cursor: 'pointer',
+                            dataLabels: {
+                              enabled: true,
+                              format: '{point.y:.0f}',// Mostrar solo números enteros
+                              distance: 150, // Ajusta este valor según sea necesario
+                              style: {
+                                color: 'black',
+                                fontSize: '12px',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        depth: 150,
+                        colorByPoint: true,
+                        allowPointSelect: false
+                      }
+                    }
+                  };
+            case "pie":
+            case "area":
+              return {
+                plotOptions: {
+                  pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    depth: 35,
+                    slicedOffset: 20,
+                    dataLabels: {
+                      enabled: true,
+                      format: `<b>{point.name}</b>: {point.percentage:.1f} % de un total de registros`, // Formato para mostrar el nombre y el porcentaje
+                      distance: 30 // Distancia de las etiquetas desde el centro del pastel
+                    }
+                  }
+                }
+              };
+
           }
+    }
+
+    configXaxis(chart,titles){
+        switch(chart) {
+            case "line":
+            case "area":
+            return{
+                xAxis: {
+                    type: "category",
+                    categories: ["",...titles],
+                    title: {
+                        text: "total",
+                        align: "middle"
+                    },
+                    labels: {
+                        autoRotation: [-45, -90],
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                }
+            }
+            default:
+            return{
+                xAxis: {
+                    type: "category",
+                    categories: [""],
+                    title: {
+                        text: "total",
+                        align: "middle"
+                    },
+                    labels: {
+                        autoRotation: [-45, -90],
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                }
+            }
         }
-      }
     }
     configYaxis(){
       return{
@@ -234,57 +525,56 @@ isLoading: boolean=true;
     }
 
     configData(chart: string, causas: any[], conteos: any[]): any {
-      switch(chart) {
-        case "bar":
-        case "column":
-          return {
-            series: causas.map((name, index) => ({
-              name: name,
-              type: chart,
-              data: [{ y: conteos[index], color: this.getRandomColor() }],
-              dataLabels: {
-                enabled: true,
-                rotation: -90,
-                color: '#FFFFFF',
-                align: 'right',
-                format: '{point.y:.1f}',
-                y: 0,
-                style: {
-                  fontSize: '13px',
-                  fontFamily: 'Verdana, sans-serif'
-                }
-              }
-            }))
-          };
-        case "pie":
-        case "area":
-          return {
-            series: [{
-              type: chart,
-              name: 'Porcentaje obtenido',
-              data: causas.map((value, index) => ({
-                name: value,
-                y: conteos[index],
-                sliced: index === 2,
-                selected: index === 2
-              }))
-            }]
-          };
-       
-          case "line":
-            return{
-              
-              series: [{
-                data: conteos.map((value, index) => ({
-                    y: value, // El valor del punto en la serie
-                    x: index + 1 // El índice del punto más 1 (para empezar desde 1)
+        switch(chart) {
+            case "bar":
+            case "column":
+              return {
+                series: causas.map((name, index) => ({
+                  name: name,
+                  type: chart,
+                  data: [{ y: conteos[index], color: this.getRandomColor() }],
+                  dataLabels: {
+                    enabled: true,
+                    rotation: -90,
+                    color: '#FFFFFF',
+                    align: 'right',
+                    format: '{point.y:.1f}',
+                    y: 0,
+                    style: {
+                      fontSize: '13px',
+                      fontFamily: 'Verdana, sans-serif'
+                    }
+                  }
                 }))
-            }]
-            
-            }
-      }
+              };
+            case "pie":
+            case "area":
+              return {
+                series: [{
+                  type: chart,
+                  name: 'Porcentaje obtenido',
+                  data: causas.map((value, index) => ({
+                    name: value,
+                    y: conteos[index],
+                    sliced: index === 2,
+                    selected: index === 2
+                  }))
+                }]
+              };
+
+              case "line":
+                return{
+
+                  series: [{
+                    data: conteos.map((value, index) => ({
+                        y: value, // El valor del punto en la serie
+                        x: index + 1 // El índice del punto más 1 (para empezar desde 1)
+                    }))
+                }]
+
+                }
+          }
     }
-    
 
 
 
@@ -302,71 +592,7 @@ isLoading: boolean=true;
 
 
 
-  createCausesChart(){
-    let totalConteosViolencias = this.conteosViolencia.reduce((total, element) => total + element, 0);
 
-    Highcharts.chart('pie', {
-      chart: {
-        type: 'pie',
-        options3d: {
-          enabled: true,
-          alpha: 45,
-          beta: 0
-        }
-      },
-      title: {
-        text: 'Suicidios con Respecto a Motivos',
-        align: 'center'
-      },
-      accessibility: {
-        point: {
-          valueSuffix: '%'
-        }
-      },
-      tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-      },
-      plotOptions: {
-        pie: {
-          allowPointSelect: true,
-          cursor: 'pointer',
-          depth: 35,
-          slicedOffset: 20,
-          dataLabels: {
-            enabled: true,
-            format: `<b>{point.name}</b>: {point.percentage:.1f} % de un total de ${totalConteosViolencias} registros`, // Formato para mostrar el nombre y el porcentaje
-            distance: 30 // Distancia de las etiquetas desde el centro del pastel
-          }
-        }
-      },
-      subtitle: {
-        text: `Total de suicidios con Respecto a Motivos ${totalConteosViolencias}`
-    },
-      exporting: {
-        enabled: true,
-        buttons: {
-          contextButton: {
-            menuItems: ['downloadPNG', 'downloadJPEG', 'downloadPDF', 'downloadSVG']
-          }
-        }
-      },
-      series: [{
-        type: 'pie',
-        name: 'Porcentaje obtenido',
-        data: this.violenceUnicas.map((value, index) => ({
-          name: value,
-          y: this.conteosViolencia[index],
-          sliced: index === 2,
-          selected: index === 2
-        }))
-      }]
-    });
 
-  }
-  onChartTypeChangeAge(event: any) {
-    this.createChart("age",event.value,this.causasUnicas,this.conteosCausas)
-  }
-  onChartTypeChangeMedia(event: any) {
-    this.createChart("media",event.value,this.violenceUnicas,this.conteosViolencia)
-  }
+
 }

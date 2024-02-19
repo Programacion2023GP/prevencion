@@ -1,0 +1,129 @@
+<div [@fadeInOutAnimation] class="row content"  [ngClass]="{'loading': isLoading}" >
+            <div class="row">
+                <div class="col-8">
+                    <mat-card>
+                        <mat-card-content>
+                            <ng-container *ngIf="activedYears">
+                                <button mat-raised-button [matMenuTriggerFor]="yearsMenu" class="mr-3">Años</button>
+                                <mat-menu #yearsMenu="matMenu">
+                                    <ng-container *ngFor="let year of yearList">
+                                        <button mat-menu-item>{{ year }}</button>
+                                    </ng-container>
+                                </mat-menu>
+                            </ng-container>
+
+                            <ng-container *ngIf="activedMonths">
+                                <!-- Botón del menú de meses -->
+                                <button mat-raised-button [matMenuTriggerFor]="monthsMenu" class="mr-3">Meses</button>
+                                <mat-menu #monthsMenu="matMenu">
+                                    <ng-container *ngFor="let month of monthsList">
+                                        <button mat-menu-item>{{ month }}</button>
+                                    </ng-container>
+                                </mat-menu>
+                            </ng-container>
+                            <ng-container *ngIf="activedDays">
+                                <button mat-raised-button [matMenuTriggerFor]="daysOfWeekMenu">Días de la Semana</button>
+                                <mat-menu #daysOfWeekMenu="matMenu">
+                                    <ng-container *ngFor="let day of daysOfWeekList">
+                                        <button class="ml-3" mat-menu-item>{{ day }}</button>
+                                    </ng-container>
+                                </mat-menu>
+                            </ng-container>
+                            <ng-container *ngIf="activedZoom">
+                                <button class="ml-3" mat-raised-button>Zoom</button>
+                            </ng-container>
+                            <ng-container *ngIf="activedPng">
+                                <button class="ml-3" mat-raised-button>PNG</button>
+                            </ng-container>
+                            <!-- Botón del menú de días de la semana -->
+
+                            <!-- Div para el gráfico -->
+                            <div class="row justify-content-center mt-4">
+                                <div class="col-12 ">
+                                    <div #chartContainer id="chart" style="width:100%; height:400px;"></div>
+                                    <mat-label class="description-label">{{descriptionText}}</mat-label>
+                                </div>
+                            </div>
+
+                        </mat-card-content>
+                    </mat-card>
+
+                </div>
+                <div class="col-4">
+                    <mat-card>
+                        <mat-card-content>
+                            <form [formGroup]="MyForm" (ngSubmit)="onSubmit()">
+                                <mat-form-field appearance="outline" style="width: 100%;">
+                                    <mat-label>Seleccionar tipo de gráfico por defecto</mat-label>
+                                    <mat-select formControlName="chart_selected" (selectionChange)="initChart($event)">
+                                      <mat-option value="line">Línea</mat-option>
+                                      <mat-option value="column">Columna</mat-option>
+                                      <mat-option value="bar">Barra</mat-option>
+                                      <mat-option value="area">Área</mat-option>
+                                      <mat-option value="pie">Pastel</mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+
+                                <mat-form-field  appearance="outline" style="width: 100%">
+                                    <mat-label>Nombre de la grafica</mat-label>
+                                    <input  (input)="initTitleChart($event)" formControlName="name" matInput>
+                                </mat-form-field>
+
+                                  <mat-form-field appearance="outline" style="width: 100%">
+                                    <mat-label>Que se mostrara en la grafica</mat-label>
+                                    <mat-select (selectionChange)="getSelected($event)" formControlName="option_selected">
+                                      <mat-option *ngFor="let option of options" [value]="option.value">{{ option.text}}</mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+
+                                <div class="row">
+                                    <!-- <mat-label class="col-12 mx-auto text-center">Agregar Opciones de filtrado </mat-label>
+                                    <div class="col-6">
+                                        <mat-checkbox formControlName="years" (click)="active('years')" class="example-margin">Años</mat-checkbox>
+                                    </div>
+                                    <div class="col-6">
+                                        <mat-checkbox formControlName="months" (click)="active('months')" class="example-margin">Meses</mat-checkbox>
+                                    </div>
+                                    <div class="col-6">
+                                        <mat-checkbox formControlName="days" (click)="active('days')" class="example-margin">Dias</mat-checkbox>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <mat-checkbox formControlName="zoom"
+                                        (click)="active('zoom')"
+                                        class="example-margin">Zoom</mat-checkbox>
+                                    </div>
+                                    <div class="col-6">
+                                        <mat-checkbox formControlName="png"
+                                        (click)="active('png')"
+                                        class="example-margin">Exportar(PNG)</mat-checkbox>
+                                    </div> -->
+                                    <mat-form-field class="example-full-width" appearance="outline" style="width: 100%">
+                                        <mat-label>Especifica una descripción para tu grafica</mat-label>
+                                        <textarea
+                                        rows="10"
+                                        matInput (input)="description($event)" formControlName="description" placeholder=""></textarea>
+                                    </mat-form-field>
+
+
+                                </div>
+                                @if (MyForm.valid) {
+                                    <button mat-raised-button color="primary">Registrar</button>
+                                  }
+                                @else {
+                                    <button
+                                    disabled
+                                    mat-raised-button color="primary">Registrar</button>
+                                     }
+
+                            </form>
+                        </mat-card-content>
+                      </mat-card>
+
+                </div>
+            </div>
+
+        </div>
+
+
+

@@ -27,6 +27,8 @@ import { SuicidepreventionComponent } from './components/suicideprevention/suici
 import { ActiviesComponent } from './components/catalogues/activies/activies.component';
 import { TablesuicidepreventionComponent } from './components/tablesuicideprevention/tablesuicideprevention.component';
 import { ChartsComponent } from './components/charts/charts.component';
+import { FormchartsComponent } from './components/formcharts/formcharts.component';
+import { TablechartsComponent } from './components/tablecharts/tablecharts.component';
 
 @NgModule({
     imports: [
@@ -36,7 +38,8 @@ import { ChartsComponent } from './components/charts/charts.component';
                 canActivate:[AcessGuard],
 
                 children: [
-                    { path: 'prevencion', component:SuicidepreventionComponent},
+                    { path: 'prevencion/:row', component: SuicidepreventionComponent },
+                    { path: 'prevencion', component: SuicidepreventionComponent },
                     { path: 'prevencioninfo', component:TablesuicidepreventionComponent},
                     { path: 'sitios', component:SitesComponent},
                     { path: 'graficas', component:ChartsComponent},
@@ -57,8 +60,9 @@ import { ChartsComponent } from './components/charts/charts.component';
                     { path: 'suicidas', component:ExistenceComponent},
                     { path: 'actos', component:ActwasComponent},
                     { path: 'ocupaciones', component:ActiviesComponent},
-
+                    { path: 'creaciongraficas', component:FormchartsComponent},
                     { path: 'usuarios', component:UsersComponent},
+                    {path:"listadograficas",component:TablechartsComponent},
                     { path: '', redirectTo: 'login', pathMatch: 'full' },
                     // { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
                     { path: 'uikit', loadChildren: () => import('./demo/components/uikit/uikit.module').then(m => m.UIkitModule) },
