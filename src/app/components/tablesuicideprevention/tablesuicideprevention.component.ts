@@ -17,6 +17,7 @@ import { fadeInOutAnimation } from 'src/app/components/animations/animate';
 import { DialogModule } from 'primeng/dialog';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-tablesuicideprevention',
@@ -63,7 +64,9 @@ loading: true;
     this.service.Data("prevention/index").subscribe({
       next: (n) => {
         this.data = n["data"]["result"];
+        // console.warn(this.data)
         this.dataSource = new MatTableDataSource(this.data);
+
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       },
@@ -73,6 +76,95 @@ loading: true;
       }
     });
   }
+
+
+
+
+  // generateManual(){
+  //   const doc = new jsPDF();
+
+  //   // Título del formulario
+  //   doc.setFontSize(16);
+  //   doc.text("Datos de la fuente informativa", 20, 15);
+
+  //   let y = 30;
+  //   const cellWidth = 85; // Ancho de celda ajustado
+  //   const cellHeight = 15; // Altura de celda ajustada
+
+  //   const data = [
+  //       ["Fecha de registro", "Fecha de dia actual"],
+  //       ["Nombre de la persona suicidada", ""],
+  //       ["Folio", "verificar en la plataforma cual es el ultimo"],
+  //       ["El acto fue", ],
+  //       ["Intento de suicido o suicidio registrado en el mes de", ""],
+  //       ["Código postal de la fuente", ""],
+  //       ["Estado de la fuente", ""],
+  //       ["Municipio de la fuente", ""],
+  //       ["Colonia de la fuente", ""],
+  //       ["Clave de la fuente (Dependencia)", ""],
+  //       ["Fecha de ocurrencia dia", ""],
+  //       ["Código postal del suicidio", ""],
+  //       ["Estado postal del suicidio", ""],
+  //       ["Municipio del suicidio", ""],
+  //       ["Colonia del suicidio", ""],
+  //       ["Sitio donde cometio el acto", ""],
+  //       ["Causa del acto", ""],
+  //       ["Medio empleado para cometer el acto", ""],
+  //       ["Dependencia a la que canaliza", ""],
+  //       ["Quien denuncia", ""],
+
+
+
+
+  //       ["Curp", ""],
+  //       ["Sexo", ""],
+  //       ["Edad(Años cumplidos)", ""],
+  //       ["Religion o culto", ""],
+  //       ["Estado civil", ""],
+  //       ["Alfabetismo y escolaridad", ""],
+  //       ["posesión de hijos", ""],
+  //       ["Existencia de suicidas en la familia", ""],
+  //       ["Adicciones", ""],
+  //       ["Enfermedades", ""],
+  //       ["Tipo de violencia", ""],
+  //       ["Tipo de familia", ""],
+  //       ["¿Es estudiante?", ""],
+  //       ["Centro educativo", ""],
+  //       ["Como se indentifica", ""],
+  //       ["Fecha de reindición de datos del dia", ""],
+
+  //       ["Ocupación", ""],
+  //       ["Especifica el nombre de la actividad a que se dedica o dedicaba, agregando una breve descripción", ""],
+  //   ];
+
+  //   // Agregar datos del formulario
+  //   doc.setFontSize(12);
+  //   y += cellHeight;
+  //   let cont = 0;
+  //   for (let row of data) {
+  //     if (cont > 0 && cont % 15 === 0) {
+  //          doc.addPage()
+  //          y=30
+  //     }
+  //     cont ++
+  //       doc.setFillColor(255, 255, 255);
+  //       doc.rect(20, y, cellWidth, cellHeight);
+  //       doc.rect(105, y, cellWidth, cellHeight); // Ajuste de posición
+  //       doc.setTextColor(0);
+  //       // Dividir la cadena en varias líneas si no cabe en el rectángulo
+  //       const lines = doc.splitTextToSize(row[0], cellWidth - 10);
+  //       doc.text(lines, 25, y + 10); // Ajuste de posición
+  //       doc.text(row[1], 110, y + 10); // Ajuste de posición
+  //       y += cellHeight;
+  //   }
+
+  //   // Guardar el PDF
+  //   doc.save('formulario.pdf');
+  // }
+
+
+
+
 
     info(row){
       this.dataSelected =[]

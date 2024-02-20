@@ -1,13 +1,14 @@
 
 <div [@fadeInOutAnimation] class="row content"  [ngClass]="{'loading': animation}">
-   
+    <button (click)="generatePDF()" mat-raised-button color="primary" >Descargar formato pdf a mano</button>
+
       <mat-stepper [linear]="" label="Registro" #stepper>
         <mat-step label="Registro">
             <div *ngIf="!isLoadingSkeleton; else SkeletonTable">
                 <mat-stepper  #stepper>
                     <mat-step label="Datos de la fuente informativa" >
                         <form [formGroup]="MyForm" (ngSubmit)="onSubmit()">
-            
+                            <br>
                             <mat-form-field  appearance="outline" style="width: 100%">
                                 <mat-label>Fecha de registro</mat-label>
                                 <input [readonly]="true" formControlName="dateregister" matInput>
@@ -149,6 +150,7 @@
                     </mat-step>
                     <mat-step label="Caracteristicas personales suicidas">
                         <form [formGroup]="Myformsecond" (ngSubmit)="onSubmitsecond()">
+                            <br>
                             <mat-form-field  appearance="outline" style="width: 100%">
                                 <mat-label>Curp</mat-label>
                                 <input  formControlName="curp" matInput>
@@ -193,12 +195,25 @@
                                     <mat-option *ngFor="let i of existences" [value]="i.value">{{i.text}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
+                            <mat-label>¿Tiene alguna adicción?</mat-label>
+                            <mat-radio-group formControlName="addicion" aria-label="Select an option">
+                                <ng-container *ngIf="addicion" >
+                                    <mat-radio-button (click)="addicionSelected(1)" value=true checked >Si</mat-radio-button>
+                                    <mat-radio-button (click)="addicionSelected(0)" value=false>No</mat-radio-button>
+                                </ng-container>
+                                <ng-container *ngIf="!addicion" >
+                                    <mat-radio-button (click)="addicionSelected(1)" value=true  >Si</mat-radio-button>
+                                    <mat-radio-button (click)="addicionSelected(0)" value=false checked>No</mat-radio-button>
+                                </ng-container>
+                              </mat-radio-group>
+                              <ng-container *ngIf="addicion" >
                             <mat-form-field appearance="outline" style="width: 100%">
                                 <mat-label>Adicciones</mat-label>
                                 <mat-select formControlName="adictions_id">
                                     <mat-option *ngFor="let i of adictions" [value]="i.value">{{i.text}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
+                            </ng-container>
                             <mat-form-field appearance="outline" style="width: 100%">
                                 <mat-label>Enfermedades</mat-label>
                                 <mat-select formControlName="diseases_id">
@@ -219,8 +234,14 @@
                             </mat-form-field>
                             <mat-label>¿Es estudiante?</mat-label>
                             <mat-radio-group formControlName="estudiante" aria-label="Select an option">
-                                <mat-radio-button (click)="estudianteSelected(1)" value=true>Si</mat-radio-button>
-                                <mat-radio-button (click)="estudianteSelected(0)" value=false>No</mat-radio-button>
+                                <ng-container *ngIf="estudiante" >
+                                    <mat-radio-button (click)="estudianteSelected(1)" value=true checked >Si</mat-radio-button>
+                                    <mat-radio-button (click)="estudianteSelected(0)" value=false>No</mat-radio-button>
+                                </ng-container>
+                                <ng-container *ngIf="!estudiante" >
+                                    <mat-radio-button (click)="estudianteSelected(1)" value=true  >Si</mat-radio-button>
+                                    <mat-radio-button (click)="estudianteSelected(0)" value=false checked>No</mat-radio-button>
+                                </ng-container>
                               </mat-radio-group>
                             <ng-container *ngIf="estudiante" >
                                 
@@ -259,6 +280,7 @@
                     </mat-step>
                     <mat-step label="Ocupacion que tiene (tenia) el suicida">
                         <form [formGroup]="Myformtree" (ngSubmit)="Onsubmitree()">
+                            <br>
                             <mat-form-field appearance="outline" style="width: 100%">
                                 <mat-label>Ocupación</mat-label>
                                 <mat-select formControlName="activies_id">
@@ -286,6 +308,7 @@
         </mat-step>
         <mat-step label="Preregistro">
             <form [formGroup]="MyFormPreregistro" (ngSubmit)="onPressSubmit()">
+                <br>
                 <mat-form-field  appearance="outline" style="width: 100%">
                     <mat-label>Fecha de registro</mat-label>
                     <input [readonly]="true" formControlName="dateregister" matInput>

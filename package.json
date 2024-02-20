@@ -30,6 +30,8 @@
     "chart.js": "^3.9.1",
     "highcharts": "^11.3.0",
     "highcharts-3d": "^0.1.7",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.2",
     "primeflex": "^3.3.1",
     "primeicons": "6.0.1",
     "primeng": "17.2.0",

@@ -21,10 +21,10 @@ import { PrimeNGConfig } from 'primeng/api';
 import { SplitterModule } from 'primeng/splitter';
 import { fadeInOutAnimation } from 'src/app/components/animations/animate';
 import {MatSelectModule} from '@angular/material/select';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Navigation, Route, Router } from '@angular/router';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import {MatRadioModule} from '@angular/material/radio';
-
+import jsPDF from 'jspdf';
 @Component({
   selector: 'app-suicideprevention',
   standalone: true,
@@ -37,30 +37,14 @@ import {MatRadioModule} from '@angular/material/radio';
 })
 export class SuicidepreventionComponent {
   estudiante:Boolean
+  addicion:Boolean
     formattedDate: string;
     role =localStorage.getItem("role")
     animation = true
     MyForm: FormGroup;
     today = new Date()
-    Myformsecond =new FormGroup({
-    curp: new FormControl('', [Validators.required, Validators.pattern(/^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/)]),
-    gender_id:new FormControl('',Validators.required),
-    age:new FormControl('',Validators.required),
-    belief_id:new FormControl('',Validators.required),
-    statecivil_id:new FormControl('',Validators.required),
-    literacy_id:new FormControl('',Validators.required),
-    childrens_id:new FormControl('',Validators.required),
-    estudiante:new FormControl('',Validators.required),
-    existence_id:new FormControl('',Validators.required),
-    adictions_id:new FormControl('',Validators.required),
-    diseases_id:new FormControl('',Validators.required),
-    violence_id:new FormControl('',Validators.required),
-    family_id:new FormControl('',Validators.required),
-    school_id:new FormControl('',Validators.required),
-    indetified_id:new FormControl('',Validators.required),
-    datereindence:new FormControl('',Validators.required),
-
-  })
+    Myformsecond: FormGroup;
+   
   Myformtree =new FormGroup({
     activies_id:new FormControl('',Validators.required),
     description:new FormControl('',Validators.required),
@@ -127,7 +111,96 @@ hoy: Date;
   parametroOpcional: any;
 existParams :boolean=false
 id :number
+generatePDF() {
+  const doc = new jsPDF();
+
+  let y = 30;
+  const cellWidth = 85; // Ancho de celda ajustado
+  let cellHeight = 15; // Altura de celda ajustada
+
+  const data = [
+      ["title","Datos de la fuente informativa"],
+      ["Fecha de registro", ""],
+      ["Nombre de la persona suicidada", ""],
+      ["Folio", ""],
+      ["El acto fue", ""],
+      ["Intento de suicidio o suicidio registrado en el mes de", ""],
+      ["Código postal de la fuente", ""],
+      ["Estado de la fuente", ""],
+      ["Municipio de la fuente", ""],
+      ["Colonia de la fuente", ""],
+      ["Clave de la fuente (Dependencia)", ""],
+      ["Fecha de ocurrencia dia", ""],
+      ["Código postal del suicidio", ""],
+      ["Estado postal del suicidio", ""],
+      ["Municipio del suicidio", ""],
+      ["Colonia del suicidio", ""],
+      ["Sitio donde cometio el acto", ""],
+      ["Causa del acto", ""],
+      ["Medio empleado para cometer el acto", ""],
+      ["Dependencia a la que canaliza", ""],
+      ["Quien denuncia", ""],
+      ["title","Caracteristicas personales suicidas"],
+      ["Curp", ""],
+      ["Sexo", ""],
+      ["Edad(Años cumplidos)", ""],
+      ["Religion o culto", ""],
+      ["Estado civil", ""],
+      ["Alfabetismo y escolaridad", ""],
+      ["posesión de hijos", ""],
+      ["Existencia de suicidas en la familia", ""],
+      ["¿Tiene alguna addición?", ""],
+      ["Adicciones", ""],
+      ["Enfermedades", ""],
+      ["Tipo de violencia", ""],
+      ["Tipo de familia", ""],
+      ["¿Es estudiante?", ""],
+      ["Centro educativo", ""],
+      ["Como se indentifica", ""],
+      ["Fecha de reindición de datos del dia", ""],
+      ["title","Ocupacion que tiene (tenia) el suicida"],
+      ["Ocupación", ""],
+      ["Especifica el nombre de la actividad a que se dedica o dedicaba, agregando una breve descripción", ""],
+  ];
+
+  let cont = 0;
+  for (let row of data) {
+      doc.setFontSize(row[0] === "title" ? 16 : 12); // Si es un título, establece un tamaño de fuente mayor
+      if (row[0] === "title") {
+          y += 10; // Agrega espacio después del título
+      }
+      if (row[0] === "title" && cont > 0) {
+          y += 5; // Agrega espacio adicional antes de un nuevo título, pero no al principio
+      }
+      if (row[0] === "title") {
+          doc.text(row[1], 20, y); // Mostrar el título
+          y += 10; // Aumentar la posición Y después de mostrar el título
+      } else {
+          if (cont > 0 && cont % 15 === 0) {
+              doc.addPage(); // Agregar nueva página después de cada 15 filas
+              y = 30; // Reiniciar posición Y en la nueva página
+          }
+          const lines = doc.splitTextToSize(row[0], cellWidth - 10);
+          cellHeight = lines.length > 1 ? cellHeight * lines.length : 15;
+          
+          doc.setFillColor(255, 255, 255);
+          doc.rect(20, y, cellWidth, cellHeight);
+          doc.rect(105, y, cellWidth, cellHeight); // Ajuste de posición
+          doc.setTextColor(0);
+          // Dividir la cadena en varias líneas si no cabe en el rectángulo
+          doc.text(lines, 25, y + 10); // Ajuste de posición
+          doc.text(row[1], 110, y + 10); // Ajuste de posición
+          y += cellHeight;
+          cellHeight = 15; // Reiniciar la altura de la celda después de cada fila
+      }
+      cont++;
+  }
+
+  // Guardar el PDF
+  doc.save('registro.pdf');
+}
 ngOnInit(): void {
+
   this.route.queryParams.subscribe(params => {
     // Verificar si el parámetro 'row' está presente en los parámetros de la URL
     if (params['row']) {
@@ -142,14 +215,29 @@ ngOnInit(): void {
         this.SearchCp(row["cp"])
 
       }
-      if (row["school_id"]) {
+      if (row["estudiante"]) {
         this.estudiante = true
-        this.Myformsecond.get("estudiante").setValue("true")
+        this.Myformsecond.get("estudiante").setValue(true)
 
       }else{
         this.estudiante = false
-        this.Myformsecond.get("estudiante").setValue("false")
+        this.Myformsecond.get("estudiante").setValue(false)
       }
+      if (row["addicion"]) {
+        this.addicion = true
+        this.Myformsecond.get("addicion").setValue(true)
+
+      }else{
+        this.addicion = false
+        this.Myformsecond.get("addicion").setValue(false)
+      }
+      
+
+
+
+
+
+
       this.SearchCpDeed(row["cpdeed"])
 
       for (const key in row) {
@@ -178,12 +266,25 @@ ngOnInit(): void {
       // El parámetro 'row' no está presente en la URL
       console.log('No se proporcionó el parámetro opcional "row" en la URL');
     }
+  
   });
 }
+
 estudianteSelected(condition){
   this.estudiante = condition ==1?true:false
+  this.Myformsecond.get("estudiante").setValue(condition ==1?true:false)
 }
-constructor(private service:ServiceService<any>,private datePipe: DatePipe,private route:ActivatedRoute,private change:Router) {
+checkOriginPage() {
+  // Obtiene la URL actual
+  const currentUrl = this.activatedRoute.url;
+console.warn(currentUrl)
+}
+addicionSelected(condition){
+  this.addicion = condition ==1?true:false
+  this.Myformsecond.get("addicion").setValue(condition ==1?true:false)
+}
+
+constructor(private service:ServiceService<any>,private datePipe: DatePipe,private route:ActivatedRoute,private change:Router, private activatedRoute: ActivatedRoute) {
   this.hoy = new Date(); // Obtiene la fecha de hoy
   
   let Today = new Date();
@@ -205,7 +306,27 @@ constructor(private service:ServiceService<any>,private datePipe: DatePipe,priva
       date_created:new FormControl('',Validators.required),
 
     })
-
+    //[ Validators.pattern(/^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/)]
+    this.Myformsecond =new FormGroup({
+      curp: new FormControl('', ),
+      gender_id:new FormControl('',Validators.required),
+      age:new FormControl('',Validators.required),
+      belief_id:new FormControl('',Validators.required),
+      statecivil_id:new FormControl('',Validators.required),
+      literacy_id:new FormControl('',Validators.required),
+      childrens_id:new FormControl('',Validators.required),
+      estudiante:new FormControl(false,Validators.required),
+      addicion:new FormControl(false,Validators.required),
+      existence_id:new FormControl('',Validators.required),
+      adictions_id:new FormControl(''),
+      diseases_id:new FormControl('',Validators.required),
+      violence_id:new FormControl('',Validators.required),
+      family_id:new FormControl('',Validators.required),
+      school_id:new FormControl(''),
+      indetified_id:new FormControl('',Validators.required),
+      datereindence:new FormControl('',Validators.required),
+  
+    })
     this.MyForm = new FormGroup  ({
       id:new FormControl(''),
         dateregister:new FormControl(this.formattedDate,Validators.required),
@@ -378,7 +499,6 @@ getGenders(){
     this.service.Data("gender/values").subscribe({
       next:(n)=>{
         this.genders =  n['data']['result'];
-        console.log(this.genders)
       },error:(e)=>{
 
       }
