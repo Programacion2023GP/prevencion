@@ -40,12 +40,12 @@
                                   </button>
                                   @if(row.active){
                                       <button mat-icon-button color="primary"(click)="change(row)" >
-                                        <i class="fas fa-toggle-off"></i>
-                                    </button>
-
-                                  }@else{
+                                        <i class="fas fa-toggle-on"></i>
+                                      </button>
+                                      
+                                    }@else{
                                       <button mat-icon-button color="accent"(click)="change(row)"  >
-                                          <i class="fas fa-toggle-on"></i>
+                                        <i class="fas fa-toggle-off"></i>
                                       </button>
 
                                   }

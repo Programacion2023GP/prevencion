@@ -33,7 +33,7 @@ export class UsersComponent {
     name:new FormControl('',Validators.required),
     email:new FormControl('',[Validators.required,Validators.email]),
     role:new FormControl('',Validators.required),
-    dependece_id:new FormControl('',Validators.required),
+    dependece_id:new FormControl(''),
 
 
   })
@@ -42,6 +42,7 @@ export class UsersComponent {
   displayedColumns: string[] = ['name','email','role', 'Actions'];
   dataSource: MatTableDataSource<any>;
   data: any;
+  capturista:Boolean
   dependeces = []
   Toast = Swal.mixin({
   toast: true,
@@ -75,7 +76,16 @@ constructor(private service:ServiceService<any>) {
      }
    })
  }
+ roleSelected(event:any){
+  if (event.value =="Capturista") {
+    this.capturista = true
+      this.MyForm.controls["dependece_id"].addValidators(Validators.required)
+  }
+  else{
+    this.capturista = false
 
+  }
+ }
  getDependeces(){
   this.service.Data("dependence/values").subscribe({
     next:(n)=>{
@@ -97,6 +107,7 @@ constructor(private service:ServiceService<any>) {
    
    onSubmit(){
      this.isLoading = true
+    this.capturista = false
 
    let url ="users/create";
 

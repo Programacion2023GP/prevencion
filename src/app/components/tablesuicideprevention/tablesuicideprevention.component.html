@@ -14,33 +14,33 @@
 
                   <ng-container matColumnDef="invoice">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Folio </th>
-                    <td [ngClass]="{'text-bg-warning':!row.actwas_id}" mat-cell *matCellDef="let row"> {{row.invoice}} </td>
+                    <td [ngClass]="{'text-bg-warning':!row.gender_id}" mat-cell *matCellDef="let row"> {{row.invoice}} </td>
                   </ng-container>
                   <ng-container matColumnDef="personinformate">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Denunciante </th>
-                    <td [ngClass]="{'text-bg-warning':!row.actwas_id}"  mat-cell *matCellDef="let row"> {{row.personinformate}} </td>
+                    <td [ngClass]="{'text-bg-warning':!row.gender_id}"  mat-cell *matCellDef="let row"> {{row.personinformate}} </td>
                   </ng-container>
                   <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Persona de los hechos </th>
-                    <td [ngClass]="{'text-bg-warning':!row.actwas_id}" mat-cell *matCellDef="let row"> {{row.name}} </td>
+                    <td [ngClass]="{'text-bg-warning':!row.gender_id}" mat-cell *matCellDef="let row"> {{row.name}} </td>
                   </ng-container>
                   <ng-container matColumnDef="dependencia">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Dependencia </th>
-                    <td [ngClass]="{'text-bg-warning':!row.actwas_id}" mat-cell *matCellDef="let row"> {{row.dependencia}} </td>
+                    <td [ngClass]="{'text-bg-warning':!row.gender_id}" mat-cell *matCellDef="let row"> {{row.dependencia}} </td>
                   </ng-container>
                   <ng-container matColumnDef="causa">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Causa del acto </th>
-                    <td [ngClass]="{'text-bg-warning':!row.actwas_id}" mat-cell *matCellDef="let row"> {{row.causa}} </td>
+                    <td [ngClass]="{'text-bg-warning':!row.gender_id}" mat-cell *matCellDef="let row"> {{row.causa}} </td>
                   </ng-container>
                   <ng-container matColumnDef="datecurrence">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Ocurrencia del Suicidio </th>
-                    <td [ngClass]="{'text-bg-warning':!row.actwas_id}" mat-cell *matCellDef="let row">{{ row.datecurrence | date:'dd/MM/yyyy' }}</td>
+                    <td [ngClass]="{'text-bg-warning':!row.gender_id}" mat-cell *matCellDef="let row">{{ row.datecurrence | date:'dd/MM/yyyy' }}</td>
                 </ng-container>
                   <ng-container matColumnDef="Actions">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
-                    <td [ngClass]="{'text-bg-warning':!row.actwas_id}" mat-cell *matCellDef="let row">
+                    <td [ngClass]="{'text-bg-warning':!row.gender_id}" mat-cell *matCellDef="let row">
                       <button mat-icon-button color="primary"(click)="edit(row)">
-                        @if(row.actwas_id){                      
+                        @if(row.gender_id){                      
                           <mat-icon>edit</mat-icon>
                         }@else{                        
                         <i class="fas fa-exclamation-triangle"></i>

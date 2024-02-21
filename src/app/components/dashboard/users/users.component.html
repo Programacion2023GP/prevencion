@@ -64,13 +64,15 @@
                             <mat-label>Correó</mat-label>
                             <input formControlName="email" type="email" matInput>
                         </mat-form-field>
-                        <mat-form-field appearance="outline" style="width: 100%">
+                        <mat-form-field  appearance="outline" style="width: 100%">
                             <mat-label>Tipo de usuario</mat-label>
-                            <mat-select formControlName="role" >
+                            <mat-select (selectionChange)="roleSelected($event)" formControlName="role">
                               <mat-option value="Administrador">Administrador</mat-option>
                               <mat-option value="Capturista">Capturista</mat-option>
                             </mat-select>
+                            
                           </mat-form-field>
+                         @if(capturista){
                           <mat-form-field appearance="outline" style="width: 100%">
                             <mat-label>Dependencia</mat-label>
                             <mat-select formControlName="dependece_id">
@@ -78,6 +80,7 @@
                             </mat-select>
                         </mat-form-field>
                         
+                         }
                         
                         @if (MyForm.valid) {
                             <button mat-raised-button color="primary">Registrar</button>

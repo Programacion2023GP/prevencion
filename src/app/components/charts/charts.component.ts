@@ -177,7 +177,7 @@ this.options.forEach((option) => {
 
     // Si la dependencia no existe en countByDependencyWithTitles, inicialízala
     if (!countByDependencyWithTitles[dependency]) {
-      this.indices.push({item:cont,active:true})
+      this.indices.push({item:cont,active:true,dependencia:dependency})
       cont ++;
         console.warn(cont)
         countByDependencyWithTitles[dependency] = { titles: [], values: [] };
@@ -262,72 +262,79 @@ onDateSelect(event) {
     }
 }
 
-searchDates(item,start,end){
+searchDates(item, start, end) {
+  this.indices.forEach(element => {
+      element.active = true;
+  });
+
   const countByDependencyWithTitles: { [dependency: string]: { titles: string[], values: number[] } } = {};
-  let startDate = new Date(start);
-  let endDate = new Date(end);
+  const startDate = new Date(start);
+  const endDate = new Date(end);
   startDate.setHours(0, 0, 0, 0);
-  startDate.setDate(startDate.getDate()+1)
+  startDate.setDate(startDate.getDate() + 1);
   endDate.setHours(0, 0, 0, 0);
-  endDate.setDate(endDate.getDate()+1)
-
-  // Iterar sobre los elementos de options
-  let cont = 0
+  endDate.setDate(endDate.getDate() + 1);
+  let foundDependencies = [];
+  let arrayNoFound =[]
   this.options.forEach((option) => {
-      let date = new Date(option.date_created);
+      const date = new Date(option.date_created);
       date.setHours(0, 0, 0, 0);
-      date.setDate(date.getDate()+1)
-
-      const dependency = option.dependencia;
-      const selectedOption = option[item.option_selected];
-      const maxLength = this.indices.length;
-
+      date.setDate(date.getDate() + 1);
+  
       if (startDate <= date && endDate >= date) {
-          // Si la dependencia no existe en countByDependencyWithTitles, inicialízala
+          const dependency = option.dependencia;
+          if (!foundDependencies.includes(option.dependencia)) {
+            foundDependencies.push(dependency); // Agrega la dependencia al conjunto de dependencias encontradas            
+          }
+  
           if (!countByDependencyWithTitles[dependency]) {
-            if (cont < maxLength) {
-              this.indices[cont].active = true
-              cont ++
-              }
-          
               countByDependencyWithTitles[dependency] = { titles: [], values: [] };
           }
-         
   
-          // Si el título ya está presente en la dependencia, incrementa su valor correspondiente
+          const selectedOption = option[item.option_selected];
           const titleIndex = countByDependencyWithTitles[dependency].titles.indexOf(selectedOption);
           if (titleIndex !== -1) {
               countByDependencyWithTitles[dependency].values[titleIndex]++;
-          } else { // Si el título no está presente, agrégalo con un valor inicial de 1
+          } else {
               countByDependencyWithTitles[dependency].titles.push(selectedOption);
               countByDependencyWithTitles[dependency].values.push(1);
           }
       }
-      else{
-
-      if (cont < maxLength) {
-          this.indices[cont].active = false;
-          cont++;
-      }
-
-      }
   });
-  console.error("here",countByDependencyWithTitles)
   
-const dependencies = Object.keys(countByDependencyWithTitles);
-for (let i = 0; i < dependencies.length; i++) {
-            const dependency = dependencies[i];
+  // Busca dependencias que no se encontraron en ningún registro dentro del rango de fechas
+  this.indices.forEach(element => {
+    if (!foundDependencies.includes(element.dependencia)) {
+        element.active = false; // Establece la propiedad 'active' en 'false' para el elemento actual
+    }
+});
 
+  console.warn("NO ENCONTRADOS",foundDependencies)
 
-            // Obtener los títulos y valores correspondientes a la dependencia actual
-            const titles = countByDependencyWithTitles[dependency].titles;
-            const values = countByDependencyWithTitles[dependency].values;
-            
-            this.createChart("chartsubselected"+ i,item.chart_selected,dependency,titles,values);
+    console.warn("NO ENCONTRADOS",arrayNoFound)
 
- }
-  
+  const dependencies = Object.keys(countByDependencyWithTitles);
+  for (let i = 0; i < dependencies.length; i++) {
+      const dependency = dependencies[i];
+      const total = countByDependencyWithTitles[dependency];
+
+      // Si no hay resultados para esta dependencia, establece active como false
+      if (!total) {
+          this.indices[i].active = false;
+      }
+  }
+
+  console.error("here", countByDependencyWithTitles);
+
+  for (let i = 0; i < dependencies.length; i++) {
+      const dependency = dependencies[i];
+      const titles = countByDependencyWithTitles[dependency].titles;
+      const values = countByDependencyWithTitles[dependency].values;
+      
+      this.createChart("chartsubselected" + i, item.chart_selected, dependency, titles, values);
+  }
 }
+
 
 
 
