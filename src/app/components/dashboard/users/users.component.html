@@ -67,7 +67,9 @@
                         <mat-form-field  appearance="outline" style="width: 100%">
                             <mat-label>Tipo de usuario</mat-label>
                             <mat-select (selectionChange)="roleSelected($event)" formControlName="role">
-                              <mat-option value="Administrador">Administrador</mat-option>
+                              @if(role!="Administrador"){
+                                <mat-option value="Administrador">Administrador</mat-option>
+                              }
                               <mat-option value="Capturista">Capturista</mat-option>
                             </mat-select>
                             

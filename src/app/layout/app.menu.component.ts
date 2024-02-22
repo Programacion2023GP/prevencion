@@ -37,7 +37,16 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Listas', icon: 'pi pi-fw pi-home', routerLink: ['/prevencioninfo'] },
                     { label: 'Registro Graficas', icon: 'pi pi-fw pi-home', routerLink: ['/creaciongraficas'] },
                     { label: 'Graficas', icon: 'pi pi-fw pi-home', routerLink: ['/graficas'] },
-                    { label: 'Listado Graficas', icon: 'pi pi-fw pi-home', routerLink: ['/listadograficas'] }
+                    { label: 'Listado Graficas', icon: 'pi pi-fw pi-home', routerLink: ['/listadograficas'] },
+
+
+                ]
+            },
+            {
+                label: 'Mapa',
+                items: [
+                    { label: 'Mapa', icon: 'pi pi-fw pi-home', routerLink: ['/mapa'] }
+
 
 
                 ]

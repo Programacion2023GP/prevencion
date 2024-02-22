@@ -29,6 +29,7 @@ import { TablesuicidepreventionComponent } from './components/tablesuicidepreven
 import { ChartsComponent } from './components/charts/charts.component';
 import { FormchartsComponent } from './components/formcharts/formcharts.component';
 import { TablechartsComponent } from './components/tablecharts/tablecharts.component';
+import { MapsComponent } from './components/maps/maps.component';
 
 @NgModule({
     imports: [
@@ -42,6 +43,7 @@ import { TablechartsComponent } from './components/tablecharts/tablecharts.compo
                     { path: 'prevencion', component: SuicidepreventionComponent },
                     { path: 'prevencioninfo', component:TablesuicidepreventionComponent},
                     { path: 'sitios', component:SitesComponent},
+                    { path: 'mapa', component:MapsComponent},
                     { path: 'graficas', component:ChartsComponent},
                     { path: 'causas', component:CauseComponent},
                     { path: 'motivos', component:MeanemployeeComponent},

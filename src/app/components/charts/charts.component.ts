@@ -80,7 +80,6 @@ indices: any=[];
     Highcharts3D(Highcharts); // Activa el módulo Highcharts 3D
   }
   createCharts(){
-    console.log("chartttt",this.getCharts);
     this.getCharts.forEach((item,index) => {
         console.log("chart"+index)
         this.getSelected("chart"+index,item.chart_selected,item.name,item.option_selected)

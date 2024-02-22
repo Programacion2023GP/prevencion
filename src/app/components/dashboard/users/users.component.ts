@@ -37,6 +37,7 @@ export class UsersComponent {
 
 
   })
+  role =localStorage.getItem("role")
   isLoading = true
   action = false
   displayedColumns: string[] = ['name','email','role', 'Actions'];
@@ -58,6 +59,9 @@ export class UsersComponent {
 @ViewChild(MatPaginator) paginator: MatPaginator;
 @ViewChild(MatSort) sort: MatSort;
 constructor(private service:ServiceService<any>) {
+  if (localStorage.getItem("role")=="Administrador") {
+    this.capturista = true
+  }
   this.getData()
   this.getDependeces()
    // Assign the data to the data source for the table to render
@@ -147,6 +151,12 @@ constructor(private service:ServiceService<any>) {
        this.MyForm.get('id')?.setValue(row.id)
        Object.keys(row).forEach(key => {
          if (this.MyForm.get(key)) {
+          if (row["role"] == "Capturista") {
+              this.capturista = true
+          }else{
+            this.capturista = false
+
+          }
            this.MyForm.get(key)?.setValue(row[key]);
          }
        });
