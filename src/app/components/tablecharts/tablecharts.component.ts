@@ -72,6 +72,50 @@ isFirstRow(row: any): boolean {
 isLastRow(row: any): boolean {
   return this.dataSource.data.indexOf(row) === this.dataSource.data.length - 1;
 }
+moveUp(row){
+  this.service.Data(`chart/moveUp/${row.id}`).subscribe({
+    next:(n)=>{
+      this.Toast.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: `Se ha cambiado de posición`,
+      });
+      this.getData()
+
+     },
+     error:(e)=>{
+       this.Toast.fire({
+         position: 'top-end',
+         icon: 'error',
+         title: "No se ha podido cambiar de posición",
+     });
+          this.getData()
+
+    }
+  })
+}
+moveDown(row){
+  this.service.Data(`chart/moveDown/${row.id}`).subscribe({
+    next:(n)=>{
+      this.Toast.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: `Se ha cambiado de posición`,
+      });
+      this.getData()
+
+     },
+     error:(e)=>{
+       this.Toast.fire({
+         position: 'top-end',
+         icon: 'error',
+         title: "No se ha podido cambiar de posición",
+     });
+          this.getData()
+
+    }
+  })
+}
 change(row){
   this.service.Delete(`chart/destroy/${row.id}`).subscribe({
     next:(n)=>{

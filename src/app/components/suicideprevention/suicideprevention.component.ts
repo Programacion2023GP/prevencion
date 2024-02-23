@@ -228,6 +228,7 @@ ngOnInit(): void {
         this.Myformsecond.get("addicion").setValue(true)
 
       }else{
+       
         this.addicion = false
         this.Myformsecond.get("addicion").setValue(false)
       }
@@ -242,7 +243,7 @@ ngOnInit(): void {
 
       for (const key in row) {
         if (row.hasOwnProperty(key)) {
-            if (row["datecurrence"]==row[key]||row["datesuccess"]==row[key]||row["datereindence"]==row[key]) {
+            if (row["datesuccess"]==row[key]||row["datereindence"]==row[key]) {
                 row[key]= new Date(row[key])
             }
 
@@ -257,7 +258,6 @@ ngOnInit(): void {
           }
         }
         //dateregister
-        //datecurrence
         //datesuccess
         //datereindence
 
@@ -294,11 +294,9 @@ constructor(private service:ServiceService<any>,private datePipe: DatePipe,priva
     this.formattedDate = this.datePipe.transform(currentDate, 'dd/MM/yyyy');
     this. MyFormPreregistro = new FormGroup({
       dateregister:new FormControl(this.formattedDate,Validators.required),
-      invoice:new FormControl('',Validators.required),
       actwas_id:new FormControl('',Validators.required),
       dependeces_id:new FormControl(''),
       personinformate:new FormControl('',Validators.required),
-      datecurrence:new FormControl('',Validators.required),
       cpdeed:new FormControl('',Validators.required),
       statesdeed:new FormControl('',Validators.required),
       municipysdeed:new FormControl('',Validators.required),
@@ -329,11 +327,10 @@ constructor(private service:ServiceService<any>,private datePipe: DatePipe,priva
     })
     this.MyForm = new FormGroup  ({
       id:new FormControl(''),
-        dateregister:new FormControl(this.formattedDate,Validators.required),
+      dateregister:new FormControl(this.formattedDate,Validators.required),
         name:new FormControl('',Validators.required),
-        invoice:new FormControl('',Validators.required),
+        // invoice:new FormControl('',Validators.required),
         actwas_id:new FormControl('',[Validators.required]),
-        datecurrence:new FormControl('',Validators.required),
         cp:new FormControl('',Validators.required),
         states:new FormControl('',Validators.required),
         municipys:new FormControl('',Validators.required),
@@ -350,17 +347,17 @@ constructor(private service:ServiceService<any>,private datePipe: DatePipe,priva
         meanemployeed_id:new FormControl('',Validators.required),
         personinformate:new FormControl('',Validators.required),
         date_created:new FormControl('',Validators.required),
-
+        
       })
       this.findIndex()
       if (this.role =="Capturista") {
           this.MyForm.removeControl("dependeces_id")
-      }
-    this.getData()
-  this.getActwas()
-  this.getDependences()
-  this.getSites()
-  this.getMeans()
+        }
+        this.getData()
+        this.getActwas()
+        this.getDependences()
+        this.getSites()
+        this.getMeans()
   this.getGenders()
   this.getBelief()
   this.getStatesCivils()
@@ -401,24 +398,19 @@ constructor(private service:ServiceService<any>,private datePipe: DatePipe,priva
     stepper.next();
   }
   findIndex(){
+    
+    this.MyForm.get("date_created").setValue(this.today)
+    this.MyForm.get("datesuccess").setValue(this.today)
+
+    this.MyFormPreregistro.get("date_created").setValue(this.today)
     this.MyForm.get("dateregister").setValue(this.formattedDate)
-    this.service.Data("prevention/findIndex").subscribe({
-      next:(n)=>{
-        if (!this.existParams) {
-          this.findFolio =n["data"]["next_id"]
-          
-          this.MyForm.get("invoice").setValue(this.findFolio)
-          this.MyForm.get("date_created").setValue(this.today)
-          
-        }
-        this.MyFormPreregistro.get("invoice").setValue(this.findFolio)
-        this.MyFormPreregistro.get("date_created").setValue(this.today)
-
-      },
-      error:(e)=>{
-
-      }
-    })
+    this.MyFormPreregistro.get("dateregister").setValue(this.formattedDate)
+    this.estudiante = false
+    this.Myformsecond.get("estudiante").setValue(false)
+    this.addicion = false
+    this.Myformsecond.get("addicion").setValue(false)
+     
+    
   }
   onPressSubmit(){
     this.isLoadingSkeleton =true
@@ -450,7 +442,7 @@ constructor(private service:ServiceService<any>,private datePipe: DatePipe,priva
        this.Toast.fire({
          position: 'top-end',
          icon: 'error',
-         title: `Se ha actualizado correctamente`,
+         title: `No se ha podido insertar correctamente`,
        });
        this.isLoadingSkeleton =false
        if (this.existParams) {
@@ -766,6 +758,8 @@ getCauses(){
             this.Myformsecond.reset()
             this.Myformtree.reset();
             this.MyFormPreregistro.reset()
+            this.findIndex()
+
             this.Toast.fire({
               position: 'top-end',
               icon: 'error',

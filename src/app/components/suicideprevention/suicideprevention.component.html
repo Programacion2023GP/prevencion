@@ -17,10 +17,7 @@
                                 <mat-label>Nombre de la persona suicidada</mat-label>
                                 <input formControlName="name" matInput>
                             </mat-form-field>
-                            <mat-form-field  appearance="outline" style="width: 100%">
-                                <mat-label>Folio</mat-label>
-                                <input readonly formControlName="invoice" matInput>
-                            </mat-form-field>
+                           
                             <mat-form-field appearance="outline" style="width: 100%">
                                 <mat-label>El acto fue</mat-label>
                                 <mat-select formControlName="actwas_id">
@@ -28,14 +25,6 @@
                                 </mat-select>
                             </mat-form-field>
             
-                            <mat-label>Intento de suicido o suicidio registrado en el mes de: </mat-label>
-                            <br>
-                            <p-calendar
-                            [defaultDate]="hoy"
-                            formControlName="datecurrence"[inline]="true" [locale]="'es'"></p-calendar>
-                                <br>
-                                <br>
-                                <br>
             
                                 <mat-form-field  appearance="outline" style="width: 100%">
                                     <mat-label>codigo postal de la fuente</mat-label>
@@ -313,27 +302,14 @@
                     <mat-label>Fecha de registro</mat-label>
                     <input [readonly]="true" formControlName="dateregister" matInput>
                 </mat-form-field>
-                <mat-form-field  appearance="outline" style="width: 100%">
-                    <mat-label>Folio</mat-label>
-                    <input readonly formControlName="invoice" matInput>
-                </mat-form-field>
+             
                 <mat-form-field appearance="outline" style="width: 100%">
                     <mat-label>El acto fue</mat-label>
                     <mat-select formControlName="actwas_id">
                         <mat-option *ngFor="let i of wasact" [value]="i.value">{{i.text}}</mat-option>
                     </mat-select>
                 </mat-form-field>
-                <br>
-                <mat-label>Intento de suicido o suicidio registrado en el mes de: </mat-label>
-                <br>
-
-                <p-calendar
-                [defaultDate]="hoy"
-                formControlName="datecurrence"[inline]="true" [locale]="'es'"></p-calendar>
-                
-                    <br>
-                    <br>
-                    <br>
+           
                     <ng-container  *ngIf="role!='Capturista'">
                         <mat-form-field appearance="outline" style="width: 100%">
                             <mat-label>Clave de la fuente(Dependencia)</mat-label>
