@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { ListboxModule } from 'primeng/listbox';
 
 import { ChartModule } from 'primeng/chart';
 import { ServiceService } from 'src/app/service.service';
@@ -25,6 +26,7 @@ animations:[fadeInOutAnimation],
 })
 export class ChartsComponent {
     rangeDates: Date[];
+  interaction =[]
   loading: true;
   visible:Boolean = false;
   data: any;
@@ -82,8 +84,18 @@ indices: any=[];
   createCharts(){
     this.getCharts.forEach((item,index) => {
         console.log("chart"+index)
+        this.interaction.push({
+          id:"chart"+index,
+          chart:item.chart_selected,
+          title:item.name,
+          option:item.option_selected,
+         })
         this.getSelected("chart"+index,item.chart_selected,item.name,item.option_selected)
        });
+  }
+  restaurar(item,id){
+    this.getSelected(id,item.chart_selected,item.name,item.option_selected)
+
   }
   getData(){
     this.isLoading = false;
@@ -98,18 +110,29 @@ indices: any=[];
       }
     })
   }
-  getSelected(id,chart_selected,name,option_selected) {
+  getSelected(id,chart_selected,name,option_selected,point=null,option=null) {
 
     const causasContador: { [key: string]: number } = {};
     this.options.forEach((item) => {
-        const causa = item[`${option_selected}`];
 
-        if (!causasContador[causa]) {
-            causasContador[causa] = 1;
-        } else {
-            causasContador[causa]++;
-        }
-
+      const causa = item[`${option_selected}`];
+      if (!point) {
+          if (!causasContador[causa]) {
+              causasContador[causa] = 1;
+          } else {
+              causasContador[causa]++;
+          }
+      } else {
+          
+        if (!point || item[option] == point) {
+          if (!causasContador[causa]) {
+              causasContador[causa] = 1;
+          } else {
+              causasContador[causa]++;
+          }
+      }
+      }
+      
 
     });
     const causasUnicas = Object.keys(causasContador);
@@ -146,16 +169,22 @@ indices: any=[];
 
 
     })
+   
     finalChartConfig.push(this.configChart(chart));
     finalChartConfig.push(this.configLegend());
     finalChartConfig.push(this.configTitle(chart,title,conteos));
-    finalChartConfig.push(this.configPlotOptions(chart));
+    finalChartConfig.push(this.configPlotOptions(chart,id));
     finalChartConfig.push(this.configXaxis(chart,causas));
     finalChartConfig.push(this.configYaxis());
     finalChartConfig.push(this.configData(chart,causas,conteos));
     console.warn(id,finalChartConfig)
-    Highcharts.chart(id, Object.assign({}, ...finalChartConfig));
-
+   chart = Highcharts.chart(id, Object.assign({}, ...finalChartConfig));
+  //  chart.series[0].points.forEach(point => {
+  //   Highcharts.addEvent(point, 'click', function() {
+  //     console.log('Clic en el punto:', this.x, this.y);
+      
+  //   });
+  // });
 
   }
 
@@ -347,17 +376,20 @@ searchDates(item, start, end) {
         return {
           chart: {
             type: `${chart}`,
+            events: {
+                click: function (event) {
+                   
+                }
+            },
             animation: true,
             options3d: {
                 enabled: true,
-                alpha: 10,
-                beta: 20,
-                depth: 100,
-                viewDistance: 25
+                alpha: 15,
+                beta: 2,
+                depth: 100
             }
-
-
-          }
+        }
+        
         };
       case "pie":
         return {
@@ -380,20 +412,29 @@ searchDates(item, start, end) {
 
   configLegend() {
     return {
-      legend: {
-        bubbleLegend: {
-          enabled: true,
-          minSize: 20,
-          maxSize: 60,
-          ranges: [{
-            value: 14
-          }, {
-            value: 89
-          }]
+        legend: {
+            // Configuración de la leyenda...
+            events: {
+                // Función que se ejecutará cuando se haga clic en un elemento de la leyenda
+                click: function(event) {
+                    console.log('Elemento de la leyenda presionado:', event);
+                    // Agrega aquí la lógica que deseas ejecutar al presionar en un elemento de la leyenda
+                }
+            },
+            bubbleLegend: {
+                enabled: true,
+                minSize: 20,
+                maxSize: 60,
+                ranges: [{
+                    value: 14
+                }, {
+                    value: 89
+                }]
+            }
         }
-      }
     };
-  }
+}
+
 
   configTitle(chart: string, title: any,conteos:number[]): any {
     const total = conteos.reduce((total, numero) => total + numero, 0);
@@ -430,13 +471,30 @@ searchDates(item, start, end) {
             };
     }
 }
+   
+    configPlotOptions(chart: string,id:string): any {
+    const findID =this.interaction.findIndex(item => item.id === id);
+    const transformData =(id,point)=>{
+      
+      this.getSelected(this.interaction[id].id,'pie',this.interaction[id].title + ' especificamente de '+point,'causa',point,this.interaction[id].option);
 
-    configPlotOptions(chart: string): any {
+    }
         switch(chart) {
             case "bar":
             case "column":
                 return {
                     plotOptions: {
+                      series: {
+                        point: {
+                          events: {
+                            click: function(event) {
+                              console.log(event.point.series.name
+                                )
+                                transformData(findID,event.point.series.name)
+                            }
+                          }
+                        }
+                      },
                         column: {
                             pointPadding: 0.2,
                             // Ajusta este valor para cambiar el espaciado entre columnas
@@ -449,6 +507,15 @@ searchDates(item, start, end) {
                                 color: 'black',
                                 fontSize: '12px',
                                 fontWeight: 'bold'
+                            },
+                            series: {
+                              point: {
+                              events: {
+                                click: function(e){
+                                  // transformData(findID,event.point.x)                                  
+                                }
+                              }
+                            }
                             }
                         },
                         depth: 150,
@@ -461,6 +528,15 @@ searchDates(item, start, end) {
             case "area":
               return {
                 plotOptions: {
+                  series: {
+                    point: {
+                      events: {
+                        click: function(event) {
+ 
+                        }
+                      }
+                    }
+                  },
                   pie: {
                     allowPointSelect: true,
                     cursor: 'pointer',
@@ -500,13 +576,12 @@ searchDates(item, start, end) {
                 }
             }
             default:
-            return{
+              return {
                 xAxis: {
-                    type: "category",
-                    categories: [""],
-                    title: {
-                        text: "total",
-                        align: "middle"
+                  categories: ["", ...titles], // Usamos el spread operator para agregar los títulos adicionales
+                  title: {
+                        text: '', // Puedes establecer un título aquí si es necesario
+                        align: "middle" // Esto centrará el título del eje x
                     },
                     labels: {
                         autoRotation: [-45, -90],
@@ -516,7 +591,8 @@ searchDates(item, start, end) {
                         }
                     }
                 }
-            }
+            };
+          
         }
     }
     configYaxis(){

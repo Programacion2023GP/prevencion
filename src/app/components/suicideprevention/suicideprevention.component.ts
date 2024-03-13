@@ -243,9 +243,11 @@ ngOnInit(): void {
 
       for (const key in row) {
         if (row.hasOwnProperty(key)) {
-            if (row["datesuccess"]==row[key]||row["datereindence"]==row[key]) {
-                row[key]= new Date(row[key])
-            }
+          if (row["datesuccess"] === row[key] || row["datereindence"] === row[key]) {
+            row[key] = new Date(row[key]);
+            row[key].setDate(row[key].getDate() + 1);
+        }
+        
 
           if (this.MyForm.controls[key]) {
             this.MyForm.controls[key].setValue(row[key]);

@@ -162,7 +162,7 @@
 
                                     <p><strong>Intento de suicido o suicidio registrado :</strong> {{ item.datesuccess | date:'dd/MM/yyyy' }}</p>
 
-                                    <p><strong>Fecha de Ocurrencia del Suicidio:</strong> {{ item.datecurrence | date:'dd/MM/yyyy' }}</p>
+                                    <!-- <p><strong>Fecha de Ocurrencia del Suicidio:</strong> {{ item.datecurrence | date:'dd/MM/yyyy' }}</p> -->
                                 </div>
                             </div>
                         </div>
@@ -189,12 +189,12 @@
                                     <p><strong>Posesión de hijos:</strong> {{ item.posesion_hijos }}</p>
                                     <p><strong>Existencia de suicidas en la familia:</strong> {{ item.suicidas_familia }}</p>
                                     <p><strong>¿Tiene alguna adicción?:</strong> {{ item.addicion === 1 ? "Sí" : "No" }}</p>
-                                    <p><strong>Adicciones:</strong> {{ item.adiciones }}</p>
+                                    <p><strong>Adicciones:</strong> {{info.adiciones != null ? info.adiciones : ' '}}</p>
                                     <p><strong>Enfermedades :</strong> {{ item.enfermedades }}</p>
                                     <p><strong>Tipo de violencia :</strong> {{ item.violencia }}</p>
                                     <p><strong>Tipo de familia:</strong> {{ item.familia }}</p>
                                     <p><strong>¿Es estudiante?:</strong> {{ item.estudiante === 1 ? "Sí" : "No" }}</p>
-                                    <p><strong>Centro educatio:</strong> {{ item.centro_educativo }}</p>
+                                    <p><strong>Centro educativo:</strong> {{info.centro_educativo != null ? info.centro_educativo : ''}}</p>
                                     <p><strong>Medio Empleado para el Acto:</strong> {{ item.medio_empleado }}</p>
                                     <p><strong>Ocupación:</strong> {{ item.ocupacion }}</p>
                                     <p><strong>Descripción:</strong> {{ item.description }}</p>

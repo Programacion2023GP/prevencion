@@ -2,4 +2,43 @@
     width: 100%;
     height: 85vh;
   }
-  
+  .ol-popup {
+    position: fixed;
+    background-color: white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 240px;
+    z-index: 1000; /* Asegura que el popup esté encima de otros elementos */
+}
+
+// .ol-popup:after, .ol-popup:before {
+//     bottom: 100%;
+//     left: 50%;
+//     transform: translateX(-50%);
+// }
+
+// .ol-popup:after {
+//     border-top-color: white;
+//     border-width: 10px;
+// }
+
+// .ol-popup:before {
+//     border-top-color: #cccccc;
+//     border-width: 11px;
+// }
+
+.ol-popup-closer {
+    text-decoration: none;
+    position: absolute;
+    top: 2px;
+    right: 8px;
+}
+
+.ol-popup-closer:after {
+    content: "✖";
+}

@@ -1,1 +1,120 @@
-<div id="map" class="map"></div>
+<!-- <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+    Link with href
+  </a>
+  <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+    Button with data-bs-target
+  </button> -->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Caso de la persona : {{dataSelected[0]?.name}}</h1>
+
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <ng-container *ngFor="let item of dataSelected">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card mb-4">
+                                        <div class="card-header bg-primary text-white">
+                                            Detalles del Suicidio
+                                        </div>
+                                        <div class="card-body">
+                                            <p><strong>Folio:</strong> {{ item.invoice }}</p>
+                                            <p><strong>Nombre de la Persona Fallecida:</strong> {{ item.name }}</p>
+                                            <p><strong>Edad:</strong> {{ item.age }}</p>
+                                            <p><strong>CURP:</strong> {{ item.curp }}</p>
+                                            <p><strong>Denunciante:</strong> {{ item.personinformate }}</p>
+                                            <p><strong>Código Postal de la fuente:</strong> {{ item.cp }}</p>
+                                            <p><strong>Estado de la fuente:</strong> {{ item.states }}</p>
+                                            <p><strong>Municipio de la fuente:</strong> {{ item.municipys }}</p>
+                                            <p><strong>Colonia de la fuente:</strong> {{ item.colony }}</p>
+                                            <p><strong>Código Postal del suicidio:</strong> {{ item.cpdeed }}</p>
+                                            <p><strong>Estado del suicidio:</strong> {{ item.statesdeed }}</p>
+                                            <p><strong>Municipio del suicidio:</strong> {{ item.municipysdeed }}</p>
+                                            <p><strong>Colonia del suicidio:</strong> {{ item.colonydeed }}</p>
+                               
+        
+                                            <p><strong>Intento de suicido o suicidio registrado :</strong> {{ item.datesuccess | date:'dd/MM/yyyy' }}</p>
+        
+                                            <!-- <p><strong>Fecha de Ocurrencia del Suicidio:</strong> {{ item.datecurrence | date:'dd/MM/yyyy' }}</p> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card mb-4">
+                                        <div class="card-header bg-primary text-white">
+                                            Información Adicional
+                                        </div>
+                                        <div class="card-body">
+                                          <p><strong>Fecha de reindición de datos del dia :</strong> {{ item.datereindence| date:'dd/MM/yyyy' }}</p>
+        
+        
+                                          
+                                            <p><strong>Sitio donde se Cometió el Acto:</strong> {{ item.sitio }}</p>
+                                            <p><strong>El Acto Fue </strong> {{ item.acto_fue }}</p>
+                                            <p><strong>Clave de la Fuente (Dependencia):</strong> {{ item.dependencia }}</p>
+                                            <p><strong>Causa del Acto:</strong> {{ item.causa }}</p>
+                                            <p><strong>Dependencia a la que Canaliza:</strong> {{ item.dependencia_canalizada }}</p>
+                                            <p><strong>Género:</strong> {{ item.genero }}</p>
+                                            <p><strong>Cómo se Identifica:</strong> {{ item.como_indentifica }}</p>
+                                            <p><strong>Religión o Culto:</strong> {{ item.religion }}</p>
+                                            <p><strong>Estado civil:</strong> {{ item.estado_civil }}</p>
+                                            <p><strong>Escolaridad o alfabetismo:</strong> {{ item.alfabetismo_escolaridad }}</p>
+                                            <p><strong>Posesión de hijos:</strong> {{ item.posesion_hijos }}</p>
+                                            <p><strong>Existencia de suicidas en la familia:</strong> {{ item.suicidas_familia }}</p>
+                                            <p><strong>¿Tiene alguna adicción?:</strong> {{ item.addicion === 1 ? "Sí" : "No" }}</p>
+                                            <p><strong>Adicciones:</strong> {{ info?.adiciones != null ? info.adiciones : ' ' }}</p>
+                                            <p><strong>Enfermedades :</strong> {{ item.enfermedades }}</p>
+                                            <p><strong>Tipo de violencia :</strong> {{ item.violencia }}</p>
+                                            <p><strong>Tipo de familia:</strong> {{ item.familia }}</p>
+                                            <p><strong>¿Es estudiante?:</strong> {{ item.estudiante === 1 ? "Sí" : "No" }}</p>
+                                            <p><strong>Centro educativo:</strong> {{info?.centro_educativo != null ? info.centro_educativo : ''}}</p>
+                                            <p><strong>Medio Empleado para el Acto:</strong> {{ item.medio_empleado }}</p>
+                                            <p><strong>Ocupación:</strong> {{ item.ocupacion }}</p>
+                                            <p><strong>Descripción:</strong> {{ item.description }}</p>
+        
+        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+
+<div class="row">
+    <!-- <div class="col-2">
+        <p-listbox [options]="options" (onChange)="onsSelected($event)"  optionLabel="name" [filter]="true" [style]="{ width: '100%' }" [listStyle]="{'max-height': '700px'}"></p-listbox>
+
+    </div> -->
+    <div class="col-12">
+        <div id="clear">
+            <div id="popup" class="ol-popup">
+                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                <div id="popup-content"></div>
+              </div>
+        </div>
+        <div id="map" class="map"></div>
+    </div>
+</div>
+
+
+
+<!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  
