@@ -683,7 +683,7 @@ getCauses(){
      SearchCp(event: any) {
         this.loading =true
         const value = event?.target?.value ?? event;
-        this.service.OtherData(`https://api.gomezpalacio.gob.mx/api/cp/${value}`).subscribe({
+        this.service.OtherData(`https://cp.gomezpalacio.gob.mx/api/cp/${value}`).subscribe({
           next:(n)=>{
             const data = n["data"]["result"]
             const info = data[0]
@@ -704,7 +704,7 @@ getCauses(){
         this.loadingtwo = true
         const value = event?.target?.value ?? event;
 
-        this.service.OtherData(`https://api.gomezpalacio.gob.mx/api/cp/${value}`).subscribe({
+        this.service.OtherData(`https://cp.gomezpalacio.gob.mx/api/cp/${value}`).subscribe({
           next:(n)=>{
             const data = n["data"]["result"]
             const info = data[0]
