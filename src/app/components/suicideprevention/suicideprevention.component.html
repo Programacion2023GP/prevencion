@@ -276,6 +276,12 @@
                                     <mat-option *ngFor="let i of activities" [value]="i.value">{{i.text}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
+                            <mat-form-field appearance="outline" style="width: 100%">
+                                <mat-label>Estatus</mat-label>
+                                <mat-select formControlName="status_id">
+                                    <mat-option *ngFor="let i of status" [value]="i.value">{{i.text}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
                             <mat-form-field class="example-full-width" appearance="outline" style="width: 100%">
                                 <mat-label>Especifica el nombre de la actividad a que se dedica o dedicaba, agregando una breve descripción</mat-label>
                                 <textarea matInput formControlName="description" placeholder=""></textarea>

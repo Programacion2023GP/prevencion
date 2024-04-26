@@ -30,6 +30,7 @@ import { ChartsComponent } from './components/charts/charts.component';
 import { FormchartsComponent } from './components/formcharts/formcharts.component';
 import { TablechartsComponent } from './components/tablecharts/tablecharts.component';
 import { MapsComponent } from './components/maps/maps.component';
+import { StatusComponent } from './components/catalogues/status/status.component';
 
 @NgModule({
     imports: [
@@ -64,6 +65,8 @@ import { MapsComponent } from './components/maps/maps.component';
                     { path: 'ocupaciones', component:ActiviesComponent},
                     { path: 'creaciongraficas', component:FormchartsComponent},
                     { path: 'usuarios', component:UsersComponent},
+                    { path: 'estatus', component:StatusComponent},
+
                     {path:"listadograficas",component:TablechartsComponent},
                     { path: '', redirectTo: 'login', pathMatch: 'full' },
                     // { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },

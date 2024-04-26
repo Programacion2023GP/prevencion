@@ -8,8 +8,8 @@ import { BehaviorSubject, Observable, catchError, throwError } from 'rxjs';
 })
 export class ServiceService<T> {
 
-    // route: string ='http://127.0.0.1:8000/api'
-    route: string =  "https://api.prevencion.gomezpalacio.gob.mx/api";
+    route: string ='http://127.0.0.1:8000/api'
+    // route: string =  "https://api.prevencion.gomezpalacio.gob.mx/api";
   constructor(private http: HttpClient,private router:Router) {
   }
 

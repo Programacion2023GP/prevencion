@@ -36,8 +36,8 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Registro', icon: 'pi pi-fw pi-home', routerLink: ['/prevencion'] },
                     { label: 'Listas', icon: 'pi pi-fw pi-home', routerLink: ['/prevencioninfo'] },
                     { label: 'Registro Graficas', icon: 'pi pi-fw pi-home', routerLink: ['/creaciongraficas'] },
-                    { label: 'Graficas', icon: 'pi pi-fw pi-home', routerLink: ['/graficas'] },
                     { label: 'Listado Graficas', icon: 'pi pi-fw pi-home', routerLink: ['/listadograficas'] },
+                    { label: 'Graficas', icon: 'pi pi-fw pi-home', routerLink: ['/graficas'] },
 
 
                 ]
@@ -64,6 +64,7 @@ export class AppMenuComponent implements OnInit {
                         { label: "Dependencias", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/dependencias"] },
                         { label: "Enfermedades", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/enfermedades"] },
                         { label: "Estado civil", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/estadocivil"] },
+                        { label: "Estatus", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/estatus"] },
                         { label: "Existencia de suicidas en la familia", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/suicidas"] },
                         { label: "Medio empleado para cometer el acto", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/motivos"] },
                         { label: "Ocupaciones", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/ocupaciones"] },

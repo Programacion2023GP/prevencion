@@ -47,6 +47,7 @@ export class SuicidepreventionComponent {
    
   Myformtree =new FormGroup({
     activies_id:new FormControl('',Validators.required),
+    status_id:new FormControl('',Validators.required),
     description:new FormControl('',Validators.required),
   })
 
@@ -68,6 +69,7 @@ export class SuicidepreventionComponent {
   displayedColumns: string[] = ['name','email','role', 'Actions'];
   dataSource: MatTableDataSource<any>;
   data: any;
+  status =[]
   dependeces = []
   wasact= [];
   colonias = []
@@ -372,6 +374,7 @@ constructor(private service:ServiceService<any>,private datePipe: DatePipe,priva
   this.getFamily()
   this.getSchool()
   this.getCauses()
+  this.getStatus()
   this.getIndentified()
   this.getActivities()
   this.findIndex()
@@ -475,6 +478,17 @@ constructor(private service:ServiceService<any>,private datePipe: DatePipe,priva
   this.service.Data("actwas/values").subscribe({
     next:(n)=>{
       this.wasact =  n['data']['result'];
+    },error:(e)=>{
+
+    }
+  })
+}
+getStatus(){
+  this.service.Data("status/values").subscribe({
+    next:(n)=>{
+      this.status =  n['data']['result'];
+     
+
     },error:(e)=>{
 
     }
