@@ -18,9 +18,19 @@ export class AppMenuComponent implements OnInit {
     }
     isItemVisible(item: any): boolean {
         const role = localStorage.getItem('role');
-        // Verifica si el rol almacenado es "capturista" y si el label del item es "Prevencion"
-        return role === 'Capturista' && item.label === 'Prevencion';
-      }
+        const rolesPermitidos = {
+            'Capturista': ['Prevencion'],
+            'Administradordependencia': ['Prevencion', 'Graficas', 'Usuarios'],
+            'SuperAdmin': ['Prevencion', 'Graficas', 'Usuarios','Mapa','Catalogos'],
+            'Administrador': ['Prevencion', 'Graficas', 'Usuarios','Mapa','Catalogos'],
+
+        };
+        // Verificar si el rol actual está en la lista de roles permitidos para ver el item
+        const isVisible = rolesPermitidos[role]?.includes(item.label);
+        return isVisible;
+    }
+
+
 
     ngOnInit() {
         this.model = [
@@ -35,11 +45,15 @@ export class AppMenuComponent implements OnInit {
                 items: [
                     { label: 'Registro', icon: 'pi pi-fw pi-home', routerLink: ['/prevencion'] },
                     { label: 'Listas', icon: 'pi pi-fw pi-home', routerLink: ['/prevencioninfo'] },
+
+                ]
+            },
+            {
+                label:"Graficas",
+                items:[
                     { label: 'Registro Graficas', icon: 'pi pi-fw pi-home', routerLink: ['/creaciongraficas'] },
                     { label: 'Listado Graficas', icon: 'pi pi-fw pi-home', routerLink: ['/listadograficas'] },
                     { label: 'Graficas', icon: 'pi pi-fw pi-home', routerLink: ['/graficas'] },
-
-
                 ]
             },
             {
@@ -68,8 +82,8 @@ export class AppMenuComponent implements OnInit {
                         { label: "Existencia de suicidas en la familia", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/suicidas"] },
                         { label: "Medio empleado para cometer el acto", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/motivos"] },
                         { label: "Ocupaciones", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/ocupaciones"] },
-                        { label: "Posesion de hijos", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/hijos"] },
-                        { label: "Religion o Cultos", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/religion"] },
+                        { label: "Posesión de hijos", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/hijos"] },
+                        { label: "Religión o Cultos", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/religion"] },
                         { label: "Sexo", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/generos"] },
                         { label: "Sitio donde se cometio el acto", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/sitios"] },
                         { label: "Tipo de familia", icon: "pi pi-fw pi-exclamation-circle", routerLink: ["/familia"] },

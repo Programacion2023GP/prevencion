@@ -18,9 +18,11 @@
             <div class="col-12 row">
                 <mat-card>
                     <div class="row">
-                        <div [ngClass]="{'col-9':item.chart_selected =='column'
-                    ,'col-12':item.chart_selected !='column'
-                    }">
+                        <div [ngClass]="{
+                            'col-9': item.chart_selected === 'column' || item.chart_selected === 'bar',
+                            'col-12': item.chart_selected !== 'column' && item.chart_selected !== 'bar'
+                        }">
+
                             <button
                                 (click)="openDialog(item)"
                                 mat-raised-button
@@ -30,7 +32,7 @@
                                 Ver más detalles
                             </button>
                         </div>
-                        @if(item.chart_selected =='column'){
+                        @if(item.chart_selected =='column' || item.chart_selected =='bar'){
 
                         <div class="col-3">
                             <button

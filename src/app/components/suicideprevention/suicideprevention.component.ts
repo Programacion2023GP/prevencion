@@ -44,7 +44,7 @@ export class SuicidepreventionComponent {
     MyForm: FormGroup;
     today = new Date()
     Myformsecond: FormGroup;
-   
+
   Myformtree =new FormGroup({
     activies_id:new FormControl('',Validators.required),
     status_id:new FormControl('',Validators.required),
@@ -146,7 +146,7 @@ generatePDF() {
       ["Curp", ""],
       ["Sexo", ""],
       ["Edad(Años cumplidos)", ""],
-      ["Religion o culto", ""],
+      ["Religión o culto", ""],
       ["Estado civil", ""],
       ["Alfabetismo y escolaridad", ""],
       ["posesión de hijos", ""],
@@ -184,7 +184,7 @@ generatePDF() {
           }
           const lines = doc.splitTextToSize(row[0], cellWidth - 10);
           cellHeight = lines.length > 1 ? cellHeight * lines.length : 15;
-          
+
           doc.setFillColor(255, 255, 255);
           doc.rect(20, y, cellWidth, cellHeight);
           doc.rect(105, y, cellWidth, cellHeight); // Ajuste de posición
@@ -230,11 +230,11 @@ ngOnInit(): void {
         this.Myformsecond.get("addicion").setValue(true)
 
       }else{
-       
+
         this.addicion = false
         this.Myformsecond.get("addicion").setValue(false)
       }
-      
+
 
 
 
@@ -249,7 +249,7 @@ ngOnInit(): void {
             row[key] = new Date(row[key]);
             row[key].setDate(row[key].getDate() + 1);
         }
-        
+
 
           if (this.MyForm.controls[key]) {
             this.MyForm.controls[key].setValue(row[key]);
@@ -270,7 +270,7 @@ ngOnInit(): void {
       // El parámetro 'row' no está presente en la URL
       console.log('No se proporcionó el parámetro opcional "row" en la URL');
     }
-  
+
   });
 }
 
@@ -290,7 +290,7 @@ addicionSelected(condition){
 
 constructor(private service:ServiceService<any>,private datePipe: DatePipe,private route:ActivatedRoute,private change:Router, private activatedRoute: ActivatedRoute) {
   this.hoy = new Date(); // Obtiene la fecha de hoy
-  
+
   let Today = new Date();
   // Formatear la fecha en el formato 'YYYY-MM-DD' (formato de fecha de HTML)
   let Hoy = Today.toISOString().split('T')[0];
@@ -327,7 +327,7 @@ constructor(private service:ServiceService<any>,private datePipe: DatePipe,priva
       school_id:new FormControl(''),
       indetified_id:new FormControl('',Validators.required),
       datereindence:new FormControl('',Validators.required),
-  
+
     })
     this.MyForm = new FormGroup  ({
       id:new FormControl(''),
@@ -351,10 +351,10 @@ constructor(private service:ServiceService<any>,private datePipe: DatePipe,priva
         meanemployeed_id:new FormControl('',Validators.required),
         personinformate:new FormControl('',Validators.required),
         date_created:new FormControl('',Validators.required),
-        
+
       })
       this.findIndex()
-      if (this.role =="Capturista") {
+      if (this.role =="Capturista" ||this.role =="Administradordependencia"  ) {
           this.MyForm.removeControl("dependeces_id")
         }
         this.getData()
@@ -403,7 +403,7 @@ constructor(private service:ServiceService<any>,private datePipe: DatePipe,priva
     stepper.next();
   }
   findIndex(){
-    
+
     this.MyForm.get("date_created").setValue(this.today)
     this.MyForm.get("datesuccess").setValue(this.today)
 
@@ -414,14 +414,14 @@ constructor(private service:ServiceService<any>,private datePipe: DatePipe,priva
     this.Myformsecond.get("estudiante").setValue(false)
     this.addicion = false
     this.Myformsecond.get("addicion").setValue(false)
-     
-    
+
+
   }
   onPressSubmit(){
     this.isLoadingSkeleton =true
     this.service.Post("prevention/create", this.MyFormPreregistro.value).subscribe({
       next: (n)=>{
-      
+
           this.MyForm.reset()
           this.Myformsecond.reset()
           this.Myformtree.reset();
@@ -487,7 +487,6 @@ getStatus(){
   this.service.Data("status/values").subscribe({
     next:(n)=>{
       this.status =  n['data']['result'];
-     
 
     },error:(e)=>{
 
@@ -751,7 +750,7 @@ getCauses(){
             ...this.Myformtree.value };
        this.service.Post(url, combinedData).subscribe({
            next: (n)=>{
-           
+
                this.MyForm.reset()
                this.Myformsecond.reset()
                this.Myformtree.reset();

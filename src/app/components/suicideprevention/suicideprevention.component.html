@@ -17,21 +17,21 @@
                                 <mat-label>Nombre de la persona suicidada</mat-label>
                                 <input formControlName="name" matInput>
                             </mat-form-field>
-                           
+
                             <mat-form-field appearance="outline" style="width: 100%">
                                 <mat-label>El acto fue</mat-label>
                                 <mat-select formControlName="actwas_id">
                                     <mat-option *ngFor="let i of wasact" [value]="i.value">{{i.text}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
-            
-            
+
+
                                 <mat-form-field  appearance="outline" style="width: 100%">
                                     <mat-label>codigo postal de la fuente</mat-label>
                                     <input type="number" (input)="SearchCp($event)" formControlName="cp" matInput>
                                 </mat-form-field>
                                 <mat-form-field  appearance="outline" style="width: 100%">
-            
+
                                     <mat-label>Estado de la fuente</mat-label>
                                     <input readonly formControlName="states" matInput>
                                     <ng-container *ngIf="loading">
@@ -40,7 +40,7 @@
                                 </mat-form-field>
                                 <mat-form-field  appearance="outline" style="width: 100%">
                                     <mat-label>Municio de la fuente</mat-label>
-            
+
                                     <input readonly formControlName="municipys" matInput>
                                     <ng-container *ngIf="loading">
                                         <mat-spinner></mat-spinner>
@@ -55,7 +55,8 @@
                                         <mat-spinner></mat-spinner>
                                     </ng-container>
                                 </mat-form-field>
-                                <ng-container  *ngIf="role!='Capturista'">
+                                <ng-container *ngIf="role !== 'Capturista' && role !== 'Administradordependencia'">
+
                                     <mat-form-field appearance="outline" style="width: 100%">
                                         <mat-label>Clave de la fuente(Dependencia)</mat-label>
                                         <mat-select formControlName="dependeces_id">
@@ -66,7 +67,7 @@
                                 <mat-label>Fecha de ocurrencia dia: </mat-label>
                                 <br>
                                 <p-calendar
-            
+
                                 formControlName="datesuccess"[inline]="true" [locale]="CALENDER_CONFIG_EN"></p-calendar>
                                 <br>
                                 <br>
@@ -125,7 +126,7 @@
                                 <mat-label>Quien denuncia</mat-label>
                                 <input  formControlName="personinformate" matInput>
                             </mat-form-field>
-            
+
                             @if (MyForm.valid) {
                                 <button (click)="nextStep(stepper)" mat-raised-button color="primary">Continuar</button>
                             }
@@ -134,7 +135,7 @@
                                 disabled
                                 mat-raised-button color="primary">Continuar</button>
                             }
-            
+
                         </form>
                     </mat-step>
                     <mat-step label="Caracteristicas personales suicidas">
@@ -155,7 +156,7 @@
                                 <input type="number" formControlName="age" matInput>
                             </mat-form-field>
                             <mat-form-field appearance="outline" style="width: 100%">
-                                <mat-label>Religion o culto</mat-label>
+                                <mat-label>Religión o culto</mat-label>
                                 <mat-select formControlName="belief_id">
                                     <mat-option *ngFor="let i of beliefs" [value]="i.value">{{i.text}}</mat-option>
                                 </mat-select>
@@ -233,7 +234,7 @@
                                 </ng-container>
                               </mat-radio-group>
                             <ng-container *ngIf="estudiante" >
-                                
+
                                 <mat-form-field appearance="outline" style="width: 100%">
                                     <mat-label>Centro educativo</mat-label>
                                     <mat-select formControlName="school_id">
@@ -250,12 +251,12 @@
                             <mat-label>Fecha de reindición de datos del dia </mat-label>
                             <br>
                             <p-calendar
-            
+
                             formControlName="datereindence"[inline]="true" [locale]="CALENDER_CONFIG_EN"></p-calendar>
                                 <br>
                                 <br>
                                 <button mat-raised-button (click)="previousStep(stepper)" color="accent">Regresar</button>
-            
+
                                 @if (Myformsecond.valid) {
                                     <button mat-raised-button (click)="nextStep(stepper)" color="primary">Continuar</button>
                                 }
@@ -264,7 +265,7 @@
                                     disabled
                                     mat-raised-button color="primary">Continuar</button>
                                 }
-            
+
                     </form>
                     </mat-step>
                     <mat-step label="Ocupacion que tiene (tenia) el suicida">
@@ -287,7 +288,7 @@
                                 <textarea matInput formControlName="description" placeholder=""></textarea>
                             </mat-form-field>
                             <button mat-raised-button type="button" (click)="previousStep(stepper)" color="accent">Regresar</button>
-            
+
                             @if (Myformtree.valid && Myformsecond.valid &&MyForm.valid) {
                                 <button mat-raised-button color="primary" (click)="stepper.reset()">Registrar</button>
                             }
@@ -308,14 +309,14 @@
                     <mat-label>Fecha de registro</mat-label>
                     <input [readonly]="true" formControlName="dateregister" matInput>
                 </mat-form-field>
-             
+
                 <mat-form-field appearance="outline" style="width: 100%">
                     <mat-label>El acto fue</mat-label>
                     <mat-select formControlName="actwas_id">
                         <mat-option *ngFor="let i of wasact" [value]="i.value">{{i.text}}</mat-option>
                     </mat-select>
                 </mat-form-field>
-           
+
                     <ng-container  *ngIf="role!='Capturista'">
                         <mat-form-field appearance="outline" style="width: 100%">
                             <mat-label>Clave de la fuente(Dependencia)</mat-label>
@@ -328,7 +329,7 @@
                         <mat-label>Quien denuncia</mat-label>
                         <input  formControlName="personinformate" matInput>
                     </mat-form-field>
-                    
+
                     <mat-form-field  appearance="outline" style="width: 100%">
                         <mat-label>Codigo postal del suicidio</mat-label>
                         <input type="number" (input)="SearchCpDeed($event)" formControlName="cpdeed" matInput>
@@ -363,10 +364,10 @@
                         }
             </form>
         </mat-step>
-       
+
       </mat-stepper>
-      
-  
+
+
     <div class="row">
         <div class="col-md-8 mx-auto"> <!-- Columna centrada horizontalmente -->
             <ng-template #SkeletonTable>

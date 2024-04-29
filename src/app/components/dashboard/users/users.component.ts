@@ -40,7 +40,7 @@ export class UsersComponent {
   role =localStorage.getItem("role")
   isLoading = true
   action = false
-  displayedColumns: string[] = ['name','email','role', 'Actions'];
+  displayedColumns: string[] = ['name','email','role','dependence_name', 'Actions'];
   dataSource: MatTableDataSource<any>;
   data: any;
   capturista:Boolean
@@ -74,6 +74,7 @@ constructor(private service:ServiceService<any>) {
        this.dataSource.paginator = this.paginator;
        this.dataSource.sort = this.sort;
        this.data = n["data"]["result"]
+       console.log("info",this.data)
      },error:(e)=>{
        this.isLoading = false
 
@@ -81,7 +82,7 @@ constructor(private service:ServiceService<any>) {
    })
  }
  roleSelected(event:any){
-  if (event.value =="Capturista") {
+  if (event.value =="Capturista" || event.value =="Administradordependencia") {
     this.capturista = true
       this.MyForm.controls["dependece_id"].addValidators(Validators.required)
   }
@@ -108,7 +109,7 @@ constructor(private service:ServiceService<any>) {
      this.dataSource.paginator.firstPage();
    }
  }
-   
+
    onSubmit(){
      this.isLoading = true
     this.capturista = false
@@ -146,12 +147,12 @@ constructor(private service:ServiceService<any>) {
 
      }
      edit(row: any) {
-       
+
        this.action = true
        this.MyForm.get('id')?.setValue(row.id)
        Object.keys(row).forEach(key => {
          if (this.MyForm.get(key)) {
-          if (row["role"] == "Capturista") {
+          if (row["role"] == "Capturista" || row["role"] == "Administradordependencia") {
               this.capturista = true
           }else{
             this.capturista = false

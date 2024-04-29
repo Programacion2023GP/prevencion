@@ -50,7 +50,7 @@ import { StatusComponent } from './components/catalogues/status/status.component
                     { path: 'motivos', component:MeanemployeeComponent},
                     { path: 'generos', component:GenderComponent},
                     { path: 'dependencias', component:DependencesComponent},
-                    { path: 'religion', component:BeliefComponent},
+                    { path: 'religión', component:BeliefComponent},
                     { path: 'estadocivil', component:StatecivilComponent},
                     { path: 'escolaridad', component:LiteracyComponent},
                     { path: 'adicciones', component:AdictionsComponent},

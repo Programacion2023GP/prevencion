@@ -34,7 +34,7 @@ export class TablesuicidepreventionComponent {
 visible:Boolean
   dataSelected =[]
   data: any;
-  displayedColumns: string[] = ['invoice','personinformate','name','dependencia','causa','datecurrence', 'Actions'];
+  displayedColumns: string[] = ['invoice','personinformate','name','dependencia','causa','datecurrence','status', 'Actions'];
   dataSource: MatTableDataSource<any>;
   isLoading: boolean=true;
 loading: true;
@@ -64,7 +64,7 @@ loading: true;
     this.service.Data("prevention/index").subscribe({
       next: (n) => {
         this.data = n["data"]["result"];
-        // console.warn(this.data)
+        console.warn("aqui",this.data)
         this.dataSource = new MatTableDataSource(this.data);
 
         this.dataSource.paginator = this.paginator;

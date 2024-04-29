@@ -49,7 +49,7 @@ export class FormchartsComponent {
         { text: 'Dependencia a la que Canaliza', value: 'dependencia_canalizada' },
         { text: 'Género', value: 'genero' },
         { text: 'Cómo se Identifica', value: 'como_indentifica' },
-        { text: 'Religión o Culto', value: 'religion' },
+        { text: 'Religión o Culto', value: 'religión' },
         { text: 'Estado civil', value: 'estado_civil' },
         { text: 'Escolaridad o alfabetismo', value: 'alfabetismo_escolaridad' },
         { text: 'Posesión de hijos', value: 'posesion_hijos' },
@@ -61,6 +61,8 @@ export class FormchartsComponent {
         { text: 'Centro educatio', value: 'centro_educativo' },
         { text: 'Medio Empleado para el Acto', value: 'medio_empleado' },
         { text: 'Ocupación', value: 'ocupacion' },
+        { text: 'Status', value: 'status' },
+
       ];
     chart :any
     MyForm = new FormGroup({
@@ -299,13 +301,14 @@ createGraphChart() {
                         }
                     },
                     tooltip: {
-                        pointFormat: `{series.name}: <b>{point.percentage:.1f}% de ${total} registros</b>`
+                        pointFormat: `{series.name}: <b>{point.y} de ${total} registros</b>`
                     }
                 };
         }
 
     }
-    configPlotOptions(chart: string): any {
+    configPlotOptions(chart: string,total:number): any {
+
       switch(chart) {
         case "bar":
         case "column":
@@ -342,7 +345,7 @@ createGraphChart() {
                 slicedOffset: 20,
                 dataLabels: {
                   enabled: true,
-                  format: `<b>{point.name}</b>: {point.percentage:.1f} % de un total de registros`, // Formato para mostrar el nombre y el porcentaje
+                  format: `<b>{series.name}</b>: {point.y} de ${total} registros`, // Formato para mostrar el nombre y el porcentaje
                   distance: 30 // Distancia de las etiquetas desde el centro del pastel
                 }
               }
@@ -432,7 +435,7 @@ createGraphChart() {
           return {
             series: [{
               type: chart,
-              name: 'Porcentaje obtenido',
+              name: 'Registros obtenidos',
               data: causas.map((value, index) => ({
                 name: value,
                 y: conteos[index],
@@ -494,7 +497,7 @@ createGraphChart() {
                 }
                 this.finalChartConfig.splice(2, 0, this.configTitle(this.namechart,this.nameselected,suma));
                 this.finalChartConfig = this.finalChartConfig.filter(config => !config || !config.hasOwnProperty('plotOptions'));
-                const plotOptions = this.configPlotOptions(this.selected);
+                const plotOptions = this.configPlotOptions(this.selected,suma);
                 if (plotOptions) {
                     this.finalChartConfig.push(plotOptions);
                 }

@@ -52,7 +52,7 @@ keys = [
     { text: 'Dependencia a la que Canaliza', value: 'dependencia_canalizada' },
     { text: 'Género', value: 'genero' },
     { text: 'Cómo se Identifica', value: 'como_indentifica' },
-    { text: 'Religión o Culto', value: 'religion' },
+    { text: 'Religión o Culto', value: 'religión' },
     { text: 'Estado civil', value: 'estado_civil' },
     { text: 'Escolaridad o alfabetismo', value: 'alfabetismo_escolaridad' },
     { text: 'Posesión de hijos', value: 'posesion_hijos' },
@@ -123,7 +123,7 @@ indices: any=[];
               causasContador[causa]++;
           }
       } else {
-          
+
         if (!point || item[option] == point) {
           if (!causasContador[causa]) {
               causasContador[causa] = 1;
@@ -132,7 +132,7 @@ indices: any=[];
           }
       }
       }
-      
+
 
     });
     const causasUnicas = Object.keys(causasContador);
@@ -169,11 +169,11 @@ indices: any=[];
 
 
     })
-   
+
     finalChartConfig.push(this.configChart(chart));
     finalChartConfig.push(this.configLegend());
     finalChartConfig.push(this.configTitle(chart,title,conteos));
-    finalChartConfig.push(this.configPlotOptions(chart,id));
+    finalChartConfig.push(this.configPlotOptions(chart,id,conteos));
     finalChartConfig.push(this.configXaxis(chart,causas));
     finalChartConfig.push(this.configYaxis());
     finalChartConfig.push(this.configData(chart,causas,conteos));
@@ -182,7 +182,7 @@ indices: any=[];
   //  chart.series[0].points.forEach(point => {
   //   Highcharts.addEvent(point, 'click', function() {
   //     console.log('Clic en el punto:', this.x, this.y);
-      
+
   //   });
   // });
 
@@ -308,17 +308,17 @@ searchDates(item, start, end) {
       const date = new Date(option.date_created);
       date.setHours(0, 0, 0, 0);
       date.setDate(date.getDate() + 1);
-  
+
       if (startDate <= date && endDate >= date) {
           const dependency = option.dependencia;
           if (!foundDependencies.includes(option.dependencia)) {
-            foundDependencies.push(dependency); // Agrega la dependencia al conjunto de dependencias encontradas            
+            foundDependencies.push(dependency); // Agrega la dependencia al conjunto de dependencias encontradas
           }
-  
+
           if (!countByDependencyWithTitles[dependency]) {
               countByDependencyWithTitles[dependency] = { titles: [], values: [] };
           }
-  
+
           const selectedOption = option[item.option_selected];
           const titleIndex = countByDependencyWithTitles[dependency].titles.indexOf(selectedOption);
           if (titleIndex !== -1) {
@@ -329,7 +329,7 @@ searchDates(item, start, end) {
           }
       }
   });
-  
+
   // Busca dependencias que no se encontraron en ningún registro dentro del rango de fechas
   this.indices.forEach(element => {
     if (!foundDependencies.includes(element.dependencia)) {
@@ -358,7 +358,7 @@ searchDates(item, start, end) {
       const dependency = dependencies[i];
       const titles = countByDependencyWithTitles[dependency].titles;
       const values = countByDependencyWithTitles[dependency].values;
-      
+
       this.createChart("chartsubselected" + i, item.chart_selected, dependency, titles, values);
   }
 }
@@ -378,7 +378,7 @@ searchDates(item, start, end) {
             type: `${chart}`,
             events: {
                 click: function (event) {
-                   
+
                 }
             },
             animation: true,
@@ -389,7 +389,7 @@ searchDates(item, start, end) {
                 depth: 100
             }
         }
-        
+
         };
       case "pie":
         return {
@@ -466,16 +466,18 @@ searchDates(item, start, end) {
                     }
                 },
                 tooltip: {
-                    pointFormat: `{series.name}: <b>{point.percentage:.1f}% de ${total} registros</b>`
+                    pointFormat: `{series.name}: <b>{point.y} de ${total} registros</b>`
                 }
             };
     }
 }
-   
-    configPlotOptions(chart: string,id:string): any {
+
+    configPlotOptions(chart: string,id:string,conteos:number[]): any {
+        const total = conteos.reduce((total, numero) => total + numero, 0);
+
     const findID =this.interaction.findIndex(item => item.id === id);
     const transformData =(id,point)=>{
-      
+
       this.getSelected(this.interaction[id].id,'pie',this.interaction[id].title + ' especificamente de '+point,'causa',point,this.interaction[id].option);
 
     }
@@ -512,7 +514,7 @@ searchDates(item, start, end) {
                               point: {
                               events: {
                                 click: function(e){
-                                  // transformData(findID,event.point.x)                                  
+                                  // transformData(findID,event.point.x)
                                 }
                               }
                             }
@@ -532,7 +534,7 @@ searchDates(item, start, end) {
                     point: {
                       events: {
                         click: function(event) {
- 
+
                         }
                       }
                     }
@@ -544,7 +546,8 @@ searchDates(item, start, end) {
                     slicedOffset: 20,
                     dataLabels: {
                       enabled: true,
-                      format: `<b>{point.name}</b>: {point.percentage:.1f} % de un total de registros`, // Formato para mostrar el nombre y el porcentaje
+
+                      format: `<b>{series.name}</b>: {point.y} de ${total} de registros`, // Formato para mostrar el nombre y el porcentaje
                       distance: 30 // Distancia de las etiquetas desde el centro del pastel
                     }
                   }
@@ -592,7 +595,7 @@ searchDates(item, start, end) {
                     }
                 }
             };
-          
+
         }
     }
     configYaxis(){
@@ -634,7 +637,7 @@ searchDates(item, start, end) {
               return {
                 series: [{
                   type: chart,
-                  name: 'Porcentaje obtenido',
+                  name: 'Registros obtenidos ',
                   data: causas.map((value, index) => ({
                     name: value,
                     y: conteos[index],

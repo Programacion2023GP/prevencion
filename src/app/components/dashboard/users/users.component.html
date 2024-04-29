@@ -54,6 +54,20 @@
                             <td mat-cell *matCellDef="let row">
                                 {{ row.role }}
                             </td>
+                           
+                        </ng-container>
+                        <ng-container matColumnDef="dependence_name">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                            >
+                                Dependecia a la que pertenece
+                            </th>
+                         
+                            <td mat-cell *matCellDef="let row">
+                                {{ row.dependence_name }}
+                            </td>
                         </ng-container>
                         <ng-container matColumnDef="Actions">
                             <th
@@ -139,17 +153,23 @@
                                 (selectionChange)="roleSelected($event)"
                                 formControlName="role"
                             >
-                                @if(role!="Administrador"){
+                                @if(role=="SuperAdmin"){
                                 <mat-option value="Administrador"
                                     >Administrador</mat-option
                                 >
                                 }
+                                @if(role!="Administradordependencia"){
+
+                                <mat-option value="Administradordependencia"
+                                >Administrador de dependencia</mat-option
+                                >
+                            }
                                 <mat-option value="Capturista"
                                     >Capturista</mat-option
                                 >
                             </mat-select>
                         </mat-form-field>
-                        @if(capturista){
+                        @if(capturista && role=="SuperAdmin" || capturista && role=="Administrador"){
                         <mat-form-field
                             appearance="outline"
                             style="width: 100%"
@@ -164,15 +184,10 @@
                             </mat-select>
                         </mat-form-field>
 
-                        } @if (MyForm.valid) {
-                        <button mat-raised-button color="primary">
+                        } <button mat-raised-button color="primary" >
                             Registrar
                         </button>
-                        } @else {
-                        <button disabled mat-raised-button color="primary">
-                            Registrar
-                        </button>
-                        }
+
                     </form>
                 </mat-card-content>
             </mat-card>
@@ -222,6 +237,18 @@
                                     mat-sort-header
                                 >
                                     Rol
+                                </th>
+                                <td mat-cell *matCellDef="let row">
+                                    <p-skeleton></p-skeleton>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="dependence_name">
+                                <th
+                                    mat-header-cell
+                                    *matHeaderCellDef
+                                    mat-sort-header
+                                >
+                                    Dependencia
                                 </th>
                                 <td mat-cell *matCellDef="let row">
                                     <p-skeleton></p-skeleton>
