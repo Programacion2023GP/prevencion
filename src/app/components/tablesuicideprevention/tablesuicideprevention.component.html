@@ -36,8 +36,8 @@
                      <td [ngClass]="{ 'text-bg-warning': !row.gender_id }" mat-cell *matCellDef="let row">{{ row.causa }}</td>
                   </ng-container>
                   <ng-container matColumnDef="datecurrence">
-                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de Ocurrencia del Suicidio</th>
-                     <td [ngClass]="{ 'text-bg-warning': !row.gender_id }" mat-cell *matCellDef="let row">{{ row.datecurrence | date : "dd/MM/yyyy" }}</td>
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de registro</th>
+                     <td [ngClass]="{ 'text-bg-warning': !row.gender_id }" mat-cell *matCellDef="let row">{{ row.datesuccess | date : "dd/MM/yyyy" }}</td>
                   </ng-container>
                   <ng-container matColumnDef="status">
                      <th mat-header-cell *matHeaderCellDef mat-sort-header>status</th>
@@ -105,8 +105,8 @@
                            <td mat-cell *matCellDef="let row"><p-skeleton p-skeleton-animation="progress"></p-skeleton></td>
                         </ng-container>
                         <ng-container matColumnDef="datecurrence">
-                           <th mat-header-cell *matHeaderCellDef mat-sort-header>Intento de suicido o suicidio registrado</th>
-                           <td mat-cell *matCellDef="let row"><p-skeleton p-skeleton-animation="progress"></p-skeleton></td>
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de registro</th>
+                          <td mat-cell *matCellDef="let row"><p-skeleton p-skeleton-animation="progress"></p-skeleton></td>
                         </ng-container>
                         <ng-container matColumnDef="status">
                            <th mat-header-cell *matHeaderCellDef mat-sort-header>status</th>
@@ -146,7 +146,7 @@
                            <div class="card-header bg-primary text-white">Detalles del {{ item.acto_fue }}</div>
                            <div class="card-body">
                               <p><strong>Folio:</strong> {{ item.invoice }}</p>
-                              <p><strong>Nombre de la Persona Fallecida:</strong> {{ item.name }}</p>
+                              <p><strong>Nombre de la Persona {{ item.acto_fue }} :</strong> {{ item.name }}</p>
                               <p><strong>Edad:</strong> {{ item.age }}</p>
                               <p><strong>CURP:</strong> {{ item.curp }}</p>
                               <p><strong>Denunciante:</strong> {{ item.personinformate }}</p>
@@ -159,7 +159,7 @@
                               <p><strong>Municipio del {{ item.acto_fue }}:</strong> {{ item.municipysdeed }}</p>
                               <p><strong>Colonia del {{ item.acto_fue }}:</strong> {{ item.colonydeed }}</p>
 
-                              <p><strong>Intento de suicido o {{ item.acto_fue }} registrado :</strong> {{ item.datesuccess | date : "dd/MM/yyyy" }}</p>
+                              <p><strong> {{ item.acto_fue }} registrado :</strong> {{ item.datesuccess | date : "dd/MM/yyyy" }}</p>
                               <p><strong>Status:</strong> {{ item.status }}</p>
 
                               <!-- <p><strong>Fecha de Ocurrencia del Suicidio:</strong> {{ item.datecurrence | date:'dd/MM/yyyy' }}</p> -->

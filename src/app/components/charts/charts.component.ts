@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { ListboxModule } from 'primeng/listbox';
 
 import { ChartModule } from 'primeng/chart';
@@ -24,7 +24,7 @@ animations:[fadeInOutAnimation],
   templateUrl: './charts.component.html',
   styleUrl: './charts.component.scss'
 })
-export class ChartsComponent {
+export class ChartsComponent  implements AfterViewInit  {
     rangeDates: Date[];
   interaction =[]
   loading: true;
@@ -77,13 +77,12 @@ indices: any=[];
       // Generar un color hexadecimal aleatorio
       return '#' + Math.floor(Math.random() * 16777215).toString(16);
   }
-  ngOnInit(): void {
-    this.createCharts();
+  ngAfterViewInit(): void {
     Highcharts3D(Highcharts); // Activa el módulo Highcharts 3D
+    this.createCharts();
   }
   createCharts(){
     this.getCharts.forEach((item,index) => {
-        console.log("chart"+index)
         this.interaction.push({
           id:"chart"+index,
           chart:item.chart_selected,
@@ -284,8 +283,7 @@ onDateSelect(event) {
 
     // Si ahora tenemos ambas fechas, puedes hacer algo con ellas
     if (this.startDate && this.endDate) {
-        console.log('Fecha de inicio:', this.startDate);
-        console.log('Fecha de fin:', this.endDate);
+
         this.searchDates(this.itemSelected[0],this.startDate,this.endDate)
     }
 }
@@ -352,7 +350,6 @@ searchDates(item, start, end) {
       }
   }
 
-  console.error("here", countByDependencyWithTitles);
 
   for (let i = 0; i < dependencies.length; i++) {
       const dependency = dependencies[i];
@@ -466,7 +463,8 @@ searchDates(item, start, end) {
                     }
                 },
                 tooltip: {
-                    pointFormat: `{series.name}: <b>{point.y} de ${total} registros</b>`
+                  
+                    pointFormat: `{series.name}: <b>{point.y} de ${total} de registros</b>`
                 }
             };
     }
@@ -541,14 +539,16 @@ searchDates(item, start, end) {
                   },
                   pie: {
                     allowPointSelect: true,
-                    cursor: 'pointer',
                     depth: 35,
                     slicedOffset: 20,
                     dataLabels: {
                       enabled: true,
-
-                      format: `<b>{series.name}</b>: {point.y} de ${total} de registros`, // Formato para mostrar el nombre y el porcentaje
-                      distance: 30 // Distancia de las etiquetas desde el centro del pastel
+                      format: `<b>{point.name}</b>: {point.y} de ${total} de registros`, // Incluye {point.y} en el formato
+                      distance: 30, // Ajusta la distancia para que las etiquetas estén encima de las porciones
+                      // Cambia la alineación para que las etiquetas estén encima de las porciones
+                      alignTo: 'plotEdges',
+                      // Utiliza el conector para unir las etiquetas con las porciones
+                      connectorPadding: 5
                     }
                   }
                 }

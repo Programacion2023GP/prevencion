@@ -338,21 +338,35 @@ createGraphChart() {
         case "area":
           return {
             plotOptions: {
+              series: {
+                point: {
+                  events: {
+                    click: function(event) {
+
+                    }
+                  }
+                }
+              },
               pie: {
                 allowPointSelect: true,
-                cursor: 'pointer',
+                // cursor: 'pointer',
+                
                 depth: 35,
                 slicedOffset: 20,
                 dataLabels: {
                   enabled: true,
-                  format: `<b>{series.name}</b>: {point.y} de ${total} registros`, // Formato para mostrar el nombre y el porcentaje
-                  distance: 30 // Distancia de las etiquetas desde el centro del pastel
+                  
+                  format: `<b>{point.name}</b>  {point.y} de ${total} de registros`, // Formato para mostrar el nombre y el porcentaje
+                  distance: 30 
                 }
               }
             }
           };
 
       }
+
+      
+      
     }
 
     configXaxis(chart,titles){
