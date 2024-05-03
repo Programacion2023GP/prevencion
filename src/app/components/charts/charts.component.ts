@@ -410,6 +410,8 @@ searchDates(item, start, end) {
   configLegend() {
     return {
         legend: {
+          enabled: false,
+
             // Configuración de la leyenda...
             events: {
                 // Función que se ejecutará cuando se haga clic en un elemento de la leyenda
@@ -464,7 +466,7 @@ searchDates(item, start, end) {
                 },
                 tooltip: {
                   
-                    pointFormat: `{series.name}: <b>{point.y} de ${total} de registros</b>`
+                    pointFormat: `{series.name}: <b>{point.y} de ${total} registros</b>`
                 }
             };
     }
@@ -543,8 +545,8 @@ searchDates(item, start, end) {
                     slicedOffset: 20,
                     dataLabels: {
                       enabled: true,
-                      format: `<b>{point.name}</b>: {point.y} de ${total} de registros`, // Incluye {point.y} en el formato
-                      distance: 30, // Ajusta la distancia para que las etiquetas estén encima de las porciones
+                      format: `<b>{point.name}</b>: {point.y} de ${total} registros`, // Incluye {point.y} en el formato
+                      distance: 30, // Ajusta la distancia para que las etiquetas estén encima las porciones
                       // Cambia la alineación para que las etiquetas estén encima de las porciones
                       alignTo: 'plotEdges',
                       // Utiliza el conector para unir las etiquetas con las porciones

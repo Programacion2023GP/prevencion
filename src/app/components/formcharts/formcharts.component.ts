@@ -259,6 +259,8 @@ createGraphChart() {
   configLegend() {
     return {
       legend: {
+        enabled: false,
+
         bubbleLegend: {
           enabled: true,
           minSize: 20,
@@ -356,7 +358,7 @@ createGraphChart() {
                 dataLabels: {
                   enabled: true,
                   
-                  format: `<b>{point.name}</b>  {point.y} de ${total} de registros`, // Formato para mostrar el nombre y el porcentaje
+                  format: `<b>{point.name}</b>  {point.y} de ${total} registros`, // Formato para mostrar el nombre y el porcentaje
                   distance: 30 
                 }
               }
