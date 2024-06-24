@@ -1,143 +1,147 @@
 <div [@fadeInOutAnimation] class="row content" [ngClass]="{ loading: loading }">
-    <div class="row">
-        <ng-container *ngFor="let item of cards; let i = index">
-            <div class="col-3">
-                <mat-card>
-                    <mat-label class="description-label">{{
-                        item | json
-                    }}</mat-label>
-                    <mat-label class="description-label">{{
-                        item.value
-                    }}</mat-label>
-                </mat-card>
-            </div>
-        </ng-container>
-    </div>
-    <div class="row">
-        <ng-container *ngFor="let item of getCharts; let i = index">
-            <div class="col-12 row">
-                <mat-card>
-                    <div class="row">
-                        <div [ngClass]="{
-                            'col-9': item.chart_selected === 'column' || item.chart_selected === 'bar',
-                            'col-12': item.chart_selected !== 'column' && item.chart_selected !== 'bar'
-                        }">
+   <div class="row">
+      <ng-container *ngFor="let item of cards; let i = index">
+         <div class="col-3">
+            <mat-card>
+               <mat-label class="description-label">{{ item | json }}</mat-label>
+               <mat-label class="description-label">{{ item.value }}</mat-label>
+            </mat-card>
+         </div>
+      </ng-container>
+   </div>
+   <div class="row">
+      <ng-container *ngFor="let item of getCharts; let i = index">
+         <div class="col-12 row">
+            <mat-card>
+               <div class="row d-print-none">
+                  <div
+                     [ngClass]="{
+                        'col-9': item.chart_selected === 'column' || item.chart_selected === 'bar',
+                        'col-12': item.chart_selected !== 'column' && item.chart_selected !== 'bar'
+                     }"
+                  >
+                     <button (click)="openDialog(item)" mat-raised-button color="primary" class="w-100 mx-1">Ver más detalles</button>
+                  </div>
+                  @if(item.chart_selected =='column' || item.chart_selected =='bar'){
 
-                            <button
-                                (click)="openDialog(item)"
-                                mat-raised-button
-                                color="primary"
-                                class="w-100 mx-1"
-                            >
-                                Ver más detalles
-                            </button>
+                  <div class="col-3">
+                     <button (click)="restaurar(item, 'chart' + i, i)" mat-raised-button color="primary" class="w-100 mx-1">Restaurar</button>
+                  </div>
+                  }
+               </div>
+
+               <div class="row">
+                  <div [ngClass]="{ 'd-none': !item.history, '': item.history, 'border border-secondary-subtle': !printMode, '': printMode }">
+                     <div class="mx-auto mt-2 mb-2" style="width: 100%; display: flex; justify-content: center; align-items: center">
+                        <mat-label class="d-print-none description-label">Historial</mat-label>
+                     </div>
+                     <!-- <div class="col-12 d-flex align-items-start" style="overflow: auto; max-widht: 700px">
+                        <mat-card
+                           appearance="outlined"
+                           *ngFor="let historia of item.historial; let f = index"
+                           [formGroup]="historia"
+                           style="margin-bottom: 10px; width: 610px; cursor: pointer"
+                        >
+                           <div class="mr-2" [id]="'historial' + item.name + f" style="width: 600px; height: 300px; cursor: pointer; overflow-x: auto; overflow-y: hidden"></div>
+                        </mat-card>
+                     </div> -->
+                     <div class="mx-auto mt-2 mb-2" style="width: 100%; display: flex; justify-content: center; align-items: center">
+                        <button mat-stroked-button class="d-print-none" onclick="window.print()">Imprimir aquí</button>
+                     </div>
+                  </div>
+                  <div class="container-fluid">
+                     <div class="container-fluid">
+                        <div class="row">
+                           <div
+                              class="d-print-none border border-secondary-subtle order-2 order-md-1"
+                              [ngClass]="{ 'd-none': !item.open, 'col-md-3': item.open, 'col-12': !item.open }"
+                              style="overflow: auto; max-height: 700px"
+                           >
+                              <div class="d-flex d-md-block flex-row-reverse flex-md-column" style="overflow-x: auto; flex-wrap: nowrap">
+                                 <mat-card
+                                    appearance="outlined"
+                                    *ngFor="let select of keys; let j = index"
+                                    class="mb-2 me-2"
+                                    style="width: 300px; cursor: pointer; flex: 0 0 auto"
+                                 >
+                                    <div [id]="item.name + j" class="mb-2" style="width: 100%; height: 300px; cursor: pointer"></div>
+                                    <button mat-stroked-button color="secondary" (click)="historial(i, j, item.name, select.value)">Seleccionar</button>
+                                 </mat-card>
+                              </div>
+                           </div>
+
+                           <div
+                              class="d-print-none order-1 order-md-2"
+                              [ngClass]="{
+                                 'col-md-9': item.open,
+                                 'col-12': !item.open,
+                                 'border border-secondary-subtle': item.history
+                              }"
+                           >
+                              <div #chartContainer [id]="'chart' + i" style="width: 100%; height: 600px"></div>
+                           </div>
                         </div>
-                        @if(item.chart_selected =='column' || item.chart_selected =='bar'){
+                     </div>
+                  </div>
+               </div>
 
-                        <div class="col-3">
-                            <button
-                                (click)="restaurar(item,'chart'+i)"
-                                mat-raised-button
-                                color="primary"
-                                class="w-100 mx-1"
-                            >
-                                Restaurar
-                            </button>
-                        </div>
-                        }
-                    </div>
+               <ng-container *ngIf="item.description">
+                  <mat-label class="description-label d-print-none">{{ item.description }}</mat-label>
+               </ng-container>
+            </mat-card>
+         </div>
+      </ng-container>
+   </div>
 
-                    <div
-                        #chartContainer
-                        [id]="'chart' + i"
-                        style="width: 100%; height: 600px"
-                    ></div>
-                    <ng-container *ngIf="item.description">
-                        <mat-label class="description-label">{{
-                            item.description
-                        }}</mat-label>
-                    </ng-container>
-                </mat-card>
+   <div class="row">
+      <div class="col-md-8 mx-auto">
+         <!-- Columna centrada horizontalmente -->
+         <ng-template #SkeletonTable>
+            <!-- Esqueleto de carga -->
+            <div style="position: relative; height: 80vh">
+               <!-- Estilo para centrar verticalmente -->
+               <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
+                  <h2>Cargando ....</h2>
+                  <mat-spinner></mat-spinner>
+                  Boolean = false;
+               </div>
             </div>
-        </ng-container>
-    </div>
-
-    <div class="row">
-        <div class="col-md-8 mx-auto">
-            <!-- Columna centrada horizontalmente -->
-            <ng-template #SkeletonTable>
-                <!-- Esqueleto de carga -->
-                <div style="position: relative; height: 80vh">
-                    <!-- Estilo para centrar verticalmente -->
-                    <div
-                        style="
-                            position: absolute;
-                            top: 50%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                        "
-                    >
-                        <h2>Cargando ....</h2>
-                        <mat-spinner></mat-spinner>
-                        Boolean = false;
-                    </div>
-                </div>
-            </ng-template>
-        </div>
-    </div>
+         </ng-template>
+      </div>
+   </div>
 </div>
-<p-dialog
-    position="center"
-    #dialogo
-    [header]="'Detalles sobre la grafica: ' +itemSelected?.[0]?.name"
-    [(visible)]="visible"
-    [style]="{ width: '80vw' }"
->
-    <br />
-    <mat-card>
-        <div
-            #chartContainer
-            [id]="'chartselected'"
-            style="width: 100%; height: 400px"
-        ></div>
-        <ng-container
-            *ngIf="
-                itemSelected && itemSelected[0] && itemSelected[0].description
-            "
-        >
-            <mat-label class="description-label">{{
-                itemSelected[0].description
-            }}</mat-label>
-        </ng-container>
-    </mat-card>
-    <br />
-    <div class="text-center">
-        <h1 class="mx-auto">Busqueda por rangos de fechas</h1>
-        <p-calendar
-            class="mx-auto"
-            selectionMode="range"
-            [inline]="true"
-            [showWeek]="true"
-            [numberOfMonths]="3"
-            [readonlyInput]="true"
-            (onSelect)="onDateSelect($event)"
-        ></p-calendar>
-    </div>
-    <br />
+<p-dialog position="center" #dialogo [header]="'Detalles sobre la grafica: ' +itemSelected?.[0]?.name" [(visible)]="visible" [style]="{ width: '80vw' }">
+   <br />
+   <mat-card>
+      <div #chartContainer [id]="'chartselected'" style="width: 100%; height: 400px"></div>
+      <ng-container *ngIf="itemSelected && itemSelected[0] && itemSelected[0].description">
+         <mat-label class="description-label">{{ itemSelected[0].description }}</mat-label>
+      </ng-container>
+   </mat-card>
+   <br />
+   <div class="text-center">
+      <h1 class="mx-auto">Busqueda por rangos de fechas</h1>
+      <p-calendar
+         class="mx-auto"
+         selectionMode="range"
+         [inline]="true"
+         [showWeek]="true"
+         [numberOfMonths]="3"
+         [readonlyInput]="true"
+         (onSelect)="onDateSelect($event)"
+      ></p-calendar>
+   </div>
+   <br />
 
-    <div class="row">
-        <ng-container *ngFor="let index of indices">
-            <div class="col-4">
-                <mat-card>
-                    <div [ngClass]="{ invisible: !index.active }">
-                        <div
-                            #chartContainer
-                            [id]="'chartsubselected' + index.item"
-                            style="width: 100%; height: 400px"
-                        ></div>
-                    </div>
-                </mat-card>
-            </div>
-        </ng-container>
-    </div>
+   <div class="row">
+      <ng-container *ngFor="let index of indices">
+         <div class="col-4">
+            <mat-card>
+               <div [ngClass]="{ invisible: !index.active }">
+                  <div #chartContainer [id]="'chartsubselected' + index.item" style="width: 100%; height: 400px"></div>
+               </div>
+            </mat-card>
+         </div>
+      </ng-container>
+   </div>
 </p-dialog>

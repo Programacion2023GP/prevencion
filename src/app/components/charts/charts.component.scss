@@ -1,3 +1,38 @@
 .larger-checkbox {
     transform: scale(1.5); /* Ajusta el tamaño del checkbox según sea necesario */
 }
+@media print {
+    @page { margin: 0;
+        size: auto; }
+    .d-none {
+        display: none !important;
+    }
+    .d-print-none {
+        display: none !important;
+    }
+    .col-12 {
+        width: 100% !important;
+    }
+    .d-flex {
+        display: block !important;
+    }
+    .align-items-start {
+        align-items: flex-start;
+    }
+    mat-card {
+        width: 100% !important;
+        margin-bottom: 10px;
+    }
+    body * {
+        visibility: hidden;
+        overflow: hidden !important;
+
+    }
+    div[id^='historial'] {
+        visibility: visible !important;
+        overflow: hidden !important;
+      
+    }
+    
+
+}

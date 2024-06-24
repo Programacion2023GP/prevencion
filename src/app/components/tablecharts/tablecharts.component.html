@@ -1,5 +1,5 @@
 <div [@fadeInOutAnimation] class="row content">
-    <div class="col-8">
+    <div class="col-12">
         <mat-card>
             <mat-card-content>
 
@@ -8,7 +8,7 @@
                         <mat-label>Buscador</mat-label>
                     <input type="text" class="form-control custom-border"  matInput (keyup)="applyFilter($event)"id="gender"formControlName="gender" aria-describedby="emailHelp">
                         <br>
-                      <div class="mat-elevation-z8">
+                      <div class="mat-elevation-z8" style="overflow: auto;">
                         <table mat-table [dataSource]="dataSource" matSort>
 
                           <ng-container matColumnDef="name">

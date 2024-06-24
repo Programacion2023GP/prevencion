@@ -1,5 +1,5 @@
 <div [@fadeInOutAnimation] class="row content"  [ngClass]="{'loading': isLoading}">
-    <div class="col-8" *ngIf="!isLoading; else SkeletonTable">
+    <div class="col-md-8 order-md-1 order-2"  *ngIf="!isLoading; else SkeletonTable">
         <mat-card>
             <mat-card-content>
         
@@ -8,8 +8,8 @@
                         <mat-label>Buscador</mat-label>
                     <input type="text" class="form-control custom-border"  matInput (keyup)="applyFilter($event)"id="gender"formControlName="gender" aria-describedby="emailHelp">
                         <br>
-                      <div class="mat-elevation-z8">
-                        <table mat-table [dataSource]="dataSource" matSort>
+                        <div class="mat-elevation-z8" style="overflow: auto;">
+                            <table mat-table [dataSource]="dataSource" matSort>
         
                           <ng-container matColumnDef="name">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo de violencia </th>
@@ -44,7 +44,7 @@
 
     </div>
     <ng-container *ngIf="!isLoading" >
-        <div class="col-4">
+        <div class="col-md-4 order-md-2 order-1 mt-4">
             <mat-card>
                 <mat-card-content>
                     <form [formGroup]="MyForm" (ngSubmit)="onSubmit()">
