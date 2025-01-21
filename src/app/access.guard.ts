@@ -13,7 +13,8 @@ export class AcessGuard implements CanActivate {
   ): boolean | UrlTree {
     const authToken =localStorage.getItem('token')
     if (authToken) {
-        console.warn("holaaaaa")
+      
+        // console.warn("holaaaaa")
       return true;
     } else {
       this.router.navigate(['/login']);

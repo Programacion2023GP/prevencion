@@ -155,6 +155,7 @@ export class ChartsComponent implements AfterViewInit {
             this.getSelected("chart" + index, item.chart_selected, item.name, item.option_selected);
          }, 1000);
       });
+      console.log("this.getCharts",this.getCharts)
    }
    restaurar(item, id, index) {
       this.getSelected(id, item.chart_selected, item.name, item.option_selected);
@@ -214,7 +215,7 @@ export class ChartsComponent implements AfterViewInit {
    subCharts(id: string, chart_selected: string, name: string, data: any[], identified: number) {
       this.keys.forEach((element, index) => {
          const causasContador: { [key: string]: number } = {};
-
+         
          data.forEach((item) => {
             const causa = item[`${element.value}`];
             if (!causasContador[causa]) {
@@ -223,13 +224,14 @@ export class ChartsComponent implements AfterViewInit {
                causasContador[causa]++;
             }
          });
-
+         
          const causasUnicas = Object.keys(causasContador);
          const conteosCausas = causasUnicas.map((causa) => causasContador[causa]);
          const suma = conteosCausas.reduce((total, numero) => total + numero, 0);
-
+         
+         console.log(name.split(" ")[0] + index,id)
          this.createChart(
-            name.split(" ")[0] + index,
+            id + index,
             chart_selected,
             `${name} ${element.text}`,
             causasUnicas.length == 0 ? [] : causasUnicas,
@@ -237,7 +239,8 @@ export class ChartsComponent implements AfterViewInit {
          );
       });
    }
-   historial(id, index, name, selected): any {
+   historial(id, index, name,chart_selected, selected): any {
+      
       this.getCharts[id].historial.push({});
       const title = this.keys.filter((item) => item.value == selected)[0].text;
       // this.getCharts[id].open =false
@@ -256,7 +259,7 @@ export class ChartsComponent implements AfterViewInit {
       const causasUnicas = Object.keys(causasContador);
       const conteosCausas = causasUnicas.map((causa) => causasContador[causa]);
       const suma = conteosCausas.reduce((total, numero) => total + numero, 0);
-      this.createChart(this.getCharts[id].id, "column", `${name} ${title}`, causasUnicas, conteosCausas, selected);
+      this.createChart(this.getCharts[id].id, chart_selected, `${name} ${title}`, causasUnicas, conteosCausas, selected);
       this.getCharts[id].data = this.getCharts[id].dataNext;
 
       // setTimeout(() => {
@@ -582,7 +585,7 @@ export class ChartsComponent implements AfterViewInit {
 
          this.getCharts[identified].dataNext = this.getCharts[identified].data.filter((key) => key[causa] == point);
          console.log("acas", this.getCharts[identified].dataNext);
-         this.subCharts(id, "pie", title, this.getCharts[identified].dataNext, identified);
+         this.subCharts(this.getCharts[identified].option_selected, "pie", title, this.getCharts[identified].dataNext, identified);
 
          this.getCharts[identified].historial.forEach((item, index) => {
             setTimeout(() => {
@@ -647,7 +650,7 @@ export class ChartsComponent implements AfterViewInit {
                      point: {
                         events: {
                            click: function (event) {
-                              // transformData(findID, event.point.name);
+                              transformData(findID, event.point.name);
                               // Verifica qué datos contiene this.getCharts[1].data
                               // Filtra los datos
                               // Si no encuentras nada, revisa las condiciones del filtro y los datos originales
@@ -656,6 +659,8 @@ export class ChartsComponent implements AfterViewInit {
                      }
                   },
                   pie: {
+                     cursor: "pointer",
+
                      allowPointSelect: true,
                      depth: 35,
                      slicedOffset: 20,

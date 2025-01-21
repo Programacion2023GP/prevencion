@@ -11,23 +11,22 @@
    </div>
    <div class="row">
       <ng-container *ngFor="let item of getCharts; let i = index">
+         
+         
          <div class="col-12 row">
             <mat-card>
                <div class="row d-print-none">
                   <div
-                     [ngClass]="{
-                        'col-9': item.chart_selected === 'column' || item.chart_selected === 'bar',
-                        'col-12': item.chart_selected !== 'column' && item.chart_selected !== 'bar'
-                     }"
+                  class="col-9"
+                 
                   >
                      <button (click)="openDialog(item)" mat-raised-button color="primary" class="w-100 mx-1">Ver más detalles</button>
                   </div>
-                  @if(item.chart_selected =='column' || item.chart_selected =='bar'){
 
                   <div class="col-3">
                      <button (click)="restaurar(item, 'chart' + i, i)" mat-raised-button color="primary" class="w-100 mx-1">Restaurar</button>
                   </div>
-                  }
+                 
                </div>
 
                <div class="row">
@@ -54,18 +53,19 @@
                         <div class="row">
                            <div
                               class="d-print-none border border-secondary-subtle order-2 order-md-1"
-                              [ngClass]="{ 'd-none': !item.open, 'col-md-3': item.open, 'col-12': !item.open }"
+                              [ngClass]="{ 'd-none': !item.open, 'col-md-7': item.open, 'col-12': !item.open }"
                               style="overflow: auto; max-height: 700px"
                            >
-                              <div class="d-flex d-md-block flex-row-reverse flex-md-column" style="overflow-x: auto; flex-wrap: nowrap">
+                              <div class="d-flex d-md-block flex-row-reverse flex-md-column" style="overflow: auto; flex-wrap: nowrap">
                                  <mat-card
                                     appearance="outlined"
                                     *ngFor="let select of keys; let j = index"
                                     class="mb-2 me-2"
-                                    style="width: 300px; cursor: pointer; flex: 0 0 auto"
+                                    style="width: 100%; cursor: pointer; flex: 0 0 auto"
                                  >
-                                    <div [id]="item.name + j" class="mb-2" style="width: 100%; height: 300px; cursor: pointer"></div>
-                                    <button mat-stroked-button color="secondary" (click)="historial(i, j, item.name, select.value)">Seleccionar</button>
+                                    <div [id]="item.option_selected + j" class="mb-2" style="width: 100%; height: 300px; cursor: pointer"></div>
+                                    <button mat-stroked-button color="secondary" (click)="historial(i, j, item.name,item.chart_selected, select.value)">  Seleccionar</button>
+
                                  </mat-card>
                               </div>
                            </div>
@@ -73,7 +73,7 @@
                            <div
                               class="d-print-none order-1 order-md-2"
                               [ngClass]="{
-                                 'col-md-9': item.open,
+                                 'col-md-5': item.open,
                                  'col-12': !item.open,
                                  'border border-secondary-subtle': item.history
                               }"

@@ -48,8 +48,10 @@ export class LoginComponent {
             // localStorage.setItem("departamentos",n["data"]["result"]["user"][0]["departamentos"])
 
 
-
+                  console.log("role",role);
+                  
                   if (role == "Administrador" ||role == "SuperAdmin") {
+             
                     this.router.navigateByUrl(`/usuarios`)
                   }else{
                     this.router.navigateByUrl('/prevencion');

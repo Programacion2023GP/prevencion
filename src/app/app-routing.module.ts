@@ -37,9 +37,12 @@ import { StatusComponent } from './components/catalogues/status/status.component
         RouterModule.forRoot([
             {
                 path: '', component: AppLayoutComponent,
+                 
+                
                 canActivate:[AcessGuard],
-
+                
                 children: [
+                    { path: '', redirectTo: 'prevencion', pathMatch: 'full' },
                     { path: 'prevencion/:row', component: SuicidepreventionComponent },
                     { path: 'prevencion', component: SuicidepreventionComponent },
                     { path: 'prevencioninfo', component:TablesuicidepreventionComponent},
@@ -68,7 +71,6 @@ import { StatusComponent } from './components/catalogues/status/status.component
                     { path: 'estatus', component:StatusComponent},
 
                     {path:"listadograficas",component:TablechartsComponent},
-                    { path: '', redirectTo: 'login', pathMatch: 'full' },
                     // { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
                     { path: 'uikit', loadChildren: () => import('./demo/components/uikit/uikit.module').then(m => m.UIkitModule) },
                     { path: 'utilities', loadChildren: () => import('./demo/components/utilities/utilities.module').then(m => m.UtilitiesModule) },

@@ -130,12 +130,12 @@ export class MapsComponent implements OnInit {
               
               anchor: [0.5, 1],
               src: 'https://svgsilh.com/svg/1093169.svg', // URL del icono
-              scale: 0.03 // Escala del icono
+              scale: 0.015 // Escala del icono
             }),
             text: new Text({
               text: feature.get('nombre') + '\n' + feature.get('conteos') + ' casos',
-              offsetY: -68,
-              scale:1.3,
+              offsetY: -38,
+              scale:1.0,
               // Ajusta la posición vertical del texto
               textAlign: 'center',
               fill: new Fill({
